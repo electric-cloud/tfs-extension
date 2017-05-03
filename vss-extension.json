@@ -1,7 +1,7 @@
 {
 "manifestVersion": 1,
   "id": "service-endpoint-tutorial",
-  "version": "0.1.71",
+  "version": "0.1.75",
   "name": "Electric Flow Test Pipeline Run",
   "description": "A sample Visual Studio Team Services extension which shows how to create a custom endpoint and dynamic build task parameters taking value from a REST API.",
   "publisher": "polinashubina",

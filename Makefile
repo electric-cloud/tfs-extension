@@ -1,5 +1,5 @@
 all:
-	tsc ef-client/index.ts
-	cd RunPipeline; npm install ../ef-client; tsc
-	cd PublishArtifact && npm install ../ef-client && tsc
+	tsc ef-client/index.ts || echo "Compilation errors"
+	cd RunPipeline; npm install; tsc || echo "Run pipeline compilation errors"
+	cd PublishArtifact; npm install; tsc || echo "PublishArtifact compilation errors"
 	perl publish.pl

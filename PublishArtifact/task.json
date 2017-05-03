@@ -1,69 +1,69 @@
 {
-   "groups" : [
-      {
-         "name" : "advanced",
-         "isExpanded" : false,
-         "displayName" : "Advanced"
-      }
-   ],
-   "author" : "Electric Cloud",
-   "description" : "Publish Artifact to Electric Flow",
-   "name" : "publish-artifact",
    "friendlyName" : "Publish artifact to Electric Flow Repository",
-   "helpMarkDown" : "",
-   "inputs" : [
-      {
-         "required" : true,
-         "defaultValue" : "",
-         "label" : "Electric Flow service endpoint",
-         "helpMarkDown" : "Select the Electric Flow end point to use.",
-         "name" : "electricFlowService",
-         "type" : "connectedService:electricFlow"
-      },
-      {
-         "defaultValue" : "",
-         "required" : true,
-         "helpMarkDown" : "Arfifact path",
-         "label" : "Artifact Path",
-         "type" : "string",
-         "name" : "artifactPath"
-      },
-      {
-         "type" : "string",
-         "name" : "artifactName",
-         "defaultValue" : "",
-         "required" : true,
-         "helpMarkDown" : "Artifact name",
-         "label" : "Artifact Name"
-      },
-      {
-         "type" : "string",
-         "name" : "artifactVersion",
-         "helpMarkDown" : "Artifact version",
-         "label" : "Artifact Version",
-         "defaultValue" : "",
-         "required" : true
-      },
-      {
-         "defaultValue" : "default",
-         "required" : true,
-         "helpMarkDown" : "Repository name",
-         "label" : "Repository Name",
-         "type" : "string",
-         "name" : "repositoryName"
-      }
-   ],
+   "name" : "publish-artifact",
+   "description" : "Publish Artifact to Electric Flow",
    "execution" : {
       "Node" : {
          "target" : "index.js"
       }
    },
-   "instanceNameFormat" : "Publish Artifact $(artifactName):$(artifactVersion) to repository $(repositoryName)",
-   "id" : "0e2424a3-42b6-48f5-b3fa-ac6ed16d4c57",
+   "helpMarkDown" : "",
    "category" : "Build",
+   "id" : "0e2424a3-42b6-48f5-b3fa-ac6ed16d4c57",
    "version" : {
-      "Major" : 0,
       "Minor" : 1,
-      "Patch" : "71"
-   }
+      "Major" : 0,
+      "Patch" : "75"
+   },
+   "groups" : [
+      {
+         "isExpanded" : false,
+         "name" : "advanced",
+         "displayName" : "Advanced"
+      }
+   ],
+   "author" : "Electric Cloud",
+   "instanceNameFormat" : "Publish Artifact $(artifactName):$(artifactVersion) to repository $(repositoryName)",
+   "inputs" : [
+      {
+         "type" : "connectedService:electricFlow",
+         "label" : "Electric Flow service endpoint",
+         "helpMarkDown" : "Select the Electric Flow end point to use.",
+         "required" : true,
+         "name" : "electricFlowService",
+         "defaultValue" : ""
+      },
+      {
+         "type" : "string",
+         "helpMarkDown" : "Arfifact path",
+         "label" : "Artifact Path",
+         "required" : true,
+         "name" : "artifactPath",
+         "defaultValue" : ""
+      },
+      {
+         "type" : "string",
+         "label" : "Artifact Name",
+         "helpMarkDown" : "Artifact name",
+         "required" : true,
+         "name" : "artifactName",
+         "defaultValue" : ""
+      },
+      {
+         "type" : "string",
+         "helpMarkDown" : "Artifact version",
+         "label" : "Artifact Version",
+         "required" : true,
+         "defaultValue" : "",
+         "name" : "artifactVersion"
+      },
+      {
+         "helpMarkDown" : "Repository name",
+         "label" : "Repository Name",
+         "type" : "string",
+         "name" : "repositoryName",
+         "defaultValue" : "default",
+         "required" : true
+      }
+   ]
 }

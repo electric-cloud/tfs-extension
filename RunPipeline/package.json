@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ef-client": "../ef-client",
     "http": "0.0.0",
     "https": "^1.0.0",
     "process": "^0.11.10",
