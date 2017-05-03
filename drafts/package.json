@@ -1,0 +1,22 @@
+{
+  "name": "drafts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "buffer": "^5.0.6",
+    "buffer-concat": "^1.0.0",
+    "form-data": "^2.1.4",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "https": "^1.0.0",
+    "process": "^0.11.10",
+    "q": "^1.5.0",
+    "url": "^0.11.0"
+  }
+}
