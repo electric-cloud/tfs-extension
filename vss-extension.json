@@ -1,0 +1,104 @@
+{
+"manifestVersion": 1,
+  "id": "service-endpoint-tutorial",
+  "version": "0.1.71",
+  "name": "Electric Flow Test Pipeline Run",
+  "description": "A sample Visual Studio Team Services extension which shows how to create a custom endpoint and dynamic build task parameters taking value from a REST API.",
+  "publisher": "polinashubina",
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "service-endpoint",
+      "description": "Service Endpoint type for Electric Flow connections",
+      "type": "ms.vss-endpoint.service-endpoint-type",
+      "targets": [ "ms.vss-endpoint.endpoint-types" ],
+      "properties": {
+        "name": "electricFlow",
+        "displayName": "Electric Flow server connection",
+        "url": {
+          "displayName": "Server Url",
+          "helpText": "Url for Electric Flow server to connect to."
+        },
+        "dataSources": [
+          {
+            "name": "ElectricFlowProjects",
+            "endpointUrl": "{{endpoint.url}}rest/v1.0/projects",
+            "resultSelector": "$.project[*].projectName"
+          }
+        ],
+        "authenticationSchemes": [
+          {
+            "type": "ms.vss-endpoint.endpoint-auth-scheme-basic",
+            "inputDescriptors": [
+              {
+                "id": "username",
+                "name": "Username",
+                "description": "Username",
+                "inputMode": "textbox",
+                "validation": {
+                  "isRequired": true,
+                  "dataType": "string"
+                }
+              },
+              {
+                "id": "password",
+                "name": "Password",
+                "description": "Password",
+                "inputMode": "passwordbox",
+                "isConfidential": true,
+                "validation": {
+                  "isRequired": true,
+                  "dataType": "string"
+                }
+              },
+              {
+                "id": "skipCertCheck",
+                "name": "Skip cert check",
+                "description": "Skip cert check",
+                "inputMode": "checkbox",
+                "isConfidential": false,
+                "validation": {
+                  "isRequired": false,
+                  "dataType": "boolean"
+                }
+              }
+            ]
+          }
+
+        ],
+        "helpMarkDown": "## Test help"
+      }
+    },
+
+    {
+      "id": "run-pipeline",
+      "description": "Run Electric Flow Pipeline",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties" : {
+        "name" : "RunPipeline"
+      }
+    },
+    {
+      "id": "publish-artifact",
+      "description": "Publish Artifact to Electric Flow Repository",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties" : {
+        "name" : "PublishArtifact"
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "RunPipeline"
+    },
+    {
+      "path": "PublishArtifact"
+    }
+  ]
+}

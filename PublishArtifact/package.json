@@ -1,0 +1,15 @@
+{
+  "name": "publish-artifact",
+  "version": "1.0.0",
+  "description": "Publish Artifact task",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Electric Cloud",
+  "license": "ISC",
+  "dependencies": {
+    "ef-client": "../ef-client",
+    "vsts-task-lib": "https://registry.npmjs.org/vsts-task-lib/-/vsts-task-lib-2.0.5.tgz"
+  }
+}
