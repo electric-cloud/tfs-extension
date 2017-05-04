@@ -10,11 +10,10 @@ let parseParameters = function(params: string) {
     try {
         retval = JSON.parse(params);
     } catch(e) {
-        console.log(e);
-        let lines = params.split("/n");
+        let lines = params.split(/\n/);
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i];
-            let pair = line.split("\s*=\s*");
+            let pair = line.split(/\s*=\s*/);
             let key = pair[0];
             let value = pair[1];
             retval[key] = value;

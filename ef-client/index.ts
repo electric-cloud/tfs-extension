@@ -53,6 +53,10 @@ class EFClient {
         return this.post("/pipelines", {pipelineName: pipelineName, projectName: projectName}, payload)
     }
 
+    getRepository(repoName: string) {
+        return this.get('/repositories/' + repoName, {});
+    }
+
     getPort() {
         let port = this.endpoint.port ? parseInt(this.endpoint.port) : 443;
         return port;

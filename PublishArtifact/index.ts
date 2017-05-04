@@ -28,12 +28,16 @@ let artifactPath = tl.getInput(ARTIFACT_PATH_FIELD);
 let repositoryName = tl.getInput(REPO_NAME_FIELD);
 let artifactVersion = tl.getInput(ARTIFACT_VERSION_FIELD);
 
+
 if(!fs.existsSync(artifactPath)) {
     tl.setResult(tl.TaskResult.Failed, "File " + artifactPath + " does not exist");
 }
 else {
-    efClient.login().then((res: any) => {
-        let sid = res.sessionId;
+    let sid = undefined;
+    efClient.login().then((res:any) => {
+        sid = res.sessionId;
+        return efClient.getRepository(repositoryName);
+    }).then((res: any) => {
         return efClient.publishArtifact(artifactPath, artifactName, artifactVersion, repositoryName, sid);
     }).then((res: any) => {
         if (res.response == "Artifact-Published-OK") {
@@ -45,6 +49,12 @@ else {
         }
     }).catch((e) => {
         console.log(e);
-        tl.setResult(tl.TaskResult.Failed, e);
+        if (e.response) {
+            let message = e.response.error ? e.response.error.message : 'Artifact publication failed';
+            tl.setResult(tl.TaskResult.Failed, message);
+        }
+        else {
+            tl.setResult(tl.TaskResult.Failed, "Artifact publication failed")
+        }
     });
 }

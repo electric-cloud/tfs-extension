@@ -41,6 +41,9 @@ var EFClient = (function () {
         var payload = JSON.stringify({ actualParameter: list });
         return this.post("/pipelines", { pipelineName: pipelineName, projectName: projectName }, payload);
     };
+    EFClient.prototype.getRepository = function (repoName) {
+        return this.get('/repositories/' + repoName, {});
+    };
     EFClient.prototype.getPort = function () {
         var port = this.endpoint.port ? parseInt(this.endpoint.port) : 443;
         return port;

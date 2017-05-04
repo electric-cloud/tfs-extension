@@ -22,9 +22,12 @@ if (!fs.existsSync(artifactPath)) {
     tl.setResult(tl.TaskResult.Failed, "File " + artifactPath + " does not exist");
 }
 else {
+    var sid_1 = undefined;
     efClient.login().then(function (res) {
-        var sid = res.sessionId;
-        return efClient.publishArtifact(artifactPath, artifactName, artifactVersion, repositoryName, sid);
+        sid_1 = res.sessionId;
+        return efClient.getRepository(repositoryName);
+    }).then(function (res) {
+        return efClient.publishArtifact(artifactPath, artifactName, artifactVersion, repositoryName, sid_1);
     }).then(function (res) {
         if (res.response == "Artifact-Published-OK") {
             console.log("Artifact published");
@@ -35,6 +38,12 @@ else {
         }
     }).catch(function (e) {
         console.log(e);
-        tl.setResult(tl.TaskResult.Failed, e);
+        if (e.response) {
+            var message = e.response.error ? e.response.error.message : 'Artifact publication failed';
+            tl.setResult(tl.TaskResult.Failed, message);
+        }
+        else {
+            tl.setResult(tl.TaskResult.Failed, "Artifact publication failed");
+        }
     });
 }
