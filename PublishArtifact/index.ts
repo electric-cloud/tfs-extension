@@ -9,7 +9,10 @@ const ARTIFACT_VERSION_FIELD = 'artifactVersion';
 const ARTIFACT_NAME_FIELD = 'artifactName';
 
 var efEndpoint = tl.getInput(ENDPOINT_FIELD, true);
+
+
 var efBaseUrl = tl.getEndpointUrl(efEndpoint, true);
+console.log(efBaseUrl);
 var efAuth = tl.getEndpointAuthorization(efEndpoint, true);
 let skipCertCheck = efAuth.parameters['skipCertCheck'] == 'true';
 
@@ -41,6 +44,7 @@ else {
             tl.setResult(tl.TaskResult.Failed, res.response);
         }
     }).catch((e) => {
+        console.log(e);
         tl.setResult(tl.TaskResult.Failed, e);
     });
 }

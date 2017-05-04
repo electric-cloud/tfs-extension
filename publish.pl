@@ -25,12 +25,13 @@ for (@folders) {
     build_task($_);
 }
 
-my $account = 'pshubina';
+my $account = 'pluginsdev';
 
 open $fh, '/Users/imago/.tfs_pat' or die $!;
 my $token = <$fh>;
 
 close $fh;
+
 
 my $output = `tfx extension publish --manifest-globs vss-extension.json --share-with $account --token $token`;
 print $output;
@@ -39,7 +40,7 @@ print $output;
 sub build_task {
     my ($folder) = @_;
 
-
+    return unless -f "./$folder/task.json";
     open $fh, "./$folder/task.json" or die $!;
     $content = join '' => <$fh>;
     close $fh;

@@ -10,6 +10,7 @@ var ARTIFACT_VERSION_FIELD = 'artifactVersion';
 var ARTIFACT_NAME_FIELD = 'artifactName';
 var efEndpoint = tl.getInput(ENDPOINT_FIELD, true);
 var efBaseUrl = tl.getEndpointUrl(efEndpoint, true);
+console.log(efBaseUrl);
 var efAuth = tl.getEndpointAuthorization(efEndpoint, true);
 var skipCertCheck = efAuth.parameters['skipCertCheck'] == 'true';
 var efClient = new ef_client_1.EFClient(efBaseUrl, efAuth.parameters['username'], efAuth.parameters['password'], skipCertCheck);
@@ -33,6 +34,7 @@ else {
             tl.setResult(tl.TaskResult.Failed, res.response);
         }
     }).catch(function (e) {
+        console.log(e);
         tl.setResult(tl.TaskResult.Failed, e);
     });
 }

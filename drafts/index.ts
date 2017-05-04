@@ -1,36 +1,70 @@
+import tl = require('vsts-task-lib/task');
+import url = require('url');
+
 import {EFClient} from "ef-client";
 
-import fs = require('fs');
-import process = require('process');
-import https = require('https');
-import q = require('q');
-import FormData = require('form-data');
-// import {BufferConcat} from 'buffer-concat';
-import {Buffer} from 'buffer';
+
+let parseParameters = function(params: string) {
+    let retval = {};
+    try {
+        retval = JSON.parse(params);
+    } catch(e) {
+        // console.log(e);
+        let lines = params.split("/n");
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i];
+            let pair = line.split(/\s*=\s*/);
+            let key = pair[0];
+            let value = pair[1];
+            retval[key] = value;
+        }
+    }
+    return retval;
+}
 
 
+// var efEndpoint = tl.getInput('electricFlowService', true);
+// var efBaseUrl = tl.getEndpointUrl(efEndpoint, true);
+// var efAuth = tl.getEndpointAuthorization(efEndpoint, true);
+var requiresAdditionalParameters = tl.getBoolInput('requiresAdditionalParameters', false);
+ requiresAdditionalParameters = true;
+var additionalParamsString = tl.getInput("additionalParameters");
+additionalParamsString = 'name=value';
+let efBaseUrl = 'http://rhel-oracle';
+let efAuth = {parameters: {username: 'admin', password: 'changeme', skipCertCheck: true}};
 
-let artifactPath = '/tmp/artifact';
-let artifactName = 'org.mycompany:artifact';
-let repositoryName = 'default';
-let artifactVersion = '3';
+// if (efAuth.parameters['skipCertCheck'] == 'true') {
+//     console.log("Certificate check is skipped");
+// }
+let skipCertCheck = true;
 
-let efClient = new EFClient('https://rhel-oracle', 'admin', 'changeme', true);
+var efClient = new EFClient(efBaseUrl, efAuth.parameters['username'], efAuth.parameters['password'], skipCertCheck);
+let projectName = tl.getInput('projectName');
+projectName = 'Default';
 
-efClient.login().then((res: any) => {
-    let sid = res.sessionId;
-    return efClient.publishArtifact(artifactPath, artifactName, artifactVersion, repositoryName, sid);
-}).then((res: any) => {
-    if (res.response == "Artifact-Published-OK") {
-        console.log("Artifact published");
+let pipelineName = tl.getInput('pipelineName');
+pipelineName = 'Test TFS With Parameters';
 
-        // tl.setResult(tl.TaskResult.Succeeded, "Successfully published artifact " + artifactName);
+let pipelinePromise = efClient.getProject(projectName).then((res) => {
+    return efClient.getPipeline(pipelineName, projectName);
+});
+
+pipelinePromise.then((res: any) => {
+    if (requiresAdditionalParameters) {
+        let additionalParams = parseParameters(additionalParamsString);
+        return efClient.runPipelineWithParameters(pipelineName, projectName, additionalParams);
     }
     else {
-        console.log(`Publish failed: ${res.response}`);
-        // tl.setResult(tl.TaskResult.Failed, res.response);
+        return efClient.runPipeline(pipelineName, projectName);
     }
+}).then((res) => {
+    let runtimeName = res.flowRuntime.flowRuntimeName;
+    console.log("Pipeline run succeeded, runtime name is " + runtimeName);
+    tl.setResult(tl.TaskResult.Succeeded, "Successfully run pipeline " + pipelineName);
 }).catch((e) => {
-    console.log(`Error occured: ${e}`);
-    // tl.setResult(tl.TaskResult.Failed, e);
+    console.log(e);
+    tl.setResult(tl.TaskResult.Failed, e);
 });
+
+
+

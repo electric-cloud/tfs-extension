@@ -1,10 +1,29 @@
 {
 "manifestVersion": 1,
-  "id": "service-endpoint-tutorial",
-  "version": "0.1.75",
-  "name": "Electric Flow Test Pipeline Run",
-  "description": "A sample Visual Studio Team Services extension which shows how to create a custom endpoint and dynamic build task parameters taking value from a REST API.",
-  "publisher": "polinashubina",
+  "id": "electric-flow",
+  "version": "0.1.112",
+  "icons": {
+      "default": "images/extension-icon.png"
+  },
+  "categories" : ["Build and release"],
+  "name": "Electric Flow Integration",
+  "content": {
+    "details": {
+        "path": "extension-details.md"
+    }
+  },
+  "tags": [
+    "build","DevOps"
+  ],
+  "branding": {
+    "color": "white"
+  },
+  "description": "ElectricFlow is an enterprise-grade DevOps Release Automation platform that simplifies provisioning, build and release of multi-tiered applications.",
+  "publisher": "pluginsdev",
+  "scopes": [
+    "vso.build_execute",
+    "vso.serviceendpoint_manage"
+  ],
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services"
@@ -12,7 +31,7 @@
   ],
   "contributions": [
     {
-      "id": "service-endpoint",
+      "id": "ef-endpoint-type",
       "description": "Service Endpoint type for Electric Flow connections",
       "type": "ms.vss-endpoint.service-endpoint-type",
       "targets": [ "ms.vss-endpoint.endpoint-types" ],
@@ -21,13 +40,14 @@
         "displayName": "Electric Flow server connection",
         "url": {
           "displayName": "Server Url",
-          "helpText": "Url for Electric Flow server to connect to."
+          "helpText": "Url for Electric Flow server to connect to, with rest/version suffix. E.g. http://my-cloud-instance/rest/v1.0"
         },
         "dataSources": [
           {
             "name": "ElectricFlowProjects",
-            "endpointUrl": "{{endpoint.url}}rest/v1.0/projects",
-            "resultSelector": "$.project[*].projectName"
+            "endpointUrl": "{{endpoint.url}}projects",
+            "resultSelector": "jsonpath:$.project[*].projectName",
+            "skipCert": true
           }
         ],
         "authenticationSchemes": [
@@ -37,7 +57,7 @@
               {
                 "id": "username",
                 "name": "Username",
-                "description": "Username",
+                "description": "Username to connecto to Electric Flow instance.",
                 "inputMode": "textbox",
                 "validation": {
                   "isRequired": true,
@@ -47,7 +67,7 @@
               {
                 "id": "password",
                 "name": "Password",
-                "description": "Password",
+                "description": "Password to connect to Electric Flow instance.",
                 "inputMode": "passwordbox",
                 "isConfidential": true,
                 "validation": {
@@ -57,8 +77,8 @@
               },
               {
                 "id": "skipCertCheck",
-                "name": "Skip cert check",
-                "description": "Skip cert check",
+                "name": "Accept untrusted SSL certificates",
+                "description": "If checkd, self-signed certificates will be accepted. Please do not use this option in production environment.",
                 "inputMode": "checkbox",
                 "isConfidential": false,
                 "validation": {
@@ -68,9 +88,8 @@
               }
             ]
           }
-
         ],
-        "helpMarkDown": "## Test help"
+        "helpMarkDown": "Connection settings, used later in build tasks to connect to your hosted Electric Flow instance."
       }
     },
 
