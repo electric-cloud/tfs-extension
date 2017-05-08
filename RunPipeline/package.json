@@ -1,7 +1,7 @@
 {
   "name": "run-pipeline",
   "version": "1.0.0",
-  "description": "Runs Electric Flow pipeline",
+  "description": "Runs ElectricFlow pipeline",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

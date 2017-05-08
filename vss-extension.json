@@ -1,15 +1,15 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "0.1.114",
+  "version": "0.1.142",
   "icons": {
       "default": "images/extension-icon.png"
   },
   "categories" : ["Build and release"],
-  "name": "Electric Flow Integration",
+  "name": "ElectricFlow Integration",
   "content": {
     "details": {
-        "path": "extension-details.md"
+        "path": "README.md"
     }
   },
   "tags": [
@@ -29,24 +29,29 @@
       "id": "Microsoft.VisualStudio.Services"
     }
   ],
+  "screenshots": [
+    {
+      "path":"Screenshots/PublishArtifact.png"
+    }
+  ],
   "contributions": [
     {
       "id": "ef-endpoint-type",
-      "description": "Service Endpoint type for Electric Flow connections",
+      "description": "Service Endpoint type for ElectricFlow connections",
       "type": "ms.vss-endpoint.service-endpoint-type",
       "targets": [ "ms.vss-endpoint.endpoint-types" ],
       "properties": {
         "name": "electricFlow",
-        "displayName": "Electric Flow server connection",
+        "displayName": "ElectricFlow server connection",
         "url": {
           "displayName": "Server Url",
-          "helpText": "Url for Electric Flow server to connect to, with rest/version suffix. E.g. http://my-cloud-instance/rest/v1.0"
+          "helpText": "Url for ElectricFlow server to connect to, with rest/version suffix. E.g. http://my-cloud-instance/rest/v1.0"
         },
         "dataSources": [
           {
             "name": "ElectricFlowProjects",
             "endpointUrl": "{{endpoint.url}}projects",
-            "resultSelector": "jsonpath:$.project[*].projectName",
+            "resultSelector": "jsonpath:$.project[?(@.pluginKey==null)].projectName",
             "skipCert": true
           }
         ],
@@ -57,7 +62,7 @@
               {
                 "id": "username",
                 "name": "Username",
-                "description": "Username to connecto to Electric Flow instance.",
+                "description": "Username to connect to ElectricFlow instance.",
                 "inputMode": "textbox",
                 "validation": {
                   "isRequired": true,
@@ -67,7 +72,7 @@
               {
                 "id": "password",
                 "name": "Password",
-                "description": "Password to connect to Electric Flow instance.",
+                "description": "Password to connect to ElectricFlow instance.",
                 "inputMode": "passwordbox",
                 "isConfidential": true,
                 "validation": {
@@ -89,13 +94,13 @@
             ]
           }
         ],
-        "helpMarkDown": "Connection settings, used later in build tasks to connect to your hosted Electric Flow instance."
+        "helpMarkDown": "Connection settings, used later in build tasks to connect to your hosted ElectricFlow instance."
       }
     },
 
     {
       "id": "run-pipeline",
-      "description": "Run Electric Flow Pipeline",
+      "description": "Run ElectricFlow Pipeline",
       "type": "ms.vss-distributed-task.task",
       "targets": [ "ms.vss-distributed-task.tasks" ],
       "properties" : {
@@ -104,7 +109,7 @@
     },
     {
       "id": "publish-artifact",
-      "description": "Publish Artifact to Electric Flow Repository",
+      "description": "Publish Artifact to ElectricFlow Repository",
       "type": "ms.vss-distributed-task.task",
       "targets": [ "ms.vss-distributed-task.tasks" ],
       "properties" : {
