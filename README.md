@@ -45,9 +45,10 @@ In order to use and integrate with ElectricFlow, you would have to create endpoi
 
 * Connection Name: Name of the ElectricFlow endpoint
 * Server URL: URL for the ElectricFlow Server. For example, `https://<electric-flow-server>`
+* REST API Version: Version for the ElectricFlow REST API. For e.g., v1
 * User Name: User name for the ElectricFlow
 * User Password: User password for the ElectricFlow
-* Accept untrusted SSL certificates: if checked, untrusted certificates will be accepted.
+* Accept Untrusted SSL certificates: If checked, untrusted certificates will be accepted.
 
 
 
