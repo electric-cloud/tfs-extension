@@ -83,7 +83,7 @@ var EFClient = (function () {
             });
             res.on('end', function () {
                 var statusCode = res.statusCode;
-                if (statusCode == 200) {
+                if (statusCode < 300) {
                     var responseObject = JSON.parse(responseString);
                     def.resolve(responseObject);
                 }
@@ -120,6 +120,12 @@ var EFClient = (function () {
             console.log("File stream error", e);
             def.reject(e);
         });
+        var stats = fs.statSync(path);
+        if (stats.isDirectory()) {
+            console.log("Is a directory");
+            def.reject({ response: path + " is directory" });
+            return def;
+        }
         form.append("files", stream);
         form.append("artifactName", artifactName);
         form.append("artifactVersionVersion", artifactVersion);

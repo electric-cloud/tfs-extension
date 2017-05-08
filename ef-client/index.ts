@@ -6,6 +6,7 @@ import querystring = require('querystring');
 import fs = require('fs');
 import FormData = require('form-data');
 
+
 class EFClient {
     endpoint: url.Url;
     username: string;
@@ -103,7 +104,7 @@ class EFClient {
             });
             res.on('end', () => {
                 let statusCode = res.statusCode;
-                if (statusCode == 200) {
+                if (statusCode < 300) {
                     var responseObject = JSON.parse(responseString);
                     def.resolve(responseObject);
                 }
@@ -149,6 +150,15 @@ class EFClient {
             console.log("File stream error", e);
             def.reject(e);
         });
+
+        let stats = fs.statSync(path);
+
+        if (stats.isDirectory()) {
+            console.log("Is a directory");
+            def.reject({response: `${path} is directory`});
+            return def;
+        }
+
         form.append("files", stream);
         form.append("artifactName", artifactName);
         form.append("artifactVersionVersion", artifactVersion);

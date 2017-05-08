@@ -1,0 +1,83 @@
+{
+   "groups" : [
+      {
+         "displayName" : "Advanced",
+         "name" : "advanced",
+         "isExpanded" : false
+      }
+   ],
+   "name" : "call-rest",
+   "author" : "Electric Cloud",
+   "execution" : {
+      "Node" : {
+         "target" : "index.js"
+      }
+   },
+   "helpMarkDown" : "",
+   "description" : "This integration allows you to to call any REST endpoint.",
+   "friendlyName" : "Call a custom ElectricFlow REST endpoint",
+   "category" : "Build",
+   "inputs" : [
+      {
+         "defaultValue" : "",
+         "required" : true,
+         "type" : "connectedService:electricFlow",
+         "label" : "ElectricFlow service endpoint",
+         "name" : "electricFlowService",
+         "helpMarkDown" : "Select the ElectricFlow end point to use."
+      },
+      {
+         "defaultValue" : "",
+         "required" : true,
+         "enum" : [
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE"
+         ],
+         "type" : "string",
+         "name" : "method",
+         "helpMarkDown" : "Select HTTP method to use.",
+         "label" : "Method"
+      },
+      {
+         "type" : "string",
+         "required" : true,
+         "defaultValue" : "",
+         "label" : "Path",
+         "helpMarkDown" : "Enter REST path.",
+         "name" : "restEndpoint"
+      },
+      {
+         "label" : "Parameters",
+         "name" : "params",
+         "helpMarkDown" : "Enter query parameters, in JSON or in key-value pairs.",
+         "defaultValue" : "",
+         "required" : false,
+         "type" : "string"
+      },
+      {
+         "type" : "string",
+         "defaultValue" : "",
+         "required" : false,
+         "helpMarkDown" : "Enter request body,",
+         "name" : "payload",
+         "label" : "Payload"
+      },
+      {
+         "label" : "Result variable name",
+         "helpMarkDown" : "Enter variable name to store call results",
+         "name" : "resultVarName",
+         "required" : true,
+         "defaultValue" : "",
+         "type" : "string"
+      }
+   ],
+   "version" : {
+      "Minor" : 1,
+      "Patch" : "171",
+      "Major" : 0
+   },
+   "instanceNameFormat" : "Run REST ",
+   "id" : "cd267176-2716-4cf7-b57b-420b126ec3da"
+}

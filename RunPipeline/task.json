@@ -1,78 +1,74 @@
 {
+   "category" : "Build",
+   "friendlyName" : "Run ElectricFlow Pipeline",
+   "inputs" : [
+      {
+         "helpMarkDown" : "Select the ElectricFlow end point to use.",
+         "name" : "electricFlowService",
+         "label" : "ElectricFlow service endpoint",
+         "required" : true,
+         "defaultValue" : "",
+         "type" : "connectedService:electricFlow"
+      },
+      {
+         "type" : "string",
+         "defaultValue" : "",
+         "required" : true,
+         "properties" : {
+            "EditableOptions" : true
+         },
+         "label" : "Project Name",
+         "helpMarkDown" : "Project name, e.g. Default",
+         "name" : "projectName"
+      },
+      {
+         "name" : "pipelineName",
+         "helpMarkDown" : "Pipeline name to run, e.g. My Pipeline",
+         "label" : "Pipeline Name",
+         "properties" : {
+            "EditableOptions" : true
+         },
+         "defaultValue" : "",
+         "required" : true,
+         "type" : "string"
+      },
+      {
+         "name" : "requiresAdditionalParameters",
+         "helpMarkDown" : "If checked, additional parameters will be passed to the pipeline",
+         "label" : "Requires additional parameters",
+         "required" : false,
+         "type" : "boolean"
+      },
+      {
+         "required" : false,
+         "type" : "multiLine",
+         "visibleRule" : "requiresAdditionalParameters=true",
+         "label" : "Additional parameters",
+         "helpMarkDown" : "Additional parameters for pipeline call, in key=value pairs or in JSON format. E.g. myParam = value",
+         "name" : "additionalParameters"
+      }
+   ],
    "execution" : {
       "Node" : {
          "target" : "index.js"
       }
    },
+   "description" : "Runs ElectricFlow pipeline.",
+   "helpMarkDown" : "",
+   "version" : {
+      "Patch" : "171",
+      "Major" : 0,
+      "Minor" : 1
+   },
+   "instanceNameFormat" : "Run Pipeline $(pipelineName) from project $(projectName)",
+   "id" : "0442a599-dd0c-4d8d-b991-ace99fa47424",
+   "author" : "Electric Cloud",
    "name" : "run-pipeline",
    "groups" : [
       {
-         "name" : "advanced",
          "displayName" : "Advanced",
+         "name" : "advanced",
          "isExpanded" : false
       }
-   ],
-   "version" : {
-      "Minor" : 1,
-      "Major" : 0,
-      "Patch" : "142"
-   },
-   "category" : "Build",
-   "id" : "0442a599-dd0c-4d8d-b991-ace99fa47424",
-   "inputs" : [
-      {
-         "required" : true,
-         "label" : "ElectricFlow service endpoint",
-         "defaultValue" : "",
-         "type" : "connectedService:electricFlow",
-         "name" : "electricFlowService",
-         "helpMarkDown" : "Select the ElectricFlow end point to use."
-      },
-      {
-         "helpMarkDown" : "Project name, e.g. Default",
-         "name" : "projectName",
-         "type" : "pickList",
-         "defaultValue" : "",
-         "label" : "Project Name",
-         "properties" : {
-            "EditableOptions" : true
-         },
-         "required" : true
-      },
-      {
-         "defaultValue" : "",
-         "helpMarkDown" : "Pipeline name to run, e.g. My Pipeline",
-         "name" : "pipelineName",
-         "type" : "string",
-         "required" : true,
-         "label" : "Pipeline Name"
-      },
-      {
-         "name" : "requiresAdditionalParameters",
-         "type" : "boolean",
-         "helpMarkDown" : "If checked, additional parameters will be passed to the pipeline",
-         "required" : false,
-         "label" : "Requires additional parameters"
-      },
-      {
-         "label" : "Additional parameters",
-         "required" : false,
-         "name" : "additionalParameters",
-         "type" : "multiLine",
-         "helpMarkDown" : "Additional parameters for pipeline call, in key=value pairs or in JSON format. E.g. myParam = value",
-         "visibleRule" : "requiresAdditionalParameters=true"
-      }
-   ],
-   "instanceNameFormat" : "Run Pipeline $(pipelineName) from project $(projectName)",
-   "helpMarkDown" : "",
-   "description" : "Runs ElectricFlow pipeline.",
-   "author" : "Electric Cloud",
-   "dataSourceBindings" : [
-      {
-         "endpointId" : "$(electricFlowService)",
-         "target" : "projectName",
-         "dataSourceName" : "ElectricFlowProjects"
-      }
-   ],
-   "friendlyName" : "Run ElectricFlow Pipeline"
+   ]
 }

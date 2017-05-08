@@ -15,6 +15,13 @@ npm install
 tsc
 cd ..
 
+
+cd RESTCall
+rm -rf node_modules
+npm install
+tsc
+cd ..
+
 perl increaseVersion.pl
 
 account=pluginsdev

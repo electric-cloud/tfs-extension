@@ -19,7 +19,6 @@ let parseParameters = function(params: string) {
             retval[key] = value;
         }
     }
-
     return retval;
 }
 
