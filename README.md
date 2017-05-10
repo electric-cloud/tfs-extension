@@ -16,6 +16,8 @@ Following build actions are available in ElectricFlow Plugin. These actions can 
 
 This integration allows you to publish artifact for your application to ElectricFlow.
 
+![Publish Artifact](https://github.com/electric-cloud/tfs-extension/blob/master/Screenshots/PublishArtifact.png?raw=true)
+
 This build task has following parameters:
 
 * Endpoint: ElectricFlow service endpoint
@@ -38,7 +40,9 @@ This build task has following parameters:
 * Pipeline Name: Name of the ElectricFlow pipeline
 (Optional) Pipeline Parameters
 
-## Configurations
+## Service endpoints
+
+![Endpoint](https://github.com/electric-cloud/tfs-extension/blob/master/Screenshots/Endpoint.png?raw=true)
 
 In order to use and integrate with ElectricFlow, you would have to create endpoints in Visual Studio Team Services/Team Foundation Services. Navigate to Services/Endpoints and find ElectricFlow service endpoint. One or more configurations can be created to connect to and call APIs into ElectricFlow system. For each endpoint, following attributes need to be specified:
 
