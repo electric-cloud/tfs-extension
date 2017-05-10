@@ -28,6 +28,8 @@ else
 
     tfx extension publish --manifest-globs vss-extension.json \
 --share-with $ACCOUNT --token $PAT
-
 fi
+
+
+rm -rf pluginsdev.electric-flow-0.1.*
 

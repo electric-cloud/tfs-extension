@@ -1,12 +1,12 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "0.1.200",
+  "version": "0.1.207",
   "icons": {
       "default": "images/extension-icon.png"
   },
   "categories" : ["Build and release"],
-  "name": "ElectricFlow Integration",
+  "name": "ElectricFlow",
   "content": {
     "details": {
         "path": "README.md"
@@ -121,7 +121,7 @@
 
     {
       "id": "run-pipeline",
-      "description": "Run ElectricFlow Pipeline",
+      "description": "ElectricFlow - Run Pipeline",
       "type": "ms.vss-distributed-task.task",
       "targets": [ "ms.vss-distributed-task.tasks" ],
       "properties" : {
@@ -130,11 +130,20 @@
     },
     {
       "id": "publish-artifact",
-      "description": "Publish Artifact to ElectricFlow Repository",
+      "description": "ElectricFlow - Publish Artifact",
       "type": "ms.vss-distributed-task.task",
       "targets": [ "ms.vss-distributed-task.tasks" ],
       "properties" : {
         "name" : "PublishArtifact"
+      }
+    },
+    {
+      "id": "call-rest",
+      "description": "ElectricFlow - REST Call",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties" : {
+        "name" : "RESTCall"
       }
     }
   ],
@@ -144,6 +153,9 @@
     },
     {
       "path": "PublishArtifact"
+    },
+    {
+      "path": "RESTCall"
     }
   ]
 }
