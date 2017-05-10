@@ -34,7 +34,13 @@ if (efAuth.parameters['skipCertCheck'] == 'true') {
 }
 let skipCertCheck = efAuth.parameters['skipCertCheck'] == 'true';
 
-var efClient = new EFClient(efBaseUrl, efAuth.parameters['username'], efAuth.parameters['password'], skipCertCheck);
+var efClient = new EFClient(
+    efBaseUrl,
+    efAuth.parameters['username'],
+    efAuth.parameters['password'],
+    efAuth.parameters['restVersion'],
+    skipCertCheck
+);
 let projectName = tl.getInput('projectName');
 let pipelineName = tl.getInput('pipelineName');
 
@@ -50,13 +56,17 @@ pipelinePromise.then((res: any) => {
     else {
         return efClient.runPipeline(pipelineName, projectName);
     }
-}).then((res) => {
+}).then((res: any) => {
     let runtimeName = res.flowRuntime.flowRuntimeName;
     console.log("Pipeline run succeeded, runtime name is " + runtimeName);
     tl.setResult(tl.TaskResult.Succeeded, "Successfully run pipeline " + pipelineName);
 }).catch((e) => {
     console.log(e);
-    tl.setResult(tl.TaskResult.Failed, e);
+    let message = 'Cannot run pipeline';
+    if (e.response && e.response.error) {
+        message = e.response.error.message;
+    }
+    tl.setResult(tl.TaskResult.Failed, message);
 });
 
 

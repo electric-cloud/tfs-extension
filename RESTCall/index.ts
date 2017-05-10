@@ -15,6 +15,7 @@ var efClient = new EFClient(
     efBaseUrl,
     efAuth.parameters['username'],
     efAuth.parameters['password'],
+    efAuth.parameters['restVersion'],
     skipCertCheck
 );
 
@@ -45,13 +46,17 @@ let parseParameters = function(params: string) {
 let parameters = parseParameters(paramsString);
 
 let promise = efClient.request(restEndpoint, method, parameters, payload);
-promise.then((res) => {
+promise.then((res: any) => {
     console.log(res);
     tl.setVariable(resVarName, JSON.stringify(res.response));
     tl.setResult(tl.TaskResult.Succeeded, `Successfully ran API method ${method} on ${restEndpoint}`);
-}).catch((e) => {
+}).catch((e: any) => {
     console.log(e);
-    tl.setResult(tl.TaskResult.Failed, e);
+    let message = 'Cannot run pipeline';
+    if (e.response && e.response.error) {
+        message = e.response.error.message;
+    }
+    tl.setResult(tl.TaskResult.Failed, message);
 });
 
 

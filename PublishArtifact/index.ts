@@ -12,7 +12,6 @@ var efEndpoint = tl.getInput(ENDPOINT_FIELD, true);
 
 
 var efBaseUrl = tl.getEndpointUrl(efEndpoint, true);
-console.log(efBaseUrl);
 var efAuth = tl.getEndpointAuthorization(efEndpoint, true);
 let skipCertCheck = efAuth.parameters['skipCertCheck'] == 'true';
 
@@ -20,6 +19,7 @@ var efClient = new EFClient(
     efBaseUrl,
     efAuth.parameters['username'],
     efAuth.parameters['password'],
+    efAuth.parameters['restVersion'],
     skipCertCheck
 );
 

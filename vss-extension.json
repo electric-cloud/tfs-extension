@@ -1,7 +1,7 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "0.1.142",
+  "version": "0.1.200",
   "icons": {
       "default": "images/extension-icon.png"
   },
@@ -78,6 +78,27 @@
                 "validation": {
                   "isRequired": true,
                   "dataType": "string"
+                }
+              },
+              {
+                "id": "restVersion",
+                "name": "REST API Version",
+                "description": "Version for the ElectricFlow REST API. E.g., v1.0",
+                "inputMode": "combo",
+                "isConfidential": false,
+                "validation": {
+                  "isRequired": true,
+                  "dataType": "string"
+                },
+                "values": {
+                  "defaultValue": "v1.0",
+                  "inputId": "restVersionValues",
+                  "possibleValues": [
+                    {
+                      "value": "v1.0",
+                      "displayValue": "v1.0"
+                    }
+                  ]
                 }
               },
               {

@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node": "^7.0.18",
     "ef-client": "../ef-client",
     "vsts-task-lib": "^2.0.5"
   }

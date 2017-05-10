@@ -1,35 +1,33 @@
 #!/usr/bin/env bash
 
-tsc ef-client/index.ts
 
-rm -rf RunPipeline/node_modules
-cd RunPipeline
-npm install
-tsc
-cd ..
-
-
-cd PublishArtifact
-rm -rf node_modules
-npm install
-tsc
-cd ..
-
-
-cd RESTCall
-rm -rf node_modules
-npm install
-tsc
-cd ..
+for FOLDER_NAME in 'ef-client' 'RunPipeline' 'PublishArtifact' 'RESTCall'
+do
+    cd $FOLDER_NAME
+    rm -rf node_modules
+    npm install
+    tsc
+    cd ..
+done
 
 perl increaseVersion.pl
 
-account=pluginsdev
-token=$(cat ~/.tfs_pat)
+TFS_SERVERNAME=http://desktop-2760qqq:8080/tfs
+TFS_PAT=lgnfxowe2tgr743y3w3qwhdvtcb2xxtyt6anrnkmhrsin5m3zklq
 
-echo  $account
-echo $token
+if [[ $1 = "--local" ]]
+then
+    echo "Installing extension locally"
+    tfx extension publish --token $TFS_PAT \
+ --manifest-globs vss-extension.json --service-url $TFS_SERVERNAME
+else
+    echo "Installing extension globally"
 
-tfx extension publish --manifest-globs vss-extension.json \
---share-with $account --token $token
+    ACCOUNT=pluginsdev
+    PAT=$(cat ~/.tfs_pat)
+
+    tfx extension publish --manifest-globs vss-extension.json \
+--share-with $ACCOUNT --token $PAT
+
+fi
 

@@ -1,69 +1,69 @@
 {
    "instanceNameFormat" : "Publish Artifact $(artifactName):$(artifactVersion) to repository $(repositoryName)",
-   "id" : "0e2424a3-42b6-48f5-b3fa-ac6ed16d4c57",
-   "version" : {
-      "Patch" : "171",
-      "Major" : 0,
-      "Minor" : 1
-   },
-   "inputs" : [
+   "groups" : [
       {
-         "label" : "ElectricFlow service endpoint",
-         "name" : "electricFlowService",
-         "helpMarkDown" : "Select the ElectricFlow end point to use.",
-         "type" : "connectedService:electricFlow",
-         "defaultValue" : "",
-         "required" : true
-      },
-      {
-         "type" : "filePath",
-         "required" : true,
-         "defaultValue" : "",
-         "label" : "Artifact Path",
-         "helpMarkDown" : "Location or path for the artifact files to be published to ElectricFlow. E.g., $(Build.BuildNumber)/target/artifact.war",
-         "name" : "artifactPath"
-      },
-      {
-         "name" : "artifactName",
-         "helpMarkDown" : "Name of the application artifact using the format <group_id>:<artifact_key>. E.g., \"com.example:helloworld\"",
-         "label" : "Artifact Name",
-         "type" : "string",
-         "defaultValue" : "",
-         "required" : true
-      },
-      {
-         "helpMarkDown" : "Version of the application artifact. E.g., you can specify 1.0 or 1.0-$BUILD_TAG that is based on Jenkins environment variable",
-         "name" : "artifactVersion",
-         "label" : "Artifact Version",
-         "required" : true,
-         "defaultValue" : "",
-         "type" : "string"
-      },
-      {
-         "helpMarkDown" : "Name of the ElectricFlow Repository",
-         "name" : "repositoryName",
-         "label" : "Repository Name",
-         "type" : "string",
-         "required" : true,
-         "defaultValue" : "default"
+         "displayName" : "Advanced",
+         "name" : "advanced",
+         "isExpanded" : false
       }
    ],
-   "friendlyName" : "Publish artifact to ElectricFlow Repository",
    "category" : "Build",
-   "helpMarkDown" : "",
-   "description" : "This integration allows you to publish artifact for your application to ElectricFlow.",
+   "friendlyName" : "Publish artifact to ElectricFlow Repository",
    "execution" : {
       "Node" : {
          "target" : "index.js"
       }
    },
-   "author" : "Electric Cloud",
    "name" : "publish-artifact",
-   "groups" : [
+   "inputs" : [
       {
-         "displayName" : "Advanced",
-         "isExpanded" : false,
-         "name" : "advanced"
+         "helpMarkDown" : "Select the ElectricFlow end point to use.",
+         "defaultValue" : "",
+         "name" : "electricFlowService",
+         "required" : true,
+         "type" : "connectedService:electricFlow",
+         "label" : "ElectricFlow service endpoint"
+      },
+      {
+         "type" : "filePath",
+         "label" : "Artifact Path",
+         "defaultValue" : "",
+         "helpMarkDown" : "Location or path for the artifact files to be published to ElectricFlow. E.g., $(Build.BuildNumber)/target/artifact.war",
+         "required" : true,
+         "name" : "artifactPath"
+      },
+      {
+         "helpMarkDown" : "Name of the application artifact using the format <group_id>:<artifact_key>. E.g., \"com.example:helloworld\"",
+         "defaultValue" : "",
+         "name" : "artifactName",
+         "required" : true,
+         "label" : "Artifact Name",
+         "type" : "string"
+      },
+      {
+         "name" : "artifactVersion",
+         "required" : true,
+         "helpMarkDown" : "Version of the application artifact. E.g., you can specify 1.0 or 1.0-$BUILD_TAG that is based on Jenkins environment variable",
+         "defaultValue" : "",
+         "type" : "string",
+         "label" : "Artifact Version"
+      },
+      {
+         "label" : "Repository Name",
+         "type" : "string",
+         "helpMarkDown" : "Name of the ElectricFlow Repository",
+         "defaultValue" : "default",
+         "name" : "repositoryName",
+         "required" : true
       }
-   ]
+   ],
+   "helpMarkDown" : "",
+   "id" : "0e2424a3-42b6-48f5-b3fa-ac6ed16d4c57",
+   "description" : "This integration allows you to publish artifact for your application to ElectricFlow.",
+   "version" : {
+      "Major" : 0,
+      "Patch" : "200",
+      "Minor" : 1
+   },
+   "author" : "Electric Cloud"
 }

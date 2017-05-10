@@ -1,19 +1,17 @@
 "use strict";
-exports.__esModule = true;
-var url = require("url");
-var q = require("q");
-var https = require("https");
-var querystring = require("querystring");
-var fs = require("fs");
-var FormData = require("form-data");
-var EFClient = (function () {
-    function EFClient(endpoint, username, password, skipCertCheck) {
+Object.defineProperty(exports, "__esModule", { value: true });
+const url = require("url");
+const q = require("q");
+const https = require("https");
+const querystring = require("querystring");
+const fs = require("fs");
+const FormData = require("form-data");
+class EFClient {
+    constructor(endpoint, username, password, restVersion, skipCertCheck) {
         if (endpoint.match(/\/$/)) {
             endpoint = endpoint.replace(/\/$/, '');
         }
-        if (!endpoint.match(/rest/)) {
-            endpoint += '/rest/v1.0';
-        }
+        endpoint += '/rest/' + restVersion;
         this.endpoint = url.parse(endpoint);
         if (!this.endpoint.host) {
             throw new Error("No hostname found");
@@ -22,44 +20,44 @@ var EFClient = (function () {
         this.password = password;
         this.skipCertCheck = skipCertCheck;
     }
-    EFClient.prototype.getProject = function (projectName) {
-        var promise = this.get("/projects/" + querystring.escape(projectName), undefined);
+    getProject(projectName) {
+        let promise = this.get("/projects/" + querystring.escape(projectName), undefined);
         return promise;
-    };
-    EFClient.prototype.getPipeline = function (pipelineName, projectName) {
-        var promise = this.get("/pipelines/" + querystring.escape(pipelineName), { projectName: projectName });
+    }
+    getPipeline(pipelineName, projectName) {
+        let promise = this.get("/pipelines/" + querystring.escape(pipelineName), { projectName: projectName });
         return promise;
-    };
-    EFClient.prototype.runPipeline = function (pipelineName, projectName) {
+    }
+    runPipeline(pipelineName, projectName) {
         return this.post("/pipelines", { pipelineName: pipelineName, projectName: projectName }, "");
-    };
-    EFClient.prototype.runPipelineWithParameters = function (pipelineName, projectName, additionalParameters) {
-        var list = [];
-        for (var parameterName in additionalParameters) {
+    }
+    runPipelineWithParameters(pipelineName, projectName, additionalParameters) {
+        let list = [];
+        for (let parameterName in additionalParameters) {
             list.push({ actualParameterName: parameterName, value: additionalParameters[parameterName] });
         }
-        var payload = JSON.stringify({ actualParameter: list });
+        let payload = JSON.stringify({ actualParameter: list });
         return this.post("/pipelines", { pipelineName: pipelineName, projectName: projectName }, payload);
-    };
-    EFClient.prototype.getRepository = function (repoName) {
+    }
+    getRepository(repoName) {
         return this.get('/repositories/' + repoName, {});
-    };
-    EFClient.prototype.getPort = function () {
-        var port = this.endpoint.port ? parseInt(this.endpoint.port) : 443;
+    }
+    getPort() {
+        let port = this.endpoint.port ? parseInt(this.endpoint.port) : 443;
         return port;
-    };
-    EFClient.prototype.request = function (path, method, query, payload) {
+    }
+    request(path, method, query, payload) {
         var def = q.defer();
-        var endpoint = this.endpoint;
-        var port = endpoint.port ? parseInt(endpoint.port) : 443;
+        let endpoint = this.endpoint;
+        let port = endpoint.port ? parseInt(endpoint.port) : 443;
         if (this.skipCertCheck) {
             process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         }
-        var queryString = "";
+        let queryString = "";
         if (query) {
-            var pairs = new Array();
-            for (var key in query) {
-                var value = query[key];
+            let pairs = new Array();
+            for (let key in query) {
+                let value = query[key];
                 pairs.push(key + "=" + querystring.escape(value));
             }
             queryString = '?' + pairs.join("&");
@@ -76,13 +74,13 @@ var EFClient = (function () {
             }
         };
         var responseString = "";
-        var req = https.request(options, function (res) {
+        let req = https.request(options, (res) => {
             res.setEncoding('utf8');
-            res.on('data', function (chunk) {
+            res.on('data', (chunk) => {
                 responseString += chunk;
             });
-            res.on('end', function () {
-                var statusCode = res.statusCode;
+            res.on('end', () => {
+                let statusCode = res.statusCode;
                 if (statusCode < 300) {
                     var responseObject = JSON.parse(responseString);
                     def.resolve(responseObject);
@@ -91,7 +89,7 @@ var EFClient = (function () {
                     def.reject({ statusCode: statusCode, response: JSON.parse(responseString) });
                 }
             });
-        }).on('error', function (e) {
+        }).on('error', (e) => {
             console.log('http request error');
             def.reject(e);
         });
@@ -100,30 +98,30 @@ var EFClient = (function () {
         }
         req.end();
         return def.promise;
-    };
-    EFClient.prototype.post = function (path, query, payload) {
+    }
+    post(path, query, payload) {
         return this.request(path, 'POST', query, payload);
-    };
-    EFClient.prototype.put = function (path, query, payload) {
+    }
+    put(path, query, payload) {
         return this.request(path, 'PUT', query, payload);
-    };
-    EFClient.prototype.get = function (path, query) {
+    }
+    get(path, query) {
         return this.request(path, 'GET', query, undefined);
-    };
-    EFClient.prototype.login = function () {
+    }
+    login() {
         return this.post('/sessions', { userName: this.username, password: this.password }, '');
-    };
-    EFClient.prototype.publishArtifact = function (path, artifactName, artifactVersion, repositoryName, commanderSessionId) {
-        var def = q.defer();
-        var form = new FormData();
-        var stream = fs.createReadStream(path).on('error', function (e) {
+    }
+    publishArtifact(path, artifactName, artifactVersion, repositoryName, commanderSessionId) {
+        let def = q.defer();
+        let form = new FormData();
+        let stream = fs.createReadStream(path).on('error', (e) => {
             console.log("File stream error", e);
             def.reject(e);
         });
-        var stats = fs.statSync(path);
+        let stats = fs.statSync(path);
         if (stats.isDirectory()) {
             console.log("Is a directory");
-            def.reject({ response: path + " is directory" });
+            def.reject({ response: `${path} is directory` });
             return def;
         }
         form.append("files", stream);
@@ -136,8 +134,8 @@ var EFClient = (function () {
         if (this.skipCertCheck) {
             process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         }
-        var endpoint = this.endpoint;
-        var options = {
+        let endpoint = this.endpoint;
+        let options = {
             host: endpoint.hostname,
             port: this.getPort(),
             method: 'POST',
@@ -145,13 +143,13 @@ var EFClient = (function () {
             auth: this.username + ':' + this.password,
             protocol: 'https:'
         };
-        var req = form.submit(options).on('response', function (res) {
+        let req = form.submit(options).on('response', (res) => {
             res.setEncoding('utf8');
-            var responseString = "";
-            res.on('data', function (chunk) {
+            let responseString = "";
+            res.on('data', (chunk) => {
                 responseString += chunk;
-            }).on('end', function () {
-                var answer = { statusCode: res.statusCode, response: responseString };
+            }).on('end', () => {
+                let answer = { statusCode: res.statusCode, response: responseString };
                 if (res.statusCode == 200) {
                     def.resolve(answer);
                 }
@@ -159,12 +157,12 @@ var EFClient = (function () {
                     def.reject(answer);
                 }
             });
-        }).on('error', function (e) {
+        }).on('error', (e) => {
             console.log("Request error", e);
             def.reject(e);
         });
         return def.promise;
-    };
-    return EFClient;
-}());
+    }
+}
 exports.EFClient = EFClient;
+//# sourceMappingURL=index.js.map

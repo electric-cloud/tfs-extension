@@ -12,16 +12,14 @@ class EFClient {
     username: string;
     password: string;
     skipCertCheck: boolean;
+    restVersion: string;
 
-    constructor(endpoint: string, username: string, password: string, skipCertCheck: boolean) {
+    constructor(endpoint: string, username: string, password: string, restVersion: string, skipCertCheck: boolean) {
         if (endpoint.match(/\/$/)) {
             endpoint = endpoint.replace(/\/$/, '');
         }
-        if(!endpoint.match(/rest/)) {
-            endpoint += '/rest/v1.0';
-        }
-
-        this.endpoint = url.parse(endpoint)
+        endpoint += '/rest/' + restVersion;
+        this.endpoint = url.parse(endpoint);
 
         if(!this.endpoint.host) {
             throw new Error("No hostname found");
