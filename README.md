@@ -8,7 +8,7 @@ ElectricFlow is an enterprise-grade DevOps Release Automation platform that simp
 Key feature of integration includes:
 
 * Run ElectricFlow Pipeline
-* Publish Artifact from TFS into ElectricFlow
+* Publish Artifact from VSTS/TFS into ElectricFlow
 
 Following build actions are available in ElectricFlow Plugin. These actions can be executed separately or combined sequentially.
 
@@ -20,7 +20,7 @@ This integration allows you to publish artifact for your application to Electric
 
 This build task has following parameters:
 
-* Endpoint: ElectricFlow service endpoint
+* Endpoint: Endpoint URL of the ElectricFlow service
 * Artifact Path: Location or path for the artifact files to be published to ElectricFlow. For e.g., MyProject/**/*-$BUILD_NUMBER.war
 * Artifact Name: Name of the application artifact using the format `<group_id>:<artifact_key>`. For example, "com.example:helloworld"
 * Artifact Version: Version of the application artifact. For e.g., you can specify 1.0 or 1.0-$(Build.BuildNumber) that is based on Visual Studio Build variable.
@@ -35,10 +35,11 @@ This integration allows you to run a pipeline in ElectricFlow.
 
 This build task has following parameters:
 
-* Endpoint: Name of the ElectricFlow configuration
+* Endpoint: Endpoint URL of the ElectricFlow service
 * Project Name: Name of the ElectricFlow project
 * Pipeline Name: Name of the ElectricFlow pipeline
-(Optional) Pipeline Parameters
+* (Optional) Pipeline Parameters
+
 
 ## Service endpoints
 
@@ -48,9 +49,10 @@ In order to use and integrate with ElectricFlow, you would have to create endpoi
 
 * Connection Name: Name of the ElectricFlow endpoint
 * Server URL: URL for the ElectricFlow Server. For example, `https://<electric-flow-server>`
+* REST API Version: Version for the ElectricFlow REST API. For e.g., v1
 * User Name: User name for the ElectricFlow
 * User Password: User password for the ElectricFlow
-* Accept untrusted SSL certificates: if checked, untrusted certificates will be accepted.
+* Accept Untrusted SSL certificates: If checked, untrusted certificates will be accepted.
 
 
 
