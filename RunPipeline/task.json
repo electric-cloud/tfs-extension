@@ -1,9 +1,64 @@
 {
-   "author" : "Electric Cloud",
-   "id" : "0442a599-dd0c-4d8d-b991-ace99fa47424",
-   "name" : "run-pipeline",
-   "helpMarkDown" : "",
    "category" : "Build",
+   "helpMarkDown" : "",
+   "id" : "0442a599-dd0c-4d8d-b991-ace99fa47424",
+   "instanceNameFormat" : "Run Pipeline $(pipelineName) from project $(projectName)",
+   "execution" : {
+      "Node" : {
+         "target" : "index.js"
+      }
+   },
+   "inputs" : [
+      {
+         "defaultValue" : "",
+         "label" : "ElectricFlow service endpoint",
+         "required" : true,
+         "helpMarkDown" : "Select the ElectricFlow end point to use.",
+         "type" : "connectedService:electricFlow",
+         "name" : "electricFlowService"
+      },
+      {
+         "helpMarkDown" : "Project name, e.g. Default",
+         "required" : true,
+         "name" : "projectName",
+         "type" : "string",
+         "label" : "Project Name",
+         "defaultValue" : "",
+         "properties" : {
+            "EditableOptions" : true
+         }
+      },
+      {
+         "type" : "string",
+         "name" : "pipelineName",
+         "required" : true,
+         "helpMarkDown" : "Pipeline name to run, e.g. My Pipeline",
+         "properties" : {
+            "EditableOptions" : true
+         },
+         "defaultValue" : "",
+         "label" : "Pipeline Name"
+      },
+      {
+         "label" : "Requires additional parameters",
+         "required" : false,
+         "helpMarkDown" : "If checked, additional parameters will be passed to the pipeline",
+         "type" : "boolean",
+         "name" : "requiresAdditionalParameters"
+      },
+      {
+         "name" : "additionalParameters",
+         "type" : "multiLine",
+         "helpMarkDown" : "Additional parameters for pipeline call, in key=value pairs or in JSON format. E.g. myParam = value",
+         "required" : false,
+         "visibleRule" : "requiresAdditionalParameters=true",
+         "label" : "Additional parameters"
+      }
+   ],
+   "friendlyName" : "ElectricFlow - Run Pipeline",
+   "author" : "Electric Cloud",
+   "description" : "This integration allows you to run a pipeline in ElectricFlow.",
+   "name" : "run-pipeline",
    "groups" : [
       {
          "name" : "advanced",
@@ -11,64 +66,9 @@
          "isExpanded" : false
       }
    ],
-   "instanceNameFormat" : "Run Pipeline $(pipelineName) from project $(projectName)",
-   "description" : "This integration allows you to run a pipeline in ElectricFlow.",
-   "friendlyName" : "ElectricFlow - Run Pipeline",
    "version" : {
-      "Patch" : "207",
+      "Major" : 0,
       "Minor" : 1,
-      "Major" : 0
-   },
-   "inputs" : [
-      {
-         "required" : true,
-         "label" : "ElectricFlow service endpoint",
-         "defaultValue" : "",
-         "helpMarkDown" : "Select the ElectricFlow end point to use.",
-         "type" : "connectedService:electricFlow",
-         "name" : "electricFlowService"
-      },
-      {
-         "properties" : {
-            "EditableOptions" : true
-         },
-         "label" : "Project Name",
-         "required" : true,
-         "type" : "string",
-         "helpMarkDown" : "Project name, e.g. Default",
-         "name" : "projectName",
-         "defaultValue" : ""
-      },
-      {
-         "name" : "pipelineName",
-         "helpMarkDown" : "Pipeline name to run, e.g. My Pipeline",
-         "type" : "string",
-         "defaultValue" : "",
-         "label" : "Pipeline Name",
-         "required" : true,
-         "properties" : {
-            "EditableOptions" : true
-         }
-      },
-      {
-         "helpMarkDown" : "If checked, additional parameters will be passed to the pipeline",
-         "type" : "boolean",
-         "name" : "requiresAdditionalParameters",
-         "required" : false,
-         "label" : "Requires additional parameters"
-      },
-      {
-         "name" : "additionalParameters",
-         "helpMarkDown" : "Additional parameters for pipeline call, in key=value pairs or in JSON format. E.g. myParam = value",
-         "visibleRule" : "requiresAdditionalParameters=true",
-         "type" : "multiLine",
-         "required" : false,
-         "label" : "Additional parameters"
-      }
-   ],
-   "execution" : {
-      "Node" : {
-         "target" : "index.js"
-      }
+      "Patch" : "209"
    }
 }

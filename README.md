@@ -54,5 +54,9 @@ In order to use and integrate with ElectricFlow, you would have to create endpoi
 * User Password: User password for the ElectricFlow
 * Accept Untrusted SSL certificates: If checked, untrusted certificates will be accepted.
 
+# Changelog
 
+## Release 1.0
+
+First public release
 
