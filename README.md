@@ -8,7 +8,7 @@ ElectricFlow is an enterprise-grade DevOps Release Automation platform that simp
 Key feature of integration includes:
 
 * Run ElectricFlow Pipeline
-* Publish Artifact from VSTS/TFS into ElectricFlow
+* Publish Artifact from Visual Studio Team Services/Team Foundation Server into ElectricFlow
 
 Following build actions are available in ElectricFlow Plugin. These actions can be executed separately or combined sequentially.
 
@@ -31,7 +31,7 @@ This build task has following parameters:
 
 This integration allows you to run a pipeline in ElectricFlow.
 
-![Run Pipeline](https://raw.githubusercontent.com/electric-cloud/tfs-extension/master/Screenshots/RunPipeline.png?token=AFAbqG1GcuhXQpGjjuFuRFGcDIhJ9GBIks5ZGZiMwA%3D%3D)
+![Run Pipeline](https://raw.githubusercontent.com/electric-cloud/tfs-extension/master/Screenshots/RunPipeline.png)
 
 This build task has following parameters:
 
@@ -39,6 +39,22 @@ This build task has following parameters:
 * Project Name: Name of the ElectricFlow project
 * Pipeline Name: Name of the ElectricFlow pipeline
 * (Optional) Pipeline Parameters
+
+
+## Run REST Call in ElectricFlow
+
+This integration allows you to run a custom REST call in ElectricFlow.
+
+![Run REST Call](https://raw.githubusercontent.com/electric-cloud/tfs-extension/master/Screenshots/RunRest.png)
+
+This build task has following parameters:
+
+* Endpoint: Endpoint URL of the ElectricFlow service
+* Method: HTTP method to run
+* Path: Path to the resource, e.g. /projects
+* Parameters: Query parameters, in JSON or in key-value pairs.
+* Payload: Enter request body.
+* Result variable name: Enter variable name to store call results.
 
 
 ## Service endpoints

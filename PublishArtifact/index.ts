@@ -1,6 +1,8 @@
 import {EFClient} from 'ef-client';
 import tl = require('vsts-task-lib/task');
 import fs = require('fs');
+import querystring = require('querystring');
+
 
 const ENDPOINT_FIELD = 'electricFlowService';
 const ARTIFACT_PATH_FIELD = 'artifactPath';
@@ -28,6 +30,15 @@ let artifactPath = tl.getInput(ARTIFACT_PATH_FIELD);
 let repositoryName = tl.getInput(REPO_NAME_FIELD);
 let artifactVersion = tl.getInput(ARTIFACT_VERSION_FIELD);
 
+let createArtifactLink = function(endpoint: string, artifactName: string, artifactVersion: string) {
+    let escapedName = querystring.escape(artifactName);
+    if (endpoint.match(/\/$/)) {
+        endpoint = endpoint.replace(/\/$/, '');
+    }
+    let url = endpoint + '/commander/link/artifactVersionDetails/artifactVersions/' + escapedName + '%3A' + artifactVersion + '?s=Artifacts&ss=Artifact%20Versions';
+    return url;
+}
+
 
 if(!fs.existsSync(artifactPath)) {
     tl.setResult(tl.TaskResult.Failed, "File " + artifactPath + " does not exist");
@@ -42,6 +53,8 @@ else {
     }).then((res: any) => {
         if (res.response == "Artifact-Published-OK") {
             console.log("Artifact published");
+            let link = createArtifactLink(efBaseUrl, artifactName, artifactVersion);
+            console.log("Link to the artifact: " + link);
             tl.setResult(tl.TaskResult.Succeeded, "Successfully published artifact " + artifactName);
         }
         else {

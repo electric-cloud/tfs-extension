@@ -41,6 +41,8 @@ sub build_task {
         die "Cannot decode json file $folder: $@\n";
     };
     $task->{version}->{Patch} = $new_build;
+    $task->{version}->{Major} = $major;
+    $task->{version}->{Minor} = $minor;
 
     # $content =~ s/"Patch": "$build"/"Patch": "$new_build"/sm;
     open $fh, ">./$folder/task.json" or die $!;

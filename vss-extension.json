@@ -1,7 +1,7 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "0.1.209",
+  "version": "1.0.226",
   "icons": {
       "default": "images/extension-icon.png"
   },
@@ -118,7 +118,6 @@
         "helpMarkDown": "Connection settings, used later in build tasks to connect to your hosted ElectricFlow instance."
       }
     },
-
     {
       "id": "run-pipeline",
       "description": "ElectricFlow - Run Pipeline",
@@ -147,6 +146,10 @@
       }
     }
   ],
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/electric-cloud/tfs-extension"
+  },
   "files": [
     {
       "path": "RunPipeline"

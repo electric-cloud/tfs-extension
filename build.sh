@@ -31,5 +31,5 @@ else
 fi
 
 
-rm -rf pluginsdev.electric-flow-0.1.*
+rm -rf pluginsdev.electric-flow-*
 
