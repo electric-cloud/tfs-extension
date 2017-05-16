@@ -1,83 +1,83 @@
 {
+   "friendlyName" : "ElectricFlow - Call REST Endpoint",
+   "instanceNameFormat" : "Run REST $(method) $(restEndpoint)",
    "execution" : {
       "Node" : {
          "target" : "index.js"
       }
    },
-   "category" : "Build",
-   "name" : "call-rest",
+   "id" : "cd267176-2716-4cf7-b57b-420b126ec3da",
    "version" : {
       "Minor" : "0",
-      "Patch" : "226",
-      "Major" : "1"
+      "Major" : "1",
+      "Patch" : "227"
    },
    "description" : "This integration allows you to to call any REST endpoint.",
-   "instanceNameFormat" : "Run REST $(method) $(restEndpoint)",
-   "id" : "cd267176-2716-4cf7-b57b-420b126ec3da",
    "inputs" : [
       {
+         "label" : "ElectricFlow Service Endpoint",
+         "name" : "electricFlowService",
          "required" : true,
          "defaultValue" : "",
-         "name" : "electricFlowService",
-         "label" : "ElectricFlow Service Endpoint",
          "helpMarkDown" : "Select the ElectricFlow end point to use.",
          "type" : "connectedService:electricFlow"
       },
       {
          "required" : true,
+         "defaultValue" : "",
+         "name" : "method",
+         "label" : "Method",
+         "type" : "string",
+         "helpMarkDown" : "Select HTTP method to use.",
          "enum" : [
             "GET",
             "POST",
             "PUT",
             "DELETE"
-         ],
-         "name" : "method",
-         "defaultValue" : "",
-         "label" : "Method",
-         "type" : "string",
-         "helpMarkDown" : "Select HTTP method to use."
+         ]
       },
       {
-         "defaultValue" : "",
-         "required" : true,
-         "name" : "restEndpoint",
          "helpMarkDown" : "Enter REST path.",
          "type" : "string",
-         "label" : "Path"
+         "label" : "Path",
+         "defaultValue" : "",
+         "name" : "restEndpoint",
+         "required" : true
       },
       {
          "defaultValue" : "",
-         "required" : false,
          "name" : "params",
-         "helpMarkDown" : "Enter query parameters, in JSON or in key-value pairs.",
+         "required" : false,
+         "label" : "Parameters",
          "type" : "multiLine",
-         "label" : "Parameters"
+         "helpMarkDown" : "Enter query parameters, in JSON or in key-value pairs."
       },
       {
-         "required" : false,
-         "defaultValue" : "",
-         "name" : "payload",
-         "helpMarkDown" : "Enter request body.",
          "type" : "multiLine",
+         "helpMarkDown" : "Enter request body.",
+         "required" : false,
+         "name" : "payload",
+         "defaultValue" : "",
          "label" : "Payload"
       },
       {
-         "required" : true,
+         "helpMarkDown" : "Enter variable name to store call results.",
+         "type" : "string",
+         "label" : "Result variable name",
          "defaultValue" : "",
          "name" : "resultVarName",
-         "type" : "string",
-         "helpMarkDown" : "Enter variable name to store call results.",
-         "label" : "Result variable name"
+         "required" : true
       }
    ],
+   "name" : "call-rest",
+   "author" : "Electric Cloud",
    "groups" : [
       {
-         "displayName" : "Advanced",
          "isExpanded" : false,
+         "displayName" : "Advanced",
          "name" : "advanced"
       }
    ],
-   "author" : "Electric Cloud",
    "helpMarkDown" : "",
-   "friendlyName" : "ElectricFlow - Call REST Endpoint"
+   "category" : "Build"
 }
