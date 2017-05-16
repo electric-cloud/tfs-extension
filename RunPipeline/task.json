@@ -1,74 +1,74 @@
 {
-   "helpMarkDown" : "",
    "category" : "Build",
-   "groups" : [
-      {
-         "name" : "advanced",
-         "displayName" : "Advanced",
-         "isExpanded" : false
-      }
-   ],
-   "author" : "Electric Cloud",
-   "name" : "run-pipeline",
-   "inputs" : [
-      {
-         "type" : "connectedService:electricFlow",
-         "helpMarkDown" : "Select the ElectricFlow endpoint to use.",
-         "defaultValue" : "",
-         "required" : true,
-         "name" : "electricFlowService",
-         "label" : "ElectricFlow Service Endpoint"
-      },
-      {
-         "properties" : {
-            "EditableOptions" : true
-         },
-         "helpMarkDown" : "Specify the ElectricFlow project name.",
-         "type" : "string",
-         "label" : "Project Name",
-         "name" : "projectName",
-         "defaultValue" : "",
-         "required" : true
-      },
-      {
-         "label" : "Pipeline Name",
-         "defaultValue" : "",
-         "name" : "pipelineName",
-         "required" : true,
-         "properties" : {
-            "EditableOptions" : true
-         },
-         "helpMarkDown" : "Specify the ElectricFlow pipeline name.",
-         "type" : "string"
-      },
-      {
-         "helpMarkDown" : "If checked, parameters will be passed to the pipeline",
-         "type" : "boolean",
-         "label" : "Requires pipeline parameters",
-         "required" : false,
-         "name" : "requiresAdditionalParameters"
-      },
-      {
-         "label" : "Pipeline parameters",
-         "name" : "additionalParameters",
-         "required" : false,
-         "helpMarkDown" : "Parameters for the pipeline call, in key=value pairs or in JSON format. E.g. myParam = value",
-         "type" : "multiLine",
-         "visibleRule" : "requiresAdditionalParameters=true"
-      }
-   ],
-   "description" : "This integration allows you to run a pipeline in ElectricFlow.",
-   "version" : {
-      "Minor" : "0",
-      "Major" : "1",
-      "Patch" : "227"
-   },
-   "id" : "0442a599-dd0c-4d8d-b991-ace99fa47424",
    "instanceNameFormat" : "Run Pipeline $(pipelineName) from project $(projectName)",
+   "author" : "Electric Cloud",
    "execution" : {
       "Node" : {
          "target" : "index.js"
       }
    },
-   "friendlyName" : "ElectricFlow - Run Pipeline"
+   "inputs" : [
+      {
+         "defaultValue" : "",
+         "label" : "ElectricFlow Service Endpoint",
+         "type" : "connectedService:electricFlow",
+         "required" : true,
+         "helpMarkDown" : "Select the ElectricFlow endpoint to use.",
+         "name" : "electricFlowService"
+      },
+      {
+         "helpMarkDown" : "Specify the ElectricFlow project name.",
+         "name" : "projectName",
+         "defaultValue" : "",
+         "type" : "string",
+         "required" : true,
+         "label" : "Project Name",
+         "properties" : {
+            "EditableOptions" : true
+         }
+      },
+      {
+         "defaultValue" : "",
+         "required" : true,
+         "type" : "string",
+         "properties" : {
+            "EditableOptions" : true
+         },
+         "label" : "Pipeline Name",
+         "helpMarkDown" : "Specify the ElectricFlow pipeline name.",
+         "name" : "pipelineName"
+      },
+      {
+         "label" : "Requires pipeline parameters",
+         "required" : false,
+         "type" : "boolean",
+         "name" : "requiresAdditionalParameters",
+         "helpMarkDown" : "If checked, parameters will be passed to the pipeline"
+      },
+      {
+         "type" : "multiLine",
+         "required" : false,
+         "label" : "Pipeline parameters",
+         "visibleRule" : "requiresAdditionalParameters=true",
+         "name" : "additionalParameters",
+         "helpMarkDown" : "Parameters for the pipeline call, in key=value pairs or in JSON format. E.g. myParam = value"
+      }
+   ],
+   "name" : "run-pipeline",
+   "id" : "0442a599-dd0c-4d8d-b991-ace99fa47424",
+   "friendlyName" : "ElectricFlow - Run Pipeline",
+   "groups" : [
+      {
+         "displayName" : "Advanced",
+         "name" : "advanced",
+         "isExpanded" : false
+      }
+   ],
+   "description" : "This integration allows you to run a pipeline in ElectricFlow.",
+   "helpMarkDown" : "",
+   "version" : {
+      "Major" : "1",
+      "Minor" : "0",
+      "Patch" : "230"
+   }
 }

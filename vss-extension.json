@@ -1,7 +1,7 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "1.0.227",
+  "version": "1.0.230",
   "icons": {
       "default": "images/extension-icon.png"
   },
@@ -44,8 +44,8 @@
         "name": "electricFlow",
         "displayName": "ElectricFlow server connection",
         "url": {
-          "displayName": "Server Url",
-          "helpText": "Url for ElectricFlow server to connect to, with rest/version suffix. E.g. http://my-cloud-instance/rest/v1.0"
+          "displayName": "Server URL",
+          "helpText": "Specify the URL for the ElectricFlow Server. For e.g., https://electric-flow-server."
         },
         "dataSources": [
           {
@@ -61,8 +61,8 @@
             "inputDescriptors": [
               {
                 "id": "username",
-                "name": "Username",
-                "description": "Username to connect to ElectricFlow instance.",
+                "name": "User Name",
+                "description": "Specify the user name for the ElectricFlow.",
                 "inputMode": "textbox",
                 "validation": {
                   "isRequired": true,
@@ -71,8 +71,8 @@
               },
               {
                 "id": "password",
-                "name": "Password",
-                "description": "Password to connect to ElectricFlow instance.",
+                "name": "User Password",
+                "description": "Specify the user password for the ElectricFlow.",
                 "inputMode": "passwordbox",
                 "isConfidential": true,
                 "validation": {
@@ -83,7 +83,7 @@
               {
                 "id": "restVersion",
                 "name": "REST API Version",
-                "description": "Version for the ElectricFlow REST API. E.g., v1.0",
+                "description": "Specify the version for the ElectricFlow REST API. For e.g., v1.",
                 "inputMode": "combo",
                 "isConfidential": false,
                 "validation": {
@@ -104,7 +104,7 @@
               {
                 "id": "skipCertCheck",
                 "name": "Accept untrusted SSL certificates",
-                "description": "If checkd, self-signed certificates will be accepted. Please do not use this option in production environment.",
+                "description": "If checked, self-signed certificates will be accepted. Please do not use this option in production environment.",
                 "inputMode": "checkbox",
                 "isConfidential": false,
                 "validation": {
