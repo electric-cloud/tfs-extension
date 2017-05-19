@@ -40,34 +40,30 @@ let createArtifactLink = function(endpoint: string, artifactName: string, artifa
 }
 
 
-if(!fs.existsSync(artifactPath)) {
-    tl.setResult(tl.TaskResult.Failed, "File " + artifactPath + " does not exist");
-}
-else {
-    let sid = undefined;
-    efClient.login().then((res:any) => {
-        sid = res.sessionId;
-        return efClient.getRepository(repositoryName);
-    }).then((res: any) => {
-        return efClient.publishArtifact(artifactPath, artifactName, artifactVersion, repositoryName, sid);
-    }).then((res: any) => {
-        if (res.response == "Artifact-Published-OK") {
-            console.log("Artifact published");
-            let link = createArtifactLink(efBaseUrl, artifactName, artifactVersion);
-            console.log("Link to the artifact: " + link);
-            tl.setResult(tl.TaskResult.Succeeded, "Successfully published artifact " + artifactName);
-        }
-        else {
-            tl.setResult(tl.TaskResult.Failed, res.response);
-        }
-    }).catch((e) => {
-        console.log(e);
-        if (e.response) {
-            let message = e.response.error ? e.response.error.message : 'Artifact publication failed';
-            tl.setResult(tl.TaskResult.Failed, message);
-        }
-        else {
-            tl.setResult(tl.TaskResult.Failed, "Artifact publication failed")
-        }
-    });
-}
+let sid = undefined;
+efClient.login().then((res:any) => {
+    sid = res.sessionId;
+    return efClient.getRepository(repositoryName);
+}).then((res: any) => {
+    return efClient.publishArtifact(artifactPath, artifactName, artifactVersion, repositoryName, sid);
+}).then((res: any) => {
+    if (res.response == "Artifact-Published-OK") {
+        console.log("Artifact published");
+        let link = createArtifactLink(efBaseUrl, artifactName, artifactVersion);
+        console.log("Link to the artifact: " + link);
+        tl.setResult(tl.TaskResult.Succeeded, "Successfully published artifact " + artifactName);
+    }
+    else {
+        tl.setResult(tl.TaskResult.Failed, res.response);
+    }
+}).catch((e) => {
+    console.log(e);
+    if (e.response) {
+        let message = e.response.error ? e.response.error.message : 'Artifact publication failed';
+        tl.setResult(tl.TaskResult.Failed, message);
+    }
+    else {
+        tl.setResult(tl.TaskResult.Failed, "Artifact publication failed")
+    }
+});
+

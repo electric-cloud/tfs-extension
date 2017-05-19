@@ -11,6 +11,7 @@
   "dependencies": {
     "@types/node": "^7.0.18",
     "ef-client": "../ef-client",
+    "glob": "^7.1.1",
     "vsts-task-lib": "https://registry.npmjs.org/vsts-task-lib/-/vsts-task-lib-2.0.5.tgz"
   }
 }

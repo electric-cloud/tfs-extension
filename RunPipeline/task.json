@@ -1,74 +1,74 @@
 {
-   "category" : "Build",
-   "instanceNameFormat" : "Run Pipeline $(pipelineName) from project $(projectName)",
-   "author" : "Electric Cloud",
-   "execution" : {
-      "Node" : {
-         "target" : "index.js"
+   "groups" : [
+      {
+         "name" : "advanced",
+         "isExpanded" : false,
+         "displayName" : "Advanced"
       }
-   },
+   ],
+   "author" : "Electric Cloud",
+   "friendlyName" : "ElectricFlow - Run Pipeline",
+   "instanceNameFormat" : "Run Pipeline $(pipelineName) from project $(projectName)",
+   "description" : "This integration allows you to run a pipeline in ElectricFlow.",
    "inputs" : [
       {
+         "name" : "electricFlowService",
+         "required" : true,
          "defaultValue" : "",
          "label" : "ElectricFlow Service Endpoint",
-         "type" : "connectedService:electricFlow",
-         "required" : true,
          "helpMarkDown" : "Select the ElectricFlow endpoint to use.",
-         "name" : "electricFlowService"
+         "type" : "connectedService:electricFlow"
       },
       {
          "helpMarkDown" : "Specify the ElectricFlow project name.",
-         "name" : "projectName",
-         "defaultValue" : "",
          "type" : "string",
-         "required" : true,
          "label" : "Project Name",
+         "required" : true,
+         "defaultValue" : "",
+         "name" : "projectName",
          "properties" : {
             "EditableOptions" : true
          }
       },
       {
-         "defaultValue" : "",
-         "required" : true,
-         "type" : "string",
+         "name" : "pipelineName",
          "properties" : {
             "EditableOptions" : true
          },
+         "defaultValue" : "",
+         "required" : true,
          "label" : "Pipeline Name",
          "helpMarkDown" : "Specify the ElectricFlow pipeline name.",
-         "name" : "pipelineName"
+         "type" : "string"
       },
       {
          "label" : "Requires pipeline parameters",
-         "required" : false,
          "type" : "boolean",
+         "helpMarkDown" : "If checked, parameters will be passed to the pipeline",
          "name" : "requiresAdditionalParameters",
-         "helpMarkDown" : "If checked, parameters will be passed to the pipeline"
+         "required" : false
       },
       {
-         "type" : "multiLine",
          "required" : false,
-         "label" : "Pipeline parameters",
-         "visibleRule" : "requiresAdditionalParameters=true",
          "name" : "additionalParameters",
-         "helpMarkDown" : "Parameters for the pipeline call, in key=value pairs or in JSON format. E.g. myParam = value"
+         "type" : "multiLine",
+         "helpMarkDown" : "Parameters for the pipeline call, in key=value pairs or in JSON format. E.g. myParam = value",
+         "visibleRule" : "requiresAdditionalParameters=true",
+         "label" : "Pipeline parameters"
       }
    ],
-   "name" : "run-pipeline",
-   "id" : "0442a599-dd0c-4d8d-b991-ace99fa47424",
-   "friendlyName" : "ElectricFlow - Run Pipeline",
-   "groups" : [
-      {
-         "displayName" : "Advanced",
-         "name" : "advanced",
-         "isExpanded" : false
-      }
-   ],
-   "description" : "This integration allows you to run a pipeline in ElectricFlow.",
-   "helpMarkDown" : "",
    "version" : {
-      "Major" : "1",
       "Minor" : "0",
-      "Patch" : "230"
-   }
+      "Major" : "1",
+      "Patch" : "259"
+   },
+   "id" : "0442a599-dd0c-4d8d-b991-ace99fa47424",
+   "execution" : {
+      "Node" : {
+         "target" : "index.js"
+      }
+   },
+   "name" : "run-pipeline",
+   "helpMarkDown" : "",
+   "category" : "Build"
 }

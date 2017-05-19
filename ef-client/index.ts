@@ -5,7 +5,8 @@ import https = require('https');
 import querystring = require('querystring');
 import fs = require('fs');
 import FormData = require('form-data');
-
+import path = require('path');
+import {glob} from "glob";
 
 class EFClient {
     endpoint: url.Url;
@@ -140,24 +141,41 @@ class EFClient {
         return this.post('/sessions', {userName: this.username, password: this.password}, '');
     }
 
-    publishArtifact(path: string, artifactName: string, artifactVersion: string, repositoryName: string, commanderSessionId: string) {
+
+    findAllFiles(dirPath: string, acc: Array<string>) {
+        fs.readdirSync(dirPath).forEach((filename: string) => {
+            let fullFilename = path.join(dirPath, filename)
+            let stat = fs.statSync(fullFilename);
+            if (stat.isDirectory()) {
+                return this.findAllFiles(fullFilename, acc);
+            }
+            else {
+                acc.push(fullFilename);
+            }
+        });
+        return acc;
+    }
+
+    publishArtifact(artifactPath: string, artifactName: string, artifactVersion: string, repositoryName: string, commanderSessionId: string) {
         let def = q.defer();
 
         let form = new FormData();
-        let stream = fs.createReadStream(path).on('error', (e) => {
-            console.log("File stream error", e);
-            def.reject(e);
+
+        let files = glob.sync(artifactPath, {});
+        files.forEach((filename) => {
+            let stream = fs.createReadStream(filename).on("error", (e) => {
+                console.log("File stream error", e);
+                def.reject(e);
+            });
+            console.log(`Adding file ${filename}`);
+            form.append("files", stream);
         });
 
-        let stats = fs.statSync(path);
-
-        if (stats.isDirectory()) {
-            console.log("Is a directory");
-            def.reject({response: `${path} is directory`});
-            return def;
+        if (files.Length == 0) {
+           def.reject(`No files found: ${artifactPath}`);
+           return def.promise;
         }
 
-        form.append("files", stream);
         form.append("artifactName", artifactName);
         form.append("artifactVersionVersion", artifactVersion);
         form.append("commanderSessionId", commanderSessionId);

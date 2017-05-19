@@ -3,9 +3,6 @@ import url = require('url');
 
 import {EFClient} from "ef-client";
 
-import RestClient = require('TFS/Build/RestClient');
-
-
 let parseParameters = function(params: string) {
     let retval = {};
     try {
