@@ -1,83 +1,83 @@
 {
-   "description" : "This integration allows you to to call any REST endpoint.",
-   "instanceNameFormat" : "Run REST $(method) $(restEndpoint)",
-   "id" : "cd267176-2716-4cf7-b57b-420b126ec3da",
    "version" : {
-      "Minor" : "0",
+      "Patch" : "260",
       "Major" : "1",
-      "Patch" : "259"
+      "Minor" : "0"
+   },
+   "name" : "call-rest",
+   "helpMarkDown" : "",
+   "category" : "Build",
+   "id" : "cd267176-2716-4cf7-b57b-420b126ec3da",
+   "friendlyName" : "ElectricFlow - Call REST Endpoint",
+   "instanceNameFormat" : "Run REST $(method) $(restEndpoint)",
+   "execution" : {
+      "Node" : {
+         "target" : "index.js"
+      }
    },
    "inputs" : [
       {
          "helpMarkDown" : "Select the ElectricFlow end point to use.",
-         "type" : "connectedService:electricFlow",
          "label" : "ElectricFlow Service Endpoint",
+         "name" : "electricFlowService",
+         "type" : "connectedService:electricFlow",
          "defaultValue" : "",
-         "required" : true,
-         "name" : "electricFlowService"
+         "required" : true
       },
       {
+         "defaultValue" : "",
+         "required" : true,
+         "name" : "method",
+         "type" : "string",
+         "label" : "Method",
          "enum" : [
             "GET",
             "POST",
             "PUT",
             "DELETE"
          ],
-         "defaultValue" : "",
+         "helpMarkDown" : "Select HTTP method to use."
+      },
+      {
          "required" : true,
-         "name" : "method",
+         "defaultValue" : "",
          "type" : "string",
-         "helpMarkDown" : "Select HTTP method to use.",
-         "label" : "Method"
-      },
-      {
          "name" : "restEndpoint",
-         "required" : true,
-         "defaultValue" : "",
          "label" : "Path",
-         "helpMarkDown" : "Enter REST path.",
-         "type" : "string"
+         "helpMarkDown" : "Enter REST path."
       },
       {
-         "type" : "multiLine",
          "helpMarkDown" : "Enter query parameters, in JSON or in key-value pairs.",
          "label" : "Parameters",
+         "type" : "multiLine",
+         "name" : "params",
          "required" : false,
-         "defaultValue" : "",
-         "name" : "params"
+         "defaultValue" : ""
       },
       {
          "defaultValue" : "",
          "required" : false,
          "name" : "payload",
-         "helpMarkDown" : "Enter request body.",
          "type" : "multiLine",
-         "label" : "Payload"
+         "label" : "Payload",
+         "helpMarkDown" : "Enter request body."
       },
       {
-         "label" : "Result variable name",
          "helpMarkDown" : "Enter variable name to store call results.",
-         "type" : "string",
+         "label" : "Result variable name",
          "name" : "resultVarName",
-         "required" : true,
-         "defaultValue" : ""
+         "type" : "string",
+         "defaultValue" : "",
+         "required" : true
       }
    ],
    "groups" : [
       {
-         "isExpanded" : false,
          "displayName" : "Advanced",
-         "name" : "advanced"
+         "name" : "advanced",
+         "isExpanded" : false
       }
    ],
-   "friendlyName" : "ElectricFlow - Call REST Endpoint",
    "author" : "Electric Cloud",
-   "category" : "Build",
-   "helpMarkDown" : "",
-   "execution" : {
-      "Node" : {
-         "target" : "index.js"
-      }
-   },
-   "name" : "call-rest"
+   "description" : "This integration allows you to to call any REST endpoint."
 }

@@ -160,15 +160,28 @@ class EFClient {
         let def = q.defer();
 
         let form = new FormData();
-
         let files = glob.sync(artifactPath, {});
         files.forEach((filename) => {
-            let stream = fs.createReadStream(filename).on("error", (e) => {
-                console.log("File stream error", e);
-                def.reject(e);
-            });
-            console.log(`Adding file ${filename}`);
-            form.append("files", stream);
+            let stat = fs.statSync(filename);
+            if (stat.isDirectory()) {
+                let files = this.findAllFiles(filename, []);
+                files.forEach((filename) => {
+                    let stream = fs.createReadStream(filename).on("error", (e) => {
+                        console.log("File stream error", e);
+                        def.reject(e);
+                    });
+                    console.log(`Adding file ${filename}`);
+                    form.append("files", stream);
+                });
+            }
+            else {
+                let stream = fs.createReadStream(filename).on("error", (e) => {
+                    console.log("File stream error", e);
+                    def.reject(e);
+                });
+                console.log(`Adding file ${filename}`);
+                form.append("files", stream);
+            }
         });
 
         if (files.Length == 0) {
