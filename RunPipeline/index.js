@@ -26,6 +26,7 @@ let createFlowRuntimeLink = function (endpoint, pipelineId, flowRuntimeId) {
 };
 var efEndpoint = tl.getInput('electricFlowService', true);
 var efBaseUrl = tl.getEndpointUrl(efEndpoint, true);
+var restVersion = tl.getEndpointDataParameter(efEndpoint, 'restVersion', true);
 var efAuth = tl.getEndpointAuthorization(efEndpoint, true);
 var requiresAdditionalParameters = tl.getBoolInput('requiresAdditionalParameters', false);
 var additionalParamsString = tl.getInput("additionalParameters");
@@ -33,7 +34,7 @@ if (efAuth.parameters['skipCertCheck'] == 'true') {
     console.log("Certificate check is skipped");
 }
 let skipCertCheck = efAuth.parameters['skipCertCheck'] == 'true';
-var efClient = new ef_client_1.EFClient(efBaseUrl, efAuth.parameters['username'], efAuth.parameters['password'], efAuth.parameters['restVersion'], skipCertCheck);
+var efClient = new ef_client_1.EFClient(efBaseUrl, efAuth.parameters['username'], efAuth.parameters['password'], restVersion, skipCertCheck);
 let projectName = tl.getInput('projectName');
 let pipelineName = tl.getInput('pipelineName');
 let pipelinePromise = efClient.getProject(projectName).then((res) => {

@@ -27,9 +27,9 @@ let createFlowRuntimeLink = function(endpoint: string, pipelineId: string, flowR
     return url;
 }
 
-
 var efEndpoint = tl.getInput('electricFlowService', true);
 var efBaseUrl = tl.getEndpointUrl(efEndpoint, true);
+var restVersion = tl.getEndpointDataParameter(efEndpoint, 'restVersion', true);
 var efAuth = tl.getEndpointAuthorization(efEndpoint, true);
 var requiresAdditionalParameters = tl.getBoolInput('requiresAdditionalParameters', false);
 var additionalParamsString = tl.getInput("additionalParameters");
@@ -44,7 +44,7 @@ var efClient = new EFClient(
     efBaseUrl,
     efAuth.parameters['username'],
     efAuth.parameters['password'],
-    efAuth.parameters['restVersion'],
+    restVersion,
     skipCertCheck
 );
 let projectName = tl.getInput('projectName');

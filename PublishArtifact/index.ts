@@ -11,6 +11,7 @@ const ARTIFACT_VERSION_FIELD = 'artifactVersion';
 const ARTIFACT_NAME_FIELD = 'artifactName';
 
 var efEndpoint = tl.getInput(ENDPOINT_FIELD, true);
+var restVersion = tl.getEndpointDataParameter(efEndpoint, 'restVersion', true);
 
 
 var efBaseUrl = tl.getEndpointUrl(efEndpoint, true);
@@ -21,7 +22,7 @@ var efClient = new EFClient(
     efBaseUrl,
     efAuth.parameters['username'],
     efAuth.parameters['password'],
-    efAuth.parameters['restVersion'],
+    restVersion,
     skipCertCheck
 );
 

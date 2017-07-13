@@ -5,11 +5,12 @@ const tl = require("vsts-task-lib/task");
 var efEndpoint = tl.getInput('electricFlowService', true);
 var efBaseUrl = tl.getEndpointUrl(efEndpoint, true);
 var efAuth = tl.getEndpointAuthorization(efEndpoint, true);
+var restVersion = tl.getEndpointDataParameter(efEndpoint, 'restVersion', true);
 let skipCertCheck = efAuth.parameters['skipCertCheck'] == 'true';
 if (skipCertCheck) {
     console.log("Certificate check is skipped");
 }
-var efClient = new ef_client_1.EFClient(efBaseUrl, efAuth.parameters['username'], efAuth.parameters['password'], efAuth.parameters['restVersion'], skipCertCheck);
+var efClient = new ef_client_1.EFClient(efBaseUrl, efAuth.parameters['username'], efAuth.parameters['password'], restVersion, skipCertCheck);
 var method = tl.getInput('method', true);
 var paramsString = tl.getInput('params', false);
 var restEndpoint = tl.getInput('restEndpoint', true);

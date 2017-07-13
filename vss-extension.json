@@ -1,7 +1,7 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "1.0.260",
+  "version": "1.0.4.12",
   "icons": {
       "default": "images/extension-icon.png"
   },
@@ -50,9 +50,32 @@
         "dataSources": [
           {
             "name": "ElectricFlowProjects",
-            "endpointUrl": "{{endpoint.url}}projects",
-            "resultSelector": "jsonpath:$.project[?(@.pluginKey==null)].projectName",
+            "endpointUrl": "{{endpoint.url}}rest/{{endpoint.restVersion}}/projects",
+            "resultSelector": "jsonpath:$.project[*].projectName",
             "skipCert": true
+          }
+        ],
+        "inputDescriptors": [
+          {
+            "id": "restVersion",
+            "name": "REST API Version",
+            "description": "Specify the version for the ElectricFlow REST API. For e.g., v1.",
+            "inputMode": "combo",
+            "isConfidential": false,
+            "validation": {
+              "isRequired": true,
+              "dataType": "string"
+            },
+            "values": {
+              "defaultValue": "v1.0",
+              "inputId": "restVersionValues",
+              "possibleValues": [
+                {
+                  "value": "v1.0",
+                  "displayValue": "v1.0"
+                }
+              ]
+            }
           }
         ],
         "authenticationSchemes": [
@@ -78,27 +101,6 @@
                 "validation": {
                   "isRequired": true,
                   "dataType": "string"
-                }
-              },
-              {
-                "id": "restVersion",
-                "name": "REST API Version",
-                "description": "Specify the version for the ElectricFlow REST API. For e.g., v1.",
-                "inputMode": "combo",
-                "isConfidential": false,
-                "validation": {
-                  "isRequired": true,
-                  "dataType": "string"
-                },
-                "values": {
-                  "defaultValue": "v1.0",
-                  "inputId": "restVersionValues",
-                  "possibleValues": [
-                    {
-                      "value": "v1.0",
-                      "displayValue": "v1.0"
-                    }
-                  ]
                 }
               },
               {

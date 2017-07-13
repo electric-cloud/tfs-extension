@@ -4,6 +4,7 @@ import tl = require('vsts-task-lib/task');
 var efEndpoint = tl.getInput('electricFlowService', true);
 var efBaseUrl = tl.getEndpointUrl(efEndpoint, true);
 var efAuth = tl.getEndpointAuthorization(efEndpoint, true);
+var restVersion = tl.getEndpointDataParameter(efEndpoint, 'restVersion', true);
 
 let skipCertCheck = efAuth.parameters['skipCertCheck'] == 'true';
 
@@ -15,7 +16,7 @@ var efClient = new EFClient(
     efBaseUrl,
     efAuth.parameters['username'],
     efAuth.parameters['password'],
-    efAuth.parameters['restVersion'],
+    restVersion,
     skipCertCheck
 );
 
