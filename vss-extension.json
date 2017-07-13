@@ -1,7 +1,7 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "1.0.4.12",
+  "version": "1.0.4.13",
   "icons": {
       "default": "images/extension-icon.png"
   },
@@ -75,6 +75,17 @@
                   "displayValue": "v1.0"
                 }
               ]
+            }
+          },
+          {
+            "id": "acceptUntrustedCerts",
+            "name": "i18n:Accept untrusted SSL certificates",
+            "description": "i18n:description",
+            "inputMode": "checkbox",
+            "isConfidential": false,
+            "validation": {
+              "isRequired": false,
+              "dataType": "boolean"
             }
           }
         ],
