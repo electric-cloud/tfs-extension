@@ -12,8 +12,8 @@ done
 
 perl increaseVersion.pl
 
-TFS_SERVERNAME=http://desktop-2760qqq:8080/tfs
-TFS_PAT=lgnfxowe2tgr743y3w3qwhdvtcb2xxtyt6anrnkmhrsin5m3zklq
+TFS_SERVERNAME=http://10.200.1.158:8080/tfs
+TFS_PAT=vx6e2fr2vb3esw6hl55zpnlghtxiw5kavtgh3u7fmycpundd3oaa
 
 if [[ $1 = "--local" ]]
 then
@@ -23,7 +23,7 @@ then
 else
     echo "Installing extension globally"
 
-    ACCOUNT=pluginsdev
+    ACCOUNT=pshubina
     PAT=$(cat ~/.tfs_pat)
 
     tfx extension publish --manifest-globs vss-extension.json \
