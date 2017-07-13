@@ -50,7 +50,7 @@ sub build_task {
 
     # $content =~ s/"Patch": "$build"/"Patch": "$new_build"/sm;
     open $fh, ">./$folder/task.json" or die $!;
-    print $fh JSON->new->utf8->pretty->encode($task);
+    print $fh JSON->new->utf8->pretty->canonical->encode($task);
     close $fh;
 
     print "Folder $folder done\n";
