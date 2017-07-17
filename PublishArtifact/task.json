@@ -1,69 +1,62 @@
 {
+   "friendlyName" : "ElectricFlow - Publish Artifact",
+   "description" : "This integration allows you to publish artifact for your application to ElectricFlow.",
    "name" : "publish-artifact",
-   "version" : {
-      "Major" : "1",
-      "Minor" : "0",
-      "Patch" : "0"
-   },
-   "helpMarkDown" : "",
    "execution" : {
       "Node" : {
          "target" : "index.js"
       }
    },
-   "friendlyName" : "ElectricFlow - Publish Artifact",
-   "id" : "0e2424a3-42b6-48f5-b3fa-ac6ed16d4c57",
-   "category" : "Build",
    "instanceNameFormat" : "Publish Artifact $(artifactName):$(artifactVersion) to repository $(repositoryName)",
-   "description" : "This integration allows you to publish artifact for your application to ElectricFlow.",
+   "id" : "0e2424a3-42b6-48f5-b3fa-ac6ed16d4c57",
    "author" : "Electric Cloud",
+   "version" : {
+      "Minor" : "0",
+      "Major" : "1",
+      "Patch" : "2"
+   },
    "inputs" : [
-      {
-         "type" : "connectedService:electricFlow",
-         "name" : "electricFlowService",
-         "label" : "ElectricFlow Service Endpoint",
-         "helpMarkDown" : "Select the ElectricFlow endpoint to use.",
-         "required" : true,
-         "defaultValue" : ""
-      },
       {
          "required" : true,
          "defaultValue" : "",
-         "name" : "artifactPath",
+         "label" : "ElectricFlow Service Endpoint",
+         "type" : "connectedService:electricFlow",
+         "name" : "electricFlowService",
+         "helpMarkDown" : "Select the ElectricFlow endpoint to use."
+      },
+      {
+         "defaultValue" : "",
+         "required" : true,
          "type" : "filePath",
          "label" : "Artifact Path",
+         "name" : "artifactPath",
          "helpMarkDown" : "Specify the location or path for the artifact files to be published to ElectricFlow. For e.g., MyProject/target-$(Build.BuildNumber).war."
       },
       {
          "defaultValue" : "",
          "required" : true,
-         "helpMarkDown" : "Specify the name of the application artifact using the format <group_id>:<artifact_key>. For e.g., \"com.example:helloworld\".",
          "label" : "Artifact Name",
          "type" : "string",
-         "name" : "artifactName"
+         "name" : "artifactName",
+         "helpMarkDown" : "Specify the name of the application artifact using the format <group_id>:<artifact_key>. For e.g., \"com.example:helloworld\"."
       },
       {
-         "type" : "string",
          "name" : "artifactVersion",
          "helpMarkDown" : "Specify the version of the application artifact. For e.g., you can specify 1.0 or 1.0-$(Build.BuildNumber) that is based on Visual Studio environment variable.",
-         "label" : "Artifact Version",
          "required" : true,
-         "defaultValue" : ""
+         "defaultValue" : "",
+         "label" : "Artifact Version",
+         "type" : "string"
       },
       {
-         "type" : "string",
          "name" : "repositoryName",
-         "label" : "Repository Name",
          "helpMarkDown" : "Specify the name of the ElectricFlow Repository.",
+         "defaultValue" : "default",
          "required" : true,
-         "defaultValue" : "default"
+         "label" : "Repository Name",
+         "type" : "string"
       }
    ],
-   "groups" : [
-      {
-         "name" : "advanced",
-         "displayName" : "Advanced",
-         "isExpanded" : false
-      }
-   ]
+   "helpMarkDown" : "",
+   "category" : "Build"
 }
