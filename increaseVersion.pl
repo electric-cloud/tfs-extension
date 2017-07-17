@@ -9,7 +9,7 @@ my $content = join '' => <$fh>;
 close $fh;
 
 my ($major, $minor, $patch, $build) = $content =~ m/"version": "(\d+)\.(\d+)\.(\d+).(\d+)/sm;
-my $new_build = $build + 1;
+my $new_build = $ENV{BUILD_NUMBER} || $build + 1;
 
 $content =~ s/"version": "(\d+)\.(\d+)\.(\d+).(\d+)"/"version": "$major.$minor.$patch.$new_build"/;
 open $fh, ">vss-extension.json" or die $!;

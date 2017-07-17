@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
-
-for FOLDER_NAME in 'ef-client' 'RunPipeline' 'PublishArtifact' 'RESTCall'
-do
-    cd $FOLDER_NAME
-    rm -rf node_modules
-    npm install
-    tsc
-    cd ..
-done
+if [[ $TFS_COMPILE = "1" ]]
+then
+    for FOLDER_NAME in 'ef-client' 'RunPipeline' 'PublishArtifact' 'RESTCall'
+    do
+        cd $FOLDER_NAME
+        rm -rf node_modules
+        npm install
+        tsc
+        cd ..
+    done
+fi
 
 perl increaseVersion.pl
 
@@ -20,16 +22,8 @@ then
     echo "Installing extension locally"
     tfx extension publish --token $TFS_PAT \
  --manifest-globs vss-extension.json --service-url $TFS_SERVERNAME
+
+    rm -rf pluginsdev.electric-flow-*
 else
-    echo "Installing extension globally"
-
-    ACCOUNT=pshubina
-    PAT=$(cat ~/.tfs_pat)
-
-    tfx extension publish --manifest-globs vss-extension.json \
---share-with $ACCOUNT --token $PAT
+    tfx extension create --manifest-globs vss-extension.json
 fi
-
-
-rm -rf pluginsdev.electric-flow-*
-
