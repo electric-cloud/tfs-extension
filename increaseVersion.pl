@@ -8,10 +8,10 @@ open my $fh, 'vss-extension.json' or die $!;
 my $content = join '' => <$fh>;
 close $fh;
 
-my ($major, $minor, $build) = $content =~ m/"version": "(\d+)\.(\d+)\.(\d+)/sm;
-my $new_build = $build + 1;
+my ($major, $minor, $patch, $build) = $content =~ m/"version": "(\d+)\.(\d+)\.(\d+).(\d+)/sm;
+my $new_build = $ENV{BUILD_NUMBER} || $build + 1;
 
-$content =~ s/"version": "(\d+)\.(\d+)\.(\d+)"/"version": "$major.$minor.$new_build"/;
+$content =~ s/"version": "(\d+)\.(\d+)\.(\d+).(\d+)"/"version": "$major.$minor.$patch.$new_build"/;
 open $fh, ">vss-extension.json" or die $!;
 print $fh $content;
 close $fh;
@@ -40,7 +40,7 @@ sub build_task {
     } or do {
         die "Cannot decode json file $folder: $@\n";
     };
-    $task->{version}->{Patch} = $new_build;
+    $task->{version}->{Patch} = $patch;
     $task->{version}->{Major} = $major;
     $task->{version}->{Minor} = $minor;
 
