@@ -3,9 +3,12 @@ import tl = require('vsts-task-lib/task');
 
 var efEndpoint = tl.getInput('electricFlowService', true);
 var efBaseUrl = tl.getEndpointUrl(efEndpoint, true);
+var trustCerts = tl.getEndpointDataParameter(efEndpoint, 'acceptUntrustedCerts', true);
+var restVersion = tl.getEndpointDataParameter(efEndpoint, 'restVersion', true);
+
 var efAuth = tl.getEndpointAuthorization(efEndpoint, true);
 
-let skipCertCheck = efAuth.parameters['skipCertCheck'] == 'true';
+let skipCertCheck = trustCerts == 'true';
 
 if (skipCertCheck) {
     console.log("Certificate check is skipped");
@@ -15,18 +18,27 @@ var efClient = new EFClient(
     efBaseUrl,
     efAuth.parameters['username'],
     efAuth.parameters['password'],
-    efAuth.parameters['restVersion'],
+    restVersion,
     skipCertCheck
 );
 
 var method = tl.getInput('method', true);
 var paramsString = tl.getInput('params', false);
 var restEndpoint = tl.getInput('restEndpoint', true);
+if(!restEndpoint.match(/^\//)) {
+    restEndpoint = '/' + restEndpoint;
+}
 var resVarName = tl.getInput('resultVarName', true);
 let payload = tl.getInput('payload', false);
+if(!payload) {
+    payload = '';
+}
 
 
 let parseParameters = function(params: string) {
+    if (!params) {
+        return {};
+    }
     let retval = {};
     try {
         retval = JSON.parse(params);
@@ -44,8 +56,9 @@ let parseParameters = function(params: string) {
 }
 
 let parameters = parseParameters(paramsString);
-
+console.log("Parameters are:", parameters);
 let promise = efClient.request(restEndpoint, method, parameters, payload);
+
 promise.then((res: any) => {
     console.log(res);
     tl.setVariable(resVarName, JSON.stringify(res.response));

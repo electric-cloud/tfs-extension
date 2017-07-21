@@ -71,7 +71,6 @@ class EFClient {
             process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         }
 
-
         let queryString = "";
         if (query) {
             let pairs = new Array();
@@ -93,6 +92,7 @@ class EFClient {
                 'Content-Type': 'application/json'
             }
         };
+        console.log(`${method} ${options.path}`);
 
         var responseString = "";
         let req = https.request(options, (res) => {

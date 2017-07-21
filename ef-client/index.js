@@ -75,6 +75,7 @@ class EFClient {
                 'Content-Type': 'application/json'
             }
         };
+        console.log(`${method} ${options.path}`);
         var responseString = "";
         let req = https.request(options, (res) => {
             res.setEncoding('utf8');

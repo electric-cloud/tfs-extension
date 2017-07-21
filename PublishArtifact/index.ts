@@ -15,13 +15,16 @@ var efEndpoint = tl.getInput(ENDPOINT_FIELD, true);
 
 var efBaseUrl = tl.getEndpointUrl(efEndpoint, true);
 var efAuth = tl.getEndpointAuthorization(efEndpoint, true);
-let skipCertCheck = efAuth.parameters['skipCertCheck'] == 'true';
+var trustCerts = tl.getEndpointDataParameter(efEndpoint, 'acceptUntrustedCerts', true);
+var restVersion = tl.getEndpointDataParameter(efEndpoint, 'restVersion', true);
+
+let skipCertCheck = trustCerts == 'true';
 
 var efClient = new EFClient(
     efBaseUrl,
     efAuth.parameters['username'],
     efAuth.parameters['password'],
-    efAuth.parameters['restVersion'],
+    restVersion,
     skipCertCheck
 );
 
