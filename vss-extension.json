@@ -1,7 +1,7 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "1.0.3.42",
+  "version": "1.0.37.67",
   "icons": {
       "default": "images/extension-icon.png"
   },
