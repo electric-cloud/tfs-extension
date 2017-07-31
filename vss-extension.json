@@ -1,7 +1,7 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "1.0.3.42",
+  "version": "1.0.4.75",
   "icons": {
       "default": "images/extension-icon.png"
   },
@@ -50,9 +50,18 @@
         "dataSources": [
           {
             "name": "ElectricFlowProjects",
-            "endpointUrl": "{{endpoint.url}}projects",
-            "resultSelector": "jsonpath:$.project[?(@.pluginKey==null)].projectName",
-            "skipCert": true
+            "resultSelector" : "jsonpath:$.project[*]",
+            "endpointUrl" : "{{{endpoint.url}}}/rest/{{{endpoint.restVersion}}}/projects"
+          },
+          {
+            "name": "ElectricFlowPipelines",
+            "endpointUrl" : "{{{endpoint.url}}}/rest/{{{endpoint.restVersion}}}/projects/{{projectName}}/pipelines",
+            "resultSelector" : "jsonpath:$.pipeline[*].pipelineName"
+          },
+          {
+            "name": "ElectricFlowRepositories",
+            "endpointUrl": "{{{endpoint.url}}}/rest/{{{endpoint.restVersion}}}/repositories",
+            "resultSelector": "jsonpath:$.repository[?(@.repositoryDisabled=='0')].repositoryName"
           }
         ],
         "inputDescriptors": [
