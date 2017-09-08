@@ -138,9 +138,8 @@ class EFClient {
     }
 
     login() {
-        return this.post('/sessions', {userName: this.username, password: this.password}, '');
+        return this.post('/sessions', {}, JSON.stringify({userName: this.username, password: this.password}));
     }
-
 
     findAllFiles(dirPath: string, acc: Array<string>) {
         fs.readdirSync(dirPath).forEach((filename: string) => {

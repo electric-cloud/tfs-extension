@@ -38,7 +38,8 @@ let createArtifactLink = function(endpoint: string, artifactName: string, artifa
     if (endpoint.match(/\/$/)) {
         endpoint = endpoint.replace(/\/$/, '');
     }
-    let url = endpoint + '/commander/link/artifactVersionDetails/artifactVersions/' + escapedName + '%3A' + artifactVersion + '?s=Artifacts&ss=Artifact%20Versions';
+    let escapedVersion = querystring.escape(artifactVersion);
+    let url = endpoint + '/commander/link/artifactVersionDetails/artifactVersions/' + escapedName + '%3A' + escapedVersion + '?s=Artifacts&ss=Artifact%20Versions';
     return url;
 }
 

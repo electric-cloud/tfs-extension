@@ -25,11 +25,16 @@ if ($compile) {
 increase_version();
 
 if ($local) {
-    my $token = 'vx6e2fr2vb3esw6hl55zpnlghtxiw5kavtgh3u7fmycpundd3oaa';
-    my $servername = 'http://10.200.1.158:8080/tfs';
+    `rm -rf pluginsdev.electric-flow*`;
+    open my $fh, './.tfs' or die "Cannot open .tfs: $!";
+    my ($servername, $token) = <$fh>;
+    close $fh;
+    chomp $servername;
+    chomp $token;
+    # my $token = 'yb4lp3cnxzx2gqykokji5lrgammvwjc2ntywgeoi2bms7ff3n4za';
+    # my $servername = 'http://10.200.1.56:8080/tfs';
     my $out = `tfx extension publish --token $token --manifest-globs vss-extension.json --service-url $servername 1>&2`;
     print $out;
-    `rm -rf pluginsdev.electric-flow*`;
 }
 else {
     `rm -rf pluginsdev.electric-flow*`;
