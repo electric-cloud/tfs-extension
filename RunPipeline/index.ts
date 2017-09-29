@@ -8,13 +8,20 @@ let parseParameters = function(params: string) {
     try {
         retval = JSON.parse(params);
     } catch(e) {
-        let lines = params.split(/\n/);
-        for (let i = 0; i < lines.length; i++) {
-            let line = lines[i];
-            let pair = line.split(/\s*=\s*/);
-            let key = pair[0];
-            let value = pair[1];
-            retval[key] = value;
+        if (params.match(/=/) {
+            let lines = params.split(/\n/);
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+                let pair = line.split(/\s*=\s*/);
+                let key = pair[0];
+                let value = pair[1];
+                retval[key] = value;
+            }
+        }
+        else {
+            var message = `Wrong parameters format, either JSON or key=value pairs are required. You have provided: ${params}`;
+            tl.setResult(tl.TaskResult.Failed, message);
+            throw(message);
         }
     }
     return retval;
