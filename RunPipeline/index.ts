@@ -8,7 +8,7 @@ let parseParameters = function(params: string) {
     try {
         retval = JSON.parse(params);
     } catch(e) {
-        if (params.match(/=/) {
+        if (params.match(/=/)) {
             let lines = params.split(/\n/);
             for (let i = 0; i < lines.length; i++) {
                 let line = lines[i];
