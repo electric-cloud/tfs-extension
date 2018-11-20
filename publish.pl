@@ -27,7 +27,7 @@ for (@folders) {
 
 my $account = 'pluginsdev';
 
-open $fh, '/Users/imago/.tfs_pat' or die $!;
+open $fh, $ENV{HOME} .'/.tfs_pat' or die $!;
 my $token = <$fh>;
 
 close $fh;
