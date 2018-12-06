@@ -9,7 +9,7 @@ my ($local, $increase_patch, $compile);
 GetOptions('local' => \$local, 'patch' => \$increase_patch, 'compile' => \$compile) or die;
 
 if ($compile) {
-    my @tasks = qw(ef-client RunPipeline PublishArtifact RESTCall);
+    my @tasks = qw(ef-client RunPipeline PublishArtifact RESTCall TriggerRelease);
     for my $folder (@tasks) {
         rmtree("$folder/node_modules");
         chdir($folder);

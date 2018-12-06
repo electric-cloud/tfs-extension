@@ -2,7 +2,7 @@
 
 if [[ $TFS_COMPILE = "1" ]]
 then
-    for FOLDER_NAME in 'ef-client' 'RunPipeline' 'PublishArtifact' 'RESTCall'
+    for FOLDER_NAME in 'ef-client' 'RunPipeline' 'PublishArtifact' 'RESTCall' 'TriggerRelease'
     do
         cd $FOLDER_NAME
         rm -rf node_modules
@@ -14,8 +14,8 @@ fi
 
 perl increaseVersion.pl
 
-TFS_SERVERNAME=http://10.200.1.158:8080/tfs
-TFS_PAT=vx6e2fr2vb3esw6hl55zpnlghtxiw5kavtgh3u7fmycpundd3oaa
+TFS_SERVERNAME=http://10.200.1.220:8080/tfs
+TFS_PAT=yqc7wyi5gdtgqkgpo7wiv52an4ejjhzv42pyib4wpjvx52z7vi6a
 
 if [[ $1 = "--local" ]]
 then

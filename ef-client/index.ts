@@ -40,6 +40,12 @@ class EFClient {
         return promise;
     }
 
+    getRelease(releaseName: string, projectName: string) {
+        console.log("GET RELEASE")
+        let promise = this.get("/releases/" + querystring.escape(releaseName), {projectName: projectName});
+        return promise;
+    }
+
     runPipeline(pipelineName: string, projectName: string) {
         return this.post("/pipelines", {pipelineName: pipelineName, projectName: projectName}, "");
     }
@@ -231,5 +237,17 @@ class EFClient {
         return def.promise;
     }
 
+    releaseWithParameters(projectName: string, releaseName: string, additionalParameters: any) {
+        let list = [];
+        for(let parameterName in additionalParameters) {
+            list.push({actualParameterName: parameterName, value: additionalParameters[parameterName]});
+        }
+        let payload = JSON.stringify({actualParameter: list});
+        return this.post("/releases", {projectName: projectName, releaseName: releaseName}, payload)
+    }
+
+    release(projectName: string, releaseName: string) {
+        return this.post("/releases", {projectName: projectName, releaseName: releaseName}, "")
+    }
 }
 export { EFClient };

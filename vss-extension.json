@@ -1,7 +1,7 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "1.0.7.89",
+  "version": "1.0.8.2",
   "icons": {
       "default": "images/extension-icon.png"
   },
@@ -57,6 +57,11 @@
             "name": "ElectricFlowPipelines",
             "endpointUrl" : "{{{endpoint.url}}}/rest/{{{endpoint.restVersion}}}/projects/{{projectName}}/pipelines",
             "resultSelector" : "jsonpath:$.pipeline[*].pipelineName"
+          },
+          {
+            "name": "ElectricFlowReleases",
+            "endpointUrl" : "{{{endpoint.url}}}/rest/{{{endpoint.restVersion}}}/projects/{{projectName}}/releases",
+            "resultSelector" : "jsonpath:$.release[*].releaseName"
           },
           {
             "name": "ElectricFlowRepositories",
@@ -155,6 +160,15 @@
       "properties" : {
         "name" : "RESTCall"
       }
+    },
+    {
+      "id": "TriggerRelease",
+      "description": "ElectricFlow - Trigger Release",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [ "ms.vss-distributed-task.tasks" ],
+      "properties" : {
+        "name" : "TriggerRelease"
+      }
     }
   ],
   "repository": {
@@ -170,6 +184,9 @@
     },
     {
       "path": "RESTCall"
+    },
+    {
+      "path": "TriggerRelease"
     }
   ]
 }
