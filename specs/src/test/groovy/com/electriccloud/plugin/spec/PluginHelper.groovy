@@ -51,7 +51,7 @@ class PluginTestHelper extends PluginSpockTestSupport {
             println "-------------------"
             println resp.dump()
             println "-------------------"
-            result = resp
+            def result = resp
             println "========================="
         }
     }

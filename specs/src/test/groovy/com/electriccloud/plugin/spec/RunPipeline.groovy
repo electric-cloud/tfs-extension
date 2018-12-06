@@ -7,6 +7,11 @@ import static groovyx.net.http.Method.*
 
 class RunPipeline extends PluginTestHelper {
 
+    @Shared
+    def tfsURI     =  '/tfs/DefaultCollection/eserbinTFSProject/_apis/build/builds',
+        apiVersion = '4.0',
+        idBuildPipelineTfs = '6'
+
     def "RunPipeline, only required fields filled - Sanity"(){
         when: 'the procedure runs'
             //System.setProperty("httpsProxyHost","127.0.0.1");
@@ -19,10 +24,10 @@ class RunPipeline extends PluginTestHelper {
             // Run TFS/AzureDevOps Pipeline
             // https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=4.1
             def r = http.request( POST, JSON ) {
-                uri.path = '/pluginsdev/Andrii Extension Test/_apis/build/builds'
-                uri.query = ['api-version' : '4.1']
-                println uri.toString() 
-                body = '{ "definition": {"id":22 }}'
+                uri.path = tfsURI
+                uri.query = ['api-version' : apiVersion]
+                println uri.toString()
+                body = "{ \"definition\": {\"id\": $idBuildPipelineTfs}}"
                 headers.'Authorization' = authHeaderValue
                 headers.'Content-Type' = 'application/json'
 
@@ -32,6 +37,7 @@ class RunPipeline extends PluginTestHelper {
                 }
             }
             def urlLogList = r;
+
 
             //-------------------------------------------------
 
