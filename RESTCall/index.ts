@@ -57,6 +57,7 @@ let parseParameters = function(params: string) {
 
 let parameters = parseParameters(paramsString);
 console.log("Parameters are:", parameters);
+console.log("Payload:", payload);
 let promise = efClient.request(restEndpoint, method, parameters, payload);
 
 promise.then((res: any) => {

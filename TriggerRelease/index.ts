@@ -76,8 +76,6 @@ releasePromise.then((res: any) => {
         return efClient.release(projectName, releaseName, startingStageName, stagesToRun);
     }
 }).then((res: any) => {
-
-    console.log(res)
     let flowRuntimeId = res.flowRuntime.flowRuntimeId;
     let runtimeName = res.flowRuntime.flowRuntimeName;
     let pipelineId = res.flowRuntime.pipelineId;
