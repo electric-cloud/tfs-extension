@@ -123,6 +123,7 @@ class EFClient {
         });
 
         if (payload) {
+            console.log(payload);
             req.write(payload);
         }
 
@@ -238,30 +239,31 @@ class EFClient {
     }
 
     releaseWithParameters(projectName: string, releaseName: string, startingStageName: string, stagesToRun: string, additionalParameters: any) {
+        let query = { projectName: projectName, releaseName: releaseName };
+        if(startingStageName) {
+            query["startingStage"] = startingStageName;
+        }
+        if(stagesToRun) {
+            query["stagesToRun"] = stagesToRun;
+        }
+
         let list = [];
         for(let parameterName in additionalParameters) {
             list.push({actualParameterName: parameterName, value: additionalParameters[parameterName]});
         }
-        if(startingStageName) {
-            list.push({actualParameterName: "startingStage", value: startingStageName});
-        }
-        if(stagesToRun) {
-            list.push({actualParameterName: "stagesToRun", value: stagesToRun});
-        }
         let payload = JSON.stringify({actualParameter: list});
-        return this.post("/releases", {projectName: projectName, releaseName: releaseName}, payload)
+        return this.post("/releases", query, payload)
     }
 
     release(projectName: string, releaseName: string, startingStageName: string, stagesToRun: string) {
-        let list = [];
+        let query = { projectName: projectName, releaseName: releaseName };
         if(startingStageName) {
-            list.push({actualParameterName: "startingStage", value: startingStageName});
+            query["startingStage"] = startingStageName;
         }
         if(stagesToRun) {
-            list.push({actualParameterName: "stagesToRun", value: stagesToRun});
+            query["stagesToRun"] = stagesToRun;
         }
-        let payload = JSON.stringify({actualParameter: list});
-        return this.post("/releases", {projectName: projectName, releaseName: releaseName}, "")
+        return this.post("/releases", query, "")
     }
 }
 export { EFClient };
