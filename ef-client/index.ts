@@ -237,16 +237,30 @@ class EFClient {
         return def.promise;
     }
 
-    releaseWithParameters(projectName: string, releaseName: string, additionalParameters: any) {
+    releaseWithParameters(projectName: string, releaseName: string, startingStageName: string, stagesToRun: string, additionalParameters: any) {
         let list = [];
         for(let parameterName in additionalParameters) {
             list.push({actualParameterName: parameterName, value: additionalParameters[parameterName]});
+        }
+        if(startingStageName) {
+            list.push({actualParameterName: "startingStage", value: startingStageName});
+        }
+        if(stagesToRun) {
+            list.push({actualParameterName: "stagesToRun", value: stagesToRun});
         }
         let payload = JSON.stringify({actualParameter: list});
         return this.post("/releases", {projectName: projectName, releaseName: releaseName}, payload)
     }
 
-    release(projectName: string, releaseName: string) {
+    release(projectName: string, releaseName: string, startingStageName: string, stagesToRun: string) {
+        let list = [];
+        if(startingStageName) {
+            list.push({actualParameterName: "startingStage", value: startingStageName});
+        }
+        if(stagesToRun) {
+            list.push({actualParameterName: "stagesToRun", value: stagesToRun});
+        }
+        let payload = JSON.stringify({actualParameter: list});
         return this.post("/releases", {projectName: projectName, releaseName: releaseName}, "")
     }
 }

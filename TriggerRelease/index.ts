@@ -58,6 +58,8 @@ var efClient = new EFClient(
 );
 let projectName = tl.getInput('projectName');
 let releaseName = tl.getInput('releaseName');
+let startingStageName = tl.getInput('startingStageName');
+let stagesToRun = tl.getInput('stagesToRun');
 
 let releasePromise = efClient.getProject(projectName).then((res) => {
     return efClient.getRelease(releaseName, projectName);
@@ -68,10 +70,10 @@ let releaseLink = '';
 releasePromise.then((res: any) => {
     if (requiresAdditionalParameters) {
         let additionalParams = parseParameters(additionalParamsString);
-        return efClient.releaseWithParameters(projectName, releaseName, additionalParams);
+        return efClient.releaseWithParameters(projectName, releaseName, startingStageName, stagesToRun, additionalParams);
     }
     else {
-        return efClient.release(projectName, releaseName);
+        return efClient.release(projectName, releaseName, startingStageName, stagesToRun);
     }
 }).then((res: any) => {
 
