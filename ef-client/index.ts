@@ -30,6 +30,12 @@ class EFClient {
         this.skipCertCheck = skipCertCheck;
     }
 
+    createFlowRuntimeLink(endpoint: string, pipelineId: string, flowRuntimeId: string) {
+        endpoint = endpoint.replace(/\/$/, '');
+        let url = endpoint + '/flow/#pipeline-run/' + pipelineId + '/' + flowRuntimeId;
+        return url;
+    }
+
     getProject(projectName: string) {
        let promise = this.get("/projects/" + querystring.escape(projectName), undefined);
        return promise;
@@ -161,6 +167,29 @@ class EFClient {
             }
         });
         return acc;
+    }
+
+    parseParameters(params: string) {
+        let retval = {};
+        try {
+            retval = JSON.parse(params);
+        } catch(e) {
+            if (params.match(/=/)) {
+                let lines = params.split(/\n/);
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i];
+                    let pair = line.split(/\s*=\s*/);
+                    let key = pair[0];
+                    let value = pair[1];
+                    retval[key] = value;
+                }
+            }
+            else {
+                var message = `Wrong parameters format, either JSON or key=value pairs are required. You have provided: ${params}`;
+                throw(message);
+            }
+        }
+        return retval;
     }
 
     publishArtifact(artifactPath: string, artifactName: string, artifactVersion: string, repositoryName: string, commanderSessionId: string) {
