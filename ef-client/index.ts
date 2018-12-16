@@ -253,6 +253,8 @@ class EFClient {
             list.push({actualParameterName: parameterName, value: additionalParameters[parameterName]});
         }
         let payload = JSON.stringify({actualParameter: list});
+        console.log("Pipeline parameters (raw):", additionalParameters);
+        console.log("Pipeline parameters (converted):", payload);
         return this.post("/releases", query, payload)
     }
 
