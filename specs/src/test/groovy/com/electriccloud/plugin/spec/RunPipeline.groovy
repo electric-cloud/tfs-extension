@@ -8,8 +8,8 @@ import static groovyx.net.http.Method.*
 class RunPipeline extends PluginTestHelper {
 
     @Shared
-    def tfsURI     =  '/tfs/DefaultCollection/eserbinTFSProject/_apis/build/builds',
-        tfsURIBuildDefinition ='/tfs/DefaultCollection/eserbinTFSProject/_apis/build/definitions',
+    def tfsURI                  =  '/tfs/DefaultCollection/eserbinTFSProject/_apis/build/builds',
+        tfsURIBuildDefinition   =  '/tfs/DefaultCollection/eserbinTFSProject/_apis/build/definitions',
         apiVersion = '4.0',
         idBuildPipelineTfs = '6'
 
@@ -67,18 +67,68 @@ class RunPipeline extends PluginTestHelper {
     }
 
     def createTFSBuild(){
+        def buildDefinitionName = "QAtest"
+        def tfsProject = "eserbinTFSProject"
+        def repositoryUrl = getHost() + "/tfs/DefaultCollection/"
+
         def result = null
         def r = http.request( POST, JSON ) {
-        uri.path = tfsURI
+        uri.path = tfsURIBuildDefinition
+        // uri.path = tfsURI
         uri.query = ['api-version' : apiVersion]
         println uri.toString()
-        body = "{ \"definition\": {\"id\": 6}}"
+//         body = '''
+// { 
+// "definition": 
+//     {
+//         "id": 7
+//     }
+// }'''
+        body = """
+{
+    "name":"$buildDefinitionName",
+    "repository":
+    {
+        "id": "\$/", 
+        "type":  "TfsVersionControl", 
+        "name":  "$tfsProject", 
+        "url":  "$repositoryUrl", 
+        "defaultBranch":  "\$/master", 
+        "rootFolder":  "\$/master", 
+        "clean":  "undefined", 
+        "checkoutSubmodules":  false
+    },
+    "queue":
+    {
+        "name":"Default"
+    },
+    "build":[    
+        {
+        "enabled": true,
+        "continueOnError": false,
+        "alwaysRun": false,
+        "displayName": "Task1",
+        "task": {
+            "id": "pluginsdev.electric-flow.run-pipeline",
+            "versionSpec": "*"
+            },
+        "inputs":{
+            "electricFlowService" : "eserbinHome",
+            "projectName": "eserbinProject",
+            "pipelineName", : "eserbinPipeline",
+            "requiresAdditionalParameters", : true,
+            "additionalParameters": ""
+            },
+        }
+      ]
+}
+        """
         headers.'Authorization' = authHeaderValue
         headers.'Content-Type' = 'application/json'
-        response.success = { resp, json ->
-            println "LOG URL $json.logs.url"
-            result = json.logs.url
-            }
+        // response.success = { resp, json ->
+        //     println "LOG URL $json.logs.url"
+        //     result = json.logs.url
+        //     }
         }
     }
 
