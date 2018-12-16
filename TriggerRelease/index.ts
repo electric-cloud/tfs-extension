@@ -53,8 +53,8 @@ releasePromise.then((res: any) => {
     let runtimeName = res.flowRuntime.flowRuntimeName;
     let pipelineId = res.flowRuntime.pipelineId;
     let link = efClient.createFlowRuntimeLink(efBaseUrl, pipelineId, flowRuntimeId);
-    console.log("Pipeline run succeeded, runtime name is " + runtimeName);
-    console.log("Link to the pipeline runtime: " + link);
+    console.log("Release run succeeded, runtime name is " + runtimeName);
+    console.log("Link to the release pipeline runtime: " + link);
     tl.setResult(tl.TaskResult.Succeeded, "Successfully trigger release " + releaseName + ', link to the pipeline: ' + link);
 }).catch((e) => {
     console.log(e);
