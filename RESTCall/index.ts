@@ -28,6 +28,8 @@ var restEndpoint = tl.getInput('restEndpoint', true);
 if(!restEndpoint.match(/^\//)) {
     restEndpoint = '/' + restEndpoint;
 }
+restEndpoint = encodeURI(restEndpoint);
+
 var resVarName = tl.getInput('resultVarName', true);
 let payload = tl.getInput('payload', false);
 if(!payload) {
