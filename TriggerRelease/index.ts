@@ -40,13 +40,13 @@ releasePromise.then((res: any) => {
         let additionalParams = efClient.parseParameters(additionalParamsString);
         try {
             let additionalParams = efClient.parseParameters(additionalParamsString);
-            return efClient.releaseWithParameters(projectName, releaseName, startingStageName, stagesToRun, additionalParams);
+            return efClient.release(projectName, releaseName, startingStageName, stagesToRun, additionalParams);
         } catch(e) {
             tl.setResult(tl.TaskResult.Failed, e);
         }
     }
     else {
-        return efClient.release(projectName, releaseName, startingStageName, stagesToRun);
+        return efClient.release(projectName, releaseName, startingStageName, stagesToRun, "");
     }
 }).then((res: any) => {
     let flowRuntimeId = res.flowRuntime.flowRuntimeId;

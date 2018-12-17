@@ -268,34 +268,30 @@ class EFClient {
         return def.promise;
     }
 
-    releaseWithParameters(projectName: string, releaseName: string, startingStageName: string, stagesToRun: string, additionalParameters: any) {
+    release(projectName: string, releaseName: string, startingStageName: string, stagesToRun: string, additionalParameters: any) {
         let query = { projectName: projectName, releaseName: releaseName };
         if(startingStageName) {
             query["startingStage"] = startingStageName;
         }
-        if(stagesToRun) {
-            query["stagesToRun"] = stagesToRun;
+
+        let body = {};
+
+        if(additionalParameters) {
+            let list = [];
+            for(let parameterName in additionalParameters) {
+                list.push({pipelineParameterName: parameterName, value: additionalParameters[parameterName]});
+            }
+            body["pipelineParameter"] = list;
         }
 
-        let list = [];
-        for(let parameterName in additionalParameters) {
-            list.push({pipelineParameterName: parameterName, value: additionalParameters[parameterName]});
+        if(stagesToRun) {
+            body["stagesToRun"] = stagesToRun.split(",");
         }
-        let payload = JSON.stringify({pipelineParameter: list});
+
+        let payload = JSON.stringify(body);
         console.log("Pipeline parameters (raw):", additionalParameters);
         console.log("Pipeline parameters (converted):", payload);
         return this.post("/releases", query, payload)
-    }
-
-    release(projectName: string, releaseName: string, startingStageName: string, stagesToRun: string) {
-        let query = { projectName: projectName, releaseName: releaseName };
-        if(startingStageName) {
-            query["startingStage"] = startingStageName;
-        }
-        if(stagesToRun) {
-            query["stagesToRun"] = stagesToRun;
-        }
-        return this.post("/releases", query, "")
     }
 }
 export { EFClient };
