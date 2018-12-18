@@ -83,5 +83,234 @@ class PluginTestHelper extends PluginSpockTestSupport {
         }
         dsl "deleteProject projectName: '$projectName'"
     }
+
+
+    def createTFSBuild(){
+        def buildDefinitionName = "QAtest"
+        def tfsProject = "eserbinTFSProject"
+        def repositoryUrl = getHost() + "/tfs/DefaultCollection/"
+
+        // 0442a599-dd0c-4d8d-b991-ace99fa47424 - run pipeline
+        def tfsTaskID = "0442a599-dd0c-4d8d-b991-ace99fa47424"
+
+        def tfsConfigID = "93f0fde8-63fa-4b9b-adf6-a2fb91f5b02a"
+        def efProjectName = "qaProject"
+        def efPipelineName = "qaPipeline"
+        def requiresAdditionalParameters = "false"
+        def additionalParameters = ""
+
+        def result = null
+        def r = http.request( POST, JSON ) {
+            uri.path = tfsURIBuildDefinition
+            uri.query = ['api-version' : apiVersion]
+            println uri.toString()
+            body = """{
+    "name":"$buildDefinitionName",
+    "repository":
+    {
+        "id": "\$/",
+        "type":  "TfsGit",
+        "name":  "$tfsProject",
+        "url":  "$repositoryUrl",
+        "defaultBranch":  "refs/heads/master",
+        "clean":  "false",
+        "checkoutSubmodules":  false
+    },
+    "queue":
+    {
+        "name":"Default"
+    },
+    process: {
+        phases: [
+            {
+                steps: [
+                    {
+                        environment: { },
+                        enabled: true,
+                        continueOnError: false,
+                        alwaysRun: false,
+                        displayName: "task1",
+                        timeoutInMinutes: 0,
+                        condition: "succeeded()",
+                        refName: "runpipeline1",
+                        task: {
+                            id: "$tfsTaskID",
+                            versionSpec: "1.*",
+                            definitionType: "task"
+                        },
+                        inputs: {
+                            electricFlowService: "$tfsConfigID",
+                            projectName: "$efProjectName",
+                            pipelineName: "$efPipelineName",
+                            requiresAdditionalParameters: "$requiresAdditionalParameters",
+                            additionalParameters: "$additionalParameters"
+                        }
+                    }
+                ],
+                name: null,
+                jobAuthorizationScope: 0
+            }
+        ],
+        type: 1
+    }
+}"""
+            headers.'Authorization' = authHeaderValue
+            headers.'Content-Type' = 'application/json'
+            response.success = { resp, json ->
+                def tfsBuildId = json._links.self.href.split("/")[-1]
+                return tfsBuildId
+            }
+        }
+    }
+
+
+
+    def updateTFSBuild(def id, def tfsConfigID = "93f0fde8-63fa-4b9b-adf6-a2fb91f5b02a",
+                       def efProjectName = "qaProject",
+                       def efPipelineName = "qaPipeline",
+                       def requiresAdditionalParameters = "true",
+                       def additionalParameters = "VAR1=test"){
+        def buildDefinitionName = "QAtest"
+        def tfsProject = "eserbinTFSProject"
+        def repositoryUrl = getHost() + "/tfs/DefaultCollection/"
+        // 0442a599-dd0c-4d8d-b991-ace99fa47424 - run pipeline
+        def tfsTaskID = "0442a599-dd0c-4d8d-b991-ace99fa47424"
+
+        def result = null
+        def r = http.request( PUT, JSON ) {
+            uri.path = tfsURIBuildDefinition + '/' + id
+            uri.query = ['api-version' : apiVersion]
+            println uri.toString()
+            body = """{
+    "id": "$id",
+    "name":"$buildDefinitionName",
+    "revision": 1,
+    "repository":
+    {
+        "id": "\$/",
+        "type":  "TfsGit",
+        "name":  "$tfsProject",
+        "url":  "$repositoryUrl",
+        "defaultBranch":  "refs/heads/master",
+        "clean":  "false",
+        "checkoutSubmodules":  false
+    },
+    "queue":
+    {
+        "name":"Default"
+    },
+    process: {
+        phases: [
+            {
+                steps: [
+                    {
+                        environment: { },
+                        enabled: true,
+                        continueOnError: false,
+                        alwaysRun: false,
+                        displayName: "task1",
+                        timeoutInMinutes: 0,
+                        condition: "succeeded()",
+                        refName: "runpipeline1",
+                        task: {
+                            id: "$tfsTaskID",
+                            versionSpec: "1.*",
+                            definitionType: "task"
+                        },
+                        inputs: {
+                            electricFlowService: "$tfsConfigID",
+                            projectName: "$efProjectName",
+                            pipelineName: "$efPipelineName",
+                            requiresAdditionalParameters: "$requiresAdditionalParameters",
+                            additionalParameters: "$additionalParameters"
+                        }
+                    }
+                ],
+                name: null,
+                jobAuthorizationScope: 0
+            }
+        ],
+        type: 1
+    }
+}"""
+            headers.'Authorization' = authHeaderValue
+            headers.'Content-Type' = 'application/json'
+            response.success = { resp, json ->
+                println json
+            }
+        }
+    }
+
+    def runTfsPipeline(def pipelineID){
+        // Run TFS/AzureDevOps Pipeline
+        // https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=4.1
+        def result = null
+        def r = http.request( POST, JSON ) {
+            uri.path = tfsURI
+            uri.query = ['api-version' : apiVersion]
+            println uri.toString()
+            body = "{ \"definition\": {\"id\": $pipelineID}}"
+            headers.'Authorization' = authHeaderValue
+            headers.'Content-Type' = 'application/json'
+            response.success = { resp, json ->
+                println "LOG URL $json"
+                result = json
+            }
+        }
+        def buildID = r._links.self.href.split("/")[-1]
+        assert waitUntilTfsBuildCompleted(buildID) == 'completed'
+        return r.logs.url
+    }
+
+    def deleteBuildDefinitions(def buildDefinitionID){
+        def r = http.request(DELETE, JSON) {
+            uri.path = tfsURIBuildDefinition + '/' + buildDefinitionID
+            uri.query = ['api-version' : apiVersion]
+            headers.'Authorization' = authHeaderValue
+        }
+    }
+
+    def waitUntilTfsBuildCompleted(def buildID){
+        def buildStatus = ''
+        for (def i=0; i<10; i++) {
+            sleep(10000)
+            def r = http.request(GET, JSON) {
+                uri.path = tfsURI + '/' + buildID
+                headers.'Authorization' = authHeaderValue
+                response.success = { resp, json ->
+                    buildStatus = json.status
+                }
+            }
+            if (buildStatus == 'completed'){
+                break;
+            }
+        }
+        return buildStatus
+    }
+
+    def getTfsLogLink(def urlLogList){
+        def r = http.request( urlLogList, GET, JSON ) {
+            println uri.toString()
+            headers.'Authorization' = authHeaderValue
+            response.success = { resp, json ->
+                return json.get('value')
+            }
+        }
+    }
+
+    def getAllTfsLogs(def listOfLinks){
+        def allLogs = ""
+        for (def urlItem : listOfLinks) {
+            def r = http.request( urlItem.url, GET, JSON ) {
+                println uri.toString()
+                headers.'Authorization' = authHeaderValue
+                response.success = { resp, json ->
+                    def log = json.get('value')
+                    allLogs += log + "\n"
+                }
+            }
+        }
+        return allLogs
+    }
 }
 
