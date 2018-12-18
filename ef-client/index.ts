@@ -196,18 +196,36 @@ class EFClient {
         let def = q.defer();
 
         let form = new FormData();
+        let root = process.cwd();
+        console.log(`Root path (on agent): ${root}`);
+        console.log(`Artifact path ${artifactPath}`);
+
         let files = glob.sync(artifactPath, {});
         files.forEach((filename) => {
             let stat = fs.statSync(filename);
+
+            // Currently results returned from glob on windows will return '/' as the separator
+            // We need convert separators to native
+            if(process.platform === "win32") {
+                filename = filename.replace(/\//g, path.sep);
+            }
+
+            let relative = path.relative(artifactPath, filename);
+
             if (stat.isDirectory()) {
                 let files = this.findAllFiles(filename, []);
                 files.forEach((filename) => {
+                    let relative = path.relative(artifactPath, filename);
+
                     let stream = fs.createReadStream(filename).on("error", (e) => {
                         console.log("File stream error", e);
                         def.reject(e);
                     });
-                    console.log(`Adding file ${filename}`);
-                    form.append("files", stream);
+                    console.log(`Adding file ${filename} with relative path ${relative}`);
+                    form.append("files", stream, {
+                        filepath: relative
+                    });
+
                 });
             }
             else {
@@ -215,8 +233,10 @@ class EFClient {
                     console.log("File stream error", e);
                     def.reject(e);
                 });
-                console.log(`Adding file ${filename}`);
-                form.append("files", stream);
+                console.log(`Adding file ${filename} with relative path ${relative}`);
+                form.append("files", stream, {
+                    filepath: relative
+                });
             }
         });
 

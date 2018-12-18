@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^7.0.18",
-    "form-data": "^2.1.4",
+    "form-data": "^2.3.3",
     "fs": "0.0.1-security",
     "glob": "^7.1.1",
     "http": "0.0.0",
