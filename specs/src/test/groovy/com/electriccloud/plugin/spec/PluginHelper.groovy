@@ -84,29 +84,36 @@ class PluginTestHelper extends PluginSpockTestSupport {
     }
 
 
-    def createTFSBuild(def params){
-        def buildDefinitionName = params.buildDefinitionName
-        def tfsProject = params.tfsProject
-        def tfsTaskID = params.tfsTaskID
-        def tfsConfigID = params.tfsConfigID
-        def efProjectName = params.efProjectName
-        def efPipelineName = params.efPipelineName
-        def requiresAdditionalParameters = params.requiresAdditionalParameters
-        def additionalParameters = params.additionalParameters
-
+    def createTFSBuild(def params, def method=POST, def id=null){
         def repositoryUrl = getHost() + "/tfs/DefaultCollection/"
-        def result = null
-        def r = http.request( POST, JSON ) {
+        def inputs = ''
+        for (input in params.inputs){
+            inputs += "${input.key}:\"${input.value}\",\n"
+        }
+
+        def idLine = ''
+        def revisionLine = ''
+        if (id){
+            idLine = "\"id\": \"$id\","
+            revisionLine = "\"revision\": $revisionNumber,"
+        }
+
+        def r = http.request( method, JSON ) {
             uri.path = tfsURIBuildDefinition
+            if (id) {
+                uri.path = tfsURIBuildDefinition + '/' + id
+            }
             uri.query = ['api-version' : apiVersion]
             println uri.toString()
             body = """{
-    "name":"$buildDefinitionName",
+    $idLine
+    $revisionLine
+    "name":"${params.buildDefinitionName}",
     "repository":
     {
         "id": "\$/",
         "type":  "TfsGit",
-        "name":  "$tfsProject",
+        "name":  "${params.tfsProject}",
         "url":  "$repositoryUrl",
         "defaultBranch":  "refs/heads/master",
         "clean":  "false",
@@ -130,16 +137,12 @@ class PluginTestHelper extends PluginSpockTestSupport {
                         condition: "succeeded()",
                         refName: "runpipeline1",
                         task: {
-                            id: "$tfsTaskID",
+                            id: "${params.tfsTaskID}",
                             versionSpec: "1.*",
                             definitionType: "task"
                         },
                         inputs: {
-                            electricFlowService: "$tfsConfigID",
-                            projectName: "$efProjectName",
-                            pipelineName: "$efPipelineName",
-                            requiresAdditionalParameters: "$requiresAdditionalParameters",
-                            additionalParameters: "$additionalParameters"
+                            $inputs
                         }
                     }
                 ],
@@ -150,94 +153,21 @@ class PluginTestHelper extends PluginSpockTestSupport {
         type: 1
     }
 }"""
+            println body
             headers.'Authorization' = authHeaderValue
             headers.'Content-Type' = 'application/json'
             response.success = { resp, json ->
-                def tfsBuildId = json._links.self.href.split("/")[-1]
-                return tfsBuildId
+                if (!id){
+                    def tfsBuildId = json._links.self.href.split("/")[-1]
+                    return tfsBuildId
+                }
             }
         }
     }
-
-
 
     def updateTFSBuild(def id, def params){
         revisionNumber++
-
-        def buildDefinitionName = params.buildDefinitionName
-        def tfsProject = params.tfsProject
-        def tfsTaskID = params.tfsTaskID
-        def tfsConfigID = params.tfsConfigID
-        def efProjectName = params.efProjectName
-        def efPipelineName = params.efPipelineName
-        def requiresAdditionalParameters = params.requiresAdditionalParameters
-        def additionalParameters = params.additionalParameters
-
-        def repositoryUrl = getHost() + "/tfs/DefaultCollection/"
-
-        def result = null
-        def r = http.request( PUT, JSON ) {
-            uri.path = tfsURIBuildDefinition + '/' + id
-            uri.query = ['api-version' : apiVersion]
-            println uri.toString()
-            body = """{
-    "id": "$id",
-    "name":"$buildDefinitionName",
-    "revision": $revisionNumber,
-    "repository":
-    {
-        "id": "\$/",
-        "type":  "TfsGit",
-        "name":  "$tfsProject",
-        "url":  "$repositoryUrl",
-        "defaultBranch":  "refs/heads/master",
-        "clean":  "false",
-        "checkoutSubmodules":  false
-    },
-    "queue":
-    {
-        "name":"Default"
-    },
-    process: {
-        phases: [
-            {
-                steps: [
-                    {
-                        environment: { },
-                        enabled: true,
-                        continueOnError: false,
-                        alwaysRun: false,
-                        displayName: "task1",
-                        timeoutInMinutes: 0,
-                        condition: "succeeded()",
-                        refName: "runpipeline1",
-                        task: {
-                            id: "$tfsTaskID",
-                            versionSpec: "1.*",
-                            definitionType: "task"
-                        },
-                        inputs: {
-                            electricFlowService: "$tfsConfigID",
-                            projectName: "$efProjectName",
-                            pipelineName: "$efPipelineName",
-                            requiresAdditionalParameters: "$requiresAdditionalParameters",
-                            additionalParameters: "$additionalParameters"
-                        }
-                    }
-                ],
-                name: null,
-                jobAuthorizationScope: 0
-            }
-        ],
-        type: 1
-    }
-}"""
-            headers.'Authorization' = authHeaderValue
-            headers.'Content-Type' = 'application/json'
-            response.success = { resp, json ->
-                println json
-            }
-        }
+        createTFSBuild(params, PUT, id)
     }
 
     def runTfsPipeline(def pipelineID){

@@ -26,11 +26,13 @@ class RunPipeline extends PluginTestHelper {
             buildDefinitionName: "QAtest",
             tfsProject: "eserbinTFSProject",
             tfsTaskID: "0442a599-dd0c-4d8d-b991-ace99fa47424",
-            tfsConfigID: "93f0fde8-63fa-4b9b-adf6-a2fb91f5b02a",
-            efProjectName: "qaProject",
-            efPipelineName: "qaPipelineNoVar",
-            requiresAdditionalParameters: "false",
-            additionalParameters: "",
+            inputs: [
+                    electricFlowService: "93f0fde8-63fa-4b9b-adf6-a2fb91f5b02a",
+                    projectName: "qaProject",
+                    pipelineName: "qaPipelineNoVar",
+                    requiresAdditionalParameters: "false",
+                    additionalParameters: ""
+            ]
         ]
 
     def setupSpec() {
@@ -45,10 +47,10 @@ class RunPipeline extends PluginTestHelper {
     @Unroll
     def "RunPipeline, Possitive - Sanity: #testCaseID.ids #testCaseID.description"(){
         setup: 'update TFS build definition'
-        tfsBuildDefinitionParams.efProjectName = efProjectName
-        tfsBuildDefinitionParams.efPipelineName = efPipelineName
-        tfsBuildDefinitionParams.requiresAdditionalParameters = requiresParams
-        tfsBuildDefinitionParams.additionalParameters = additParams
+        tfsBuildDefinitionParams.inputs.projectName = efProjectName
+        tfsBuildDefinitionParams.inputs.pipelineName = efPipelineName
+        tfsBuildDefinitionParams.inputs.requiresAdditionalParameters = requiresParams
+        tfsBuildDefinitionParams.inputs.additionalParameters = additParams
         updateTFSBuild(idBuildPipelineTfs, tfsBuildDefinitionParams)
 
         when: 'the procedure runs'
@@ -95,10 +97,10 @@ class RunPipeline extends PluginTestHelper {
     @Unroll
     def "RunPipeline, Negative - Sanity: #testCaseID.ids #testCaseID.description"(){
         setup: 'update TFS build definition'
-        tfsBuildDefinitionParams.efProjectName = efProjectName
-        tfsBuildDefinitionParams.efPipelineName = efPipelineName
-        tfsBuildDefinitionParams.requiresAdditionalParameters = requiresParams
-        tfsBuildDefinitionParams.additionalParameters = additParams
+        tfsBuildDefinitionParams.inputs.projectName = efProjectName
+        tfsBuildDefinitionParams.inputs.pipelineName = efPipelineName
+        tfsBuildDefinitionParams.inputs.requiresAdditionalParameters = requiresParams
+        tfsBuildDefinitionParams.inputs.additionalParameters = additParams
         updateTFSBuild(idBuildPipelineTfs, tfsBuildDefinitionParams)
 
         when: 'the procedure runs'
