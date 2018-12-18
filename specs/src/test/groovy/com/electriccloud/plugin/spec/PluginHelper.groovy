@@ -8,6 +8,10 @@ import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
 
 class PluginTestHelper extends PluginSpockTestSupport {
+
+    @Shared
+    def revisionNumber = 0
+
     static final String PLUGIN_NAME = 'TFS_extension'
     
     static def         CONFIG_CREATED = false
@@ -28,13 +32,8 @@ class PluginTestHelper extends PluginSpockTestSupport {
         return token
     }
 
-    def setup() {
+    def setupSpec() {
         this.http = new HTTPBuilder(getHost())
-        //http.setProxy(
-        //    '127.0.0.1',
-        //    8080,
-        //    'http'
-        //)
 
         // Doesn't work for me
         this.http.ignoreSSLIssues()
@@ -85,20 +84,17 @@ class PluginTestHelper extends PluginSpockTestSupport {
     }
 
 
-    def createTFSBuild(){
-        def buildDefinitionName = "QAtest"
-        def tfsProject = "eserbinTFSProject"
+    def createTFSBuild(def params){
+        def buildDefinitionName = params.buildDefinitionName
+        def tfsProject = params.tfsProject
+        def tfsTaskID = params.tfsTaskID
+        def tfsConfigID = params.tfsConfigID
+        def efProjectName = params.efProjectName
+        def efPipelineName = params.efPipelineName
+        def requiresAdditionalParameters = params.requiresAdditionalParameters
+        def additionalParameters = params.additionalParameters
+
         def repositoryUrl = getHost() + "/tfs/DefaultCollection/"
-
-        // 0442a599-dd0c-4d8d-b991-ace99fa47424 - run pipeline
-        def tfsTaskID = "0442a599-dd0c-4d8d-b991-ace99fa47424"
-
-        def tfsConfigID = "93f0fde8-63fa-4b9b-adf6-a2fb91f5b02a"
-        def efProjectName = "qaProject"
-        def efPipelineName = "qaPipeline"
-        def requiresAdditionalParameters = "false"
-        def additionalParameters = ""
-
         def result = null
         def r = http.request( POST, JSON ) {
             uri.path = tfsURIBuildDefinition
@@ -165,16 +161,19 @@ class PluginTestHelper extends PluginSpockTestSupport {
 
 
 
-    def updateTFSBuild(def id, def tfsConfigID = "93f0fde8-63fa-4b9b-adf6-a2fb91f5b02a",
-                       def efProjectName = "qaProject",
-                       def efPipelineName = "qaPipeline",
-                       def requiresAdditionalParameters = "true",
-                       def additionalParameters = "VAR1=test"){
-        def buildDefinitionName = "QAtest"
-        def tfsProject = "eserbinTFSProject"
+    def updateTFSBuild(def id, def params){
+        revisionNumber++
+
+        def buildDefinitionName = params.buildDefinitionName
+        def tfsProject = params.tfsProject
+        def tfsTaskID = params.tfsTaskID
+        def tfsConfigID = params.tfsConfigID
+        def efProjectName = params.efProjectName
+        def efPipelineName = params.efPipelineName
+        def requiresAdditionalParameters = params.requiresAdditionalParameters
+        def additionalParameters = params.additionalParameters
+
         def repositoryUrl = getHost() + "/tfs/DefaultCollection/"
-        // 0442a599-dd0c-4d8d-b991-ace99fa47424 - run pipeline
-        def tfsTaskID = "0442a599-dd0c-4d8d-b991-ace99fa47424"
 
         def result = null
         def r = http.request( PUT, JSON ) {
@@ -184,7 +183,7 @@ class PluginTestHelper extends PluginSpockTestSupport {
             body = """{
     "id": "$id",
     "name":"$buildDefinitionName",
-    "revision": 1,
+    "revision": $revisionNumber,
     "repository":
     {
         "id": "\$/",
