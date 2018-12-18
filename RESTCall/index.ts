@@ -64,7 +64,7 @@ let promise = efClient.request(restEndpoint, method, parameters, payload);
 
 promise.then((res: any) => {
     console.log(res);
-    tl.setVariable(resVarName, JSON.stringify(res.response));
+    tl.setVariable(resVarName, JSON.stringify(res));
     tl.setResult(tl.TaskResult.Succeeded, `Successfully ran API method ${method} on ${restEndpoint}`);
 }).catch((e: any) => {
     console.log(e);
