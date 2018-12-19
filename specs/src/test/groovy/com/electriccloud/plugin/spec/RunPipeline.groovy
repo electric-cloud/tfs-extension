@@ -18,13 +18,10 @@ class RunPipeline extends PluginTestHelper {
     ]
 
     @Shared
-    def tfsURI                  =  '/tfs/DefaultCollection/eserbinTFSProject/_apis/build/builds',
-        tfsURIBuildDefinition   =  '/tfs/DefaultCollection/eserbinTFSProject/_apis/build/definitions',
-        idBuildPipelineTfs = null,
-        apiVersion = '4.0',
+    def idBuildPipelineTfs = null,
         tfsBuildDefinitionParams = [
             buildDefinitionName: "QAtest",
-            tfsProject: "eserbinTFSProject",
+            tfsProject: "$tfsProject",
             tfsTaskID: "0442a599-dd0c-4d8d-b991-ace99fa47424",
             inputs: [
                     electricFlowService: "93f0fde8-63fa-4b9b-adf6-a2fb91f5b02a",
@@ -36,7 +33,6 @@ class RunPipeline extends PluginTestHelper {
         ]
 
     def setupSpec() {
-//        dslFile('dsl/RunPipeline.dsl')
         idBuildPipelineTfs = createTFSBuild(tfsBuildDefinitionParams)
     }
 

@@ -10,6 +10,12 @@ import static groovyx.net.http.Method.*
 class PluginTestHelper extends PluginSpockTestSupport {
 
     @Shared
+    def tfsProject              =  'eserbinTFSProject',
+        tfsURI                  =  "/tfs/DefaultCollection/$tfsProject/_apis/build/builds",
+        tfsURIBuildDefinition   =  "/tfs/DefaultCollection/$tfsProject/_apis/build/definitions",
+        apiVersion = '4.0'
+
+    @Shared
     def revisionNumber = 0
 
     static final String PLUGIN_NAME = 'TFS_extension'
@@ -33,6 +39,7 @@ class PluginTestHelper extends PluginSpockTestSupport {
     }
 
     def setupSpec() {
+        dslFile('dsl/RunPipeline.dsl')
         this.http = new HTTPBuilder(getHost())
 
         // Doesn't work for me
