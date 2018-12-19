@@ -10,10 +10,13 @@ import static groovyx.net.http.Method.*
 class PluginTestHelper extends PluginSpockTestSupport {
 
     @Shared
-    def tfsProject              =  'eserbinTFSProject',
+    def efURL                   =  'http://10.200.1.250/',
+        tfsProject              =  'eserbinTFSProject',
         tfsURI                  =  "/tfs/DefaultCollection/$tfsProject/_apis/build/builds",
         tfsURIBuildDefinition   =  "/tfs/DefaultCollection/$tfsProject/_apis/build/definitions",
-        apiVersion = '4.0'
+        tfsURIServiceEndpoint   =  "/tfs/DefaultCollection/$tfsProject/_apis/distributedtask/serviceendpoints",
+        apiVersion = '4.0',
+        apiVersion2 = '4.0-preview.1'
 
     @Shared
     def revisionNumber = 0
@@ -248,5 +251,81 @@ class PluginTestHelper extends PluginSpockTestSupport {
         }
         return allLogs
     }
+
+    def createTfsServiceEndpoint(def params){
+        def result = null
+        def r = http.request( POST, JSON ) {
+            uri.path = tfsURIServiceEndpoint
+            uri.query = ['api-version' : apiVersion2]
+            println uri.toString()
+            body = """
+{
+  "data": {
+  "restVersion": "${params.restVersion}",
+  "acceptUntrustedCerts": "${params.acceptUntrustedCerts}"
+  },
+  "name": "${params.name}",
+  "type": "electricFlow",
+  "url": "${params.url}",
+  "authorization": {
+    "parameters": {
+      "username": "${params.username}",
+      "password": "${params.password}"
+    },
+    "scheme": "UsernamePassword"
+  },
+  "isReady": true
+}
+"""
+            headers.'Authorization' = authHeaderValue
+            headers.'Content-Type' = 'application/json'
+            response.success = { resp, json ->
+                return json
+            }
+        }
+    }
+
+    def updateTfsServiceEndpoint(def id, def params){
+        def result = null
+        def r = http.request( PUT, JSON ) {
+            uri.path = tfsURIServiceEndpoint + '/' + id
+            uri.query = ['api-version' : apiVersion2]
+            println uri.toString()
+            body = """
+{
+  "id": "$id",
+  "data": {
+  "restVersion": "${params.restVersion}",
+  "acceptUntrustedCerts": "${params.acceptUntrustedCerts}"
+  },
+  "name": "${params.name}",
+  "type": "electricFlow",
+  "url": "${params.url}",
+  "authorization": {
+    "parameters": {
+      "username": "${params.username}",
+      "password": "${params.password}"
+    },
+    "scheme": "UsernamePassword"
+  },
+  "isReady": true
+}
+"""
+            headers.'Authorization' = authHeaderValue
+            headers.'Content-Type' = 'application/json'
+            response.success = { resp, json ->
+                return json
+            }
+        }
+    }
+
+    def deleteTfsServiceEndpoint(def id){
+        def r = http.request(DELETE, JSON) {
+            uri.path = tfsURIServiceEndpoint + '/' + id
+            uri.query = ['api-version' : apiVersion2]
+            headers.'Authorization' = authHeaderValue
+        }
+    }
+
 }
 
