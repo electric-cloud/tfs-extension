@@ -16,9 +16,14 @@ class PluginTestHelper extends PluginSpockTestSupport {
         tfsURIBuildDefinition     =  "/tfs/DefaultCollection/$tfsProject/_apis/build/definitions",
         tfsURIServiceEndpoint     =  "/tfs/DefaultCollection/$tfsProject/_apis/distributedtask/serviceendpoints",
         tfsRunPipelineTaskID      =  "0442a599-dd0c-4d8d-b991-ace99fa47424",
-        tfsCallRestEndpoint       =  "cd267176-2716-4cf7-b57b-420b126ec3da",
+        tfsCallRestEndpointTaskID =  "cd267176-2716-4cf7-b57b-420b126ec3da",
+        tfsPublishArtifactTaskID  =  "0e2424a3-42b6-48f5-b3fa-ac6ed16d4c57",
+        tfsTriggerReleaseTaskID   =  "41e66e30-f95f-11e8-a9f6-d16792ff02ec",
         apiVersion = '4.0',
         apiVersion2 = '4.0-preview.1'
+
+    @Shared
+    def currentTfsBuildRunID
 
     @Shared
     def defaultTfsServiceEndpointParams = [
@@ -209,6 +214,7 @@ class PluginTestHelper extends PluginSpockTestSupport {
             }
         }
         def buildID = r._links.self.href.split("/")[-1]
+        currentTfsBuildRunID = buildID
         assert waitUntilTfsBuildCompleted(buildID) == 'completed'
         return r.logs.url
     }
