@@ -19,12 +19,13 @@ class RunPipeline extends PluginTestHelper {
 
     @Shared
     def idBuildPipelineTfs = null,
+        tfsServiceEndpointDefault,
         tfsBuildDefinitionParams = [
             buildDefinitionName: "QAtest",
             tfsProject: "$tfsProject",
-            tfsTaskID: "0442a599-dd0c-4d8d-b991-ace99fa47424",
+            tfsTaskID: tfsRunPipelineTaskID,
             inputs: [
-                    electricFlowService: "93f0fde8-63fa-4b9b-adf6-a2fb91f5b02a",
+                    electricFlowService: "",
                     projectName: "qaProject",
                     pipelineName: "qaPipelineNoVar",
                     requiresAdditionalParameters: "false",
@@ -33,11 +34,14 @@ class RunPipeline extends PluginTestHelper {
         ]
 
     def setupSpec() {
+        tfsServiceEndpointDefault = createTfsServiceEndpoint(defaultTfsServiceEndpointParams).id
+        tfsBuildDefinitionParams.inputs.electricFlowService = tfsServiceEndpointDefault
         idBuildPipelineTfs = createTFSBuild(tfsBuildDefinitionParams)
     }
 
     def doCleanupSpec() {
         deleteBuildDefinitions(idBuildPipelineTfs)
+        deleteTfsServiceEndpoint(tfsServiceEndpointDefault)
     }
 
     @Unroll

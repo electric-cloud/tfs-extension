@@ -43,12 +43,13 @@ class CallRestEndpoint extends PluginTestHelper {
 
     @Shared
     def idBuildPipelineTfs = null,
+        tfsServiceEndpointDefault,
         tfsBuildDefinitionParams = [
                 buildDefinitionName: "QAtest",
                 tfsProject: "$tfsProject",
-                tfsTaskID: "cd267176-2716-4cf7-b57b-420b126ec3da",
+                tfsTaskID: tfsCallRestEndpoint,
                 inputs: [
-                        electricFlowService: "93f0fde8-63fa-4b9b-adf6-a2fb91f5b02a",
+                        electricFlowService: "",
                         method: "GET",
                         restEndpoint: "/projects",
                         params: "",
@@ -58,11 +59,14 @@ class CallRestEndpoint extends PluginTestHelper {
         ]
 
     def setupSpec() {
+        tfsServiceEndpointDefault = createTfsServiceEndpoint(defaultTfsServiceEndpointParams).id
+        tfsBuildDefinitionParams.inputs.electricFlowService = tfsServiceEndpointDefault
         idBuildPipelineTfs = createTFSBuild(tfsBuildDefinitionParams)
     }
 
     def doCleanupSpec() {
         deleteBuildDefinitions(idBuildPipelineTfs)
+        deleteTfsServiceEndpoint(tfsServiceEndpointDefault)
     }
 
     @Unroll

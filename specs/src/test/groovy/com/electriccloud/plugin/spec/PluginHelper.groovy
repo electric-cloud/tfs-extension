@@ -10,13 +10,25 @@ import static groovyx.net.http.Method.*
 class PluginTestHelper extends PluginSpockTestSupport {
 
     @Shared
-    def efURL                   =  'http://10.200.1.250/',
-        tfsProject              =  'eserbinTFSProject',
-        tfsURI                  =  "/tfs/DefaultCollection/$tfsProject/_apis/build/builds",
-        tfsURIBuildDefinition   =  "/tfs/DefaultCollection/$tfsProject/_apis/build/definitions",
-        tfsURIServiceEndpoint   =  "/tfs/DefaultCollection/$tfsProject/_apis/distributedtask/serviceendpoints",
+    def efURL                     =  'http://10.200.1.250/',
+        tfsProject                =  'eserbinTFSProject',
+        tfsURI                    =  "/tfs/DefaultCollection/$tfsProject/_apis/build/builds",
+        tfsURIBuildDefinition     =  "/tfs/DefaultCollection/$tfsProject/_apis/build/definitions",
+        tfsURIServiceEndpoint     =  "/tfs/DefaultCollection/$tfsProject/_apis/distributedtask/serviceendpoints",
+        tfsRunPipelineTaskID      =  "0442a599-dd0c-4d8d-b991-ace99fa47424",
+        tfsCallRestEndpoint       =  "cd267176-2716-4cf7-b57b-420b126ec3da",
         apiVersion = '4.0',
         apiVersion2 = '4.0-preview.1'
+
+    @Shared
+    def defaultTfsServiceEndpointParams = [
+            restVersion: "v1.0",
+            acceptUntrustedCerts: "true",
+            name: "defaultServiceEndpointEF",
+            url: efURL,
+            username: 'admin',
+            password: 'changeme'
+    ]
 
     @Shared
     def revisionNumber = 0
@@ -43,6 +55,7 @@ class PluginTestHelper extends PluginSpockTestSupport {
 
     def setupSpec() {
         dslFile('dsl/RunPipeline.dsl')
+
         this.http = new HTTPBuilder(getHost())
 
         // Doesn't work for me
@@ -64,7 +77,6 @@ class PluginTestHelper extends PluginSpockTestSupport {
             println "========================="
         }
     }
-
 
     def createConfig(String configName) {
         createPluginConfiguration(

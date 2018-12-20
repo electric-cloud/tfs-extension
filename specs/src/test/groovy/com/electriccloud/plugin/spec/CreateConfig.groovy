@@ -1,6 +1,5 @@
 package com.electriccloud.plugin.spec
 
-import groovy.json.JsonSlurper
 import spock.lang.*
 
 
@@ -26,7 +25,7 @@ class CreateConfig extends PluginTestHelper {
         tfsBuildDefinitionParams = [
                 buildDefinitionName: "QAtest",
                 tfsProject: "$tfsProject",
-                tfsTaskID: "0442a599-dd0c-4d8d-b991-ace99fa47424",
+                tfsTaskID: tfsRunPipelineTaskID,
                 inputs: [
                         electricFlowService: "",
                         projectName: "qaProject",
@@ -38,7 +37,6 @@ class CreateConfig extends PluginTestHelper {
 
     def setupSpec() {
         idBuildPipelineTfs = createTFSBuild(tfsBuildDefinitionParams)
-
     }
 
     def doCleanupSpec() {
@@ -103,14 +101,7 @@ class CreateConfig extends PluginTestHelper {
     @Unroll
     def "Update,  - Sanity: #testCaseID.ids #testCaseID.description"(){
         setup: 'set parameters'
-        def params = [
-                restVersion: "v1.0",
-                acceptUntrustedCerts: "true",
-                name: "defaultEF",
-                url: efURL,
-                username: "admin",
-                password: "changeme"
-        ]
+        def params = defaultTfsServiceEndpointParams
         when: 'the procedure runs'
         def result = createTfsServiceEndpoint(params)
         params = [
