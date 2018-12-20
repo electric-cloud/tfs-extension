@@ -25,42 +25,42 @@ var efClient = new EFClient(
     skipCertCheck
 );
 let projectName = tl.getInput('projectName');
-let pipelineName = tl.getInput('pipelineName');
+let releaseName = tl.getInput('releaseName');
+let startingStageName = tl.getInput('startingStageName');
+let stagesToRun = tl.getInput('stagesToRun');
 
-let pipelinePromise = efClient.getProject(projectName).then((res) => {
-    return efClient.getPipeline(pipelineName, projectName);
+let releasePromise = efClient.getProject(projectName).then((res) => {
+    return efClient.getRelease(releaseName, projectName);
 });
 
-let pipelineLink = '';
+let releaseLink = '';
 
-pipelinePromise.then((res: any) => {
+releasePromise.then((res: any) => {
     if (requiresAdditionalParameters) {
+        let additionalParams = efClient.parseParameters(additionalParamsString);
         try {
             let additionalParams = efClient.parseParameters(additionalParamsString);
-            return efClient.runPipelineWithParameters(pipelineName, projectName, additionalParams);
+            return efClient.release(projectName, releaseName, startingStageName, stagesToRun, additionalParams);
         } catch(e) {
             tl.setResult(tl.TaskResult.Failed, e);
         }
     }
     else {
-        return efClient.runPipeline(pipelineName, projectName);
+        return efClient.release(projectName, releaseName, startingStageName, stagesToRun, "");
     }
 }).then((res: any) => {
     let flowRuntimeId = res.flowRuntime.flowRuntimeId;
     let runtimeName = res.flowRuntime.flowRuntimeName;
     let pipelineId = res.flowRuntime.pipelineId;
     let link = efClient.createFlowRuntimeLink(efBaseUrl, pipelineId, flowRuntimeId);
-    console.log("Pipeline run succeeded, runtime name is " + runtimeName);
-    console.log("Link to the pipeline runtime: " + link);
-    tl.setResult(tl.TaskResult.Succeeded, "Successfully run pipeline " + pipelineName + ', link to the pipeline: ' + link);
+    console.log("Release run succeeded, runtime name is " + runtimeName);
+    console.log("Link to the release pipeline runtime: " + link);
+    tl.setResult(tl.TaskResult.Succeeded, "Successfully trigger release " + releaseName + ', link to the pipeline: ' + link);
 }).catch((e) => {
     console.log(e);
-    let message = 'Cannot run pipeline';
+    let message = 'Cannot trigger release';
     if (e.response && e.response.error) {
         message = e.response.error.message;
     }
     tl.setResult(tl.TaskResult.Failed, message);
 });
-
-
-

@@ -1,72 +1,72 @@
 {
-   "instanceNameFormat" : "Publish Artifact $(artifactName):$(artifactVersion) to repository $(repositoryName)",
-   "friendlyName" : "ElectricFlow - Publish Artifact",
+   "author" : "Electric Cloud",
+   "category" : "Build",
    "dataSourceBindings" : [
       {
-         "target" : "repositoryName",
          "dataSourceName" : "ElectricFlowRepositories",
-         "endpointId" : "$(electricFlowService)"
+         "endpointId" : "$(electricFlowService)",
+         "target" : "repositoryName"
       }
    ],
+   "description" : "This integration allows you to publish artifact for your application to ElectricFlow.",
    "execution" : {
       "Node" : {
          "target" : "index.js"
       }
    },
-   "version" : {
-      "Minor" : "0",
-      "Major" : "1",
-      "Patch" : "15"
-   },
-   "name" : "publish-artifact",
-   "author" : "Electric Cloud",
-   "description" : "This integration allows you to publish artifact for your application to ElectricFlow.",
-   "inputs" : [
-      {
-         "helpMarkDown" : "Select the ElectricFlow endpoint to use.",
-         "required" : true,
-         "name" : "electricFlowService",
-         "type" : "connectedService:electricFlow",
-         "label" : "ElectricFlow Service Endpoint",
-         "defaultValue" : ""
-      },
-      {
-         "helpMarkDown" : "Specify the location or path for the artifact files to be published to ElectricFlow. For e.g., MyProject/target-$(Build.BuildNumber).war.",
-         "required" : true,
-         "name" : "artifactPath",
-         "type" : "filePath",
-         "label" : "Artifact Path",
-         "defaultValue" : ""
-      },
-      {
-         "helpMarkDown" : "Specify the name of the application artifact using the format <group_id>:<artifact_key>. For e.g., \"com.example:helloworld\".",
-         "required" : true,
-         "name" : "artifactName",
-         "label" : "Artifact Name",
-         "type" : "string",
-         "defaultValue" : ""
-      },
-      {
-         "helpMarkDown" : "Specify the version of the application artifact. For e.g., you can specify 1.0 or 1.0-$(Build.BuildNumber) that is based on Visual Studio environment variable.",
-         "required" : true,
-         "name" : "artifactVersion",
-         "label" : "Artifact Version",
-         "type" : "string",
-         "defaultValue" : ""
-      },
-      {
-         "helpMarkDown" : "Specify the name of the ElectricFlow Repository.",
-         "required" : true,
-         "name" : "repositoryName",
-         "type" : "pickList",
-         "label" : "Repository Name",
-         "defaultValue" : "default",
-         "properties" : {
-            "EditableOptions" : true
-         }
-      }
-   ],
+   "friendlyName" : "ElectricFlow - Publish Artifact",
    "helpMarkDown" : "",
    "id" : "0e2424a3-42b6-48f5-b3fa-ac6ed16d4c57",
-   "category" : "Build"
+   "inputs" : [
+      {
+         "defaultValue" : "",
+         "helpMarkDown" : "Select the ElectricFlow endpoint to use.",
+         "label" : "ElectricFlow Service Endpoint",
+         "name" : "electricFlowService",
+         "required" : true,
+         "type" : "connectedService:electricFlow"
+      },
+      {
+         "defaultValue" : "",
+         "helpMarkDown" : "Specify the location or path for the artifact files to be published to ElectricFlow. For e.g., \"MyProject/target-$(Build.BuildNumber).war\". To preserve directory structure use asterisk \"\\*\" in the path end. For example: \"\\*\", \"MyProject/\\*\", \"Test1/Test2/\\*\".",
+         "label" : "Artifact Path",
+         "name" : "artifactPath",
+         "required" : true,
+         "type" : "filePath"
+      },
+      {
+         "defaultValue" : "",
+         "helpMarkDown" : "Specify the name of the application artifact using the format <group_id>:<artifact_key>. For e.g., \"com.example:helloworld\".",
+         "label" : "Artifact Name",
+         "name" : "artifactName",
+         "required" : true,
+         "type" : "string"
+      },
+      {
+         "defaultValue" : "",
+         "helpMarkDown" : "Specify the version of the application artifact. For e.g., you can specify 1.0 or 1.0-$(Build.BuildNumber) that is based on Visual Studio environment variable.",
+         "label" : "Artifact Version",
+         "name" : "artifactVersion",
+         "required" : true,
+         "type" : "string"
+      },
+      {
+         "defaultValue" : "default",
+         "helpMarkDown" : "Specify the name of the ElectricFlow Repository.",
+         "label" : "Repository Name",
+         "name" : "repositoryName",
+         "properties" : {
+            "EditableOptions" : true
+         },
+         "required" : true,
+         "type" : "pickList"
+      }
+   ],
+   "instanceNameFormat" : "Publish Artifact $(artifactName):$(artifactVersion) to repository $(repositoryName)",
+   "name" : "publish-artifact",
+   "version" : {
+      "Major" : "1",
+      "Minor" : "0",
+      "Patch" : 53
+   }
 }

@@ -1,0 +1,110 @@
+{
+   "author" : "Electric Cloud",
+   "category" : "build",
+   "dataSourceBindings" : [
+      {
+         "dataSourceName" : "ElectricFlowProjects",
+         "endpointId" : "$(electricFlowService)",
+         "resultTemplate" : "{\"Value\": \"{{#unless this.pluginKey}}{{{this.projectName}}}{{else}}Default{{/unless}}\", \"DisplayValue\": \"{{#unless this.pluginKey}}{{{this.projectName}}}{{else}}Default{{/unless}}\"}",
+         "target" : "projectName"
+      },
+      {
+         "dataSourceName" : "ElectricFlowReleases",
+         "endpointId" : "$(electricFlowService)",
+         "parameters" : {
+            "projectName" : "$(projectName)"
+         },
+         "target" : "releaseName"
+      },
+      {
+         "dataSourceName" : "ElectricFlowReleaseStages",
+         "endpointId" : "$(electricFlowService)",
+         "parameters" : {
+            "projectName" : "$(projectName)",
+            "releaseName" : "$(releaseName)"
+         },
+         "target" : "startingStageName"
+      }
+   ],
+   "description" : "Start a release in ElectricFlow.",
+   "execution" : {
+      "Node" : {
+         "target" : "index.js"
+      }
+   },
+   "friendlyName" : "ElectricFlow - Trigger Release",
+   "helpMarkDown" : "",
+   "id" : "41e66e30-f95f-11e8-a9f6-d16792ff02ec",
+   "inputs" : [
+      {
+         "defaultValue" : "",
+         "helpMarkDown" : "Select the ElectricFlow endpoint to use.",
+         "label" : "ElectricFlow Service Endpoint",
+         "name" : "electricFlowService",
+         "required" : true,
+         "type" : "connectedService:electricFlow"
+      },
+      {
+         "defaultValue" : "",
+         "helpMarkDown" : "Specify the ElectricFlow project name.",
+         "label" : "Project Name",
+         "name" : "projectName",
+         "properties" : {
+            "EditableOptions" : true
+         },
+         "required" : true,
+         "type" : "pickList"
+      },
+      {
+         "defaultValue" : "",
+         "helpMarkDown" : "Specify the ElectricFlow release name.",
+         "label" : "Release Name",
+         "name" : "releaseName",
+         "properties" : {
+            "EditableOptions" : true
+         },
+         "required" : true,
+         "type" : "pickList"
+      },
+      {
+         "defaultValue" : "",
+         "helpMarkDown" : "Specify the starting stage name",
+         "label" : "Starting stage name",
+         "name" : "startingStageName",
+         "properties" : {
+            "EditableOptions" : true
+         },
+         "required" : false,
+         "type" : "pickList"
+      },
+      {
+         "defaultValue" : "",
+         "helpMarkDown" : "One or more stages to run in a pipeline associated with the release, comma-separated.",
+         "label" : "Stages to run",
+         "name" : "stagesToRun",
+         "type" : "string"
+      },
+      {
+         "helpMarkDown" : "If checked, parameters will be passed to the pipeline",
+         "label" : "Requires pipeline parameters",
+         "name" : "requiresAdditionalParameters",
+         "required" : false,
+         "type" : "boolean"
+      },
+      {
+         "helpMarkDown" : "Parameters for the pipeline call, in key=value pairs or in JSON format. E.g. myParam = value",
+         "label" : "Pipeline parameters",
+         "name" : "additionalParameters",
+         "required" : false,
+         "type" : "multiLine",
+         "visibleRule" : "requiresAdditionalParameters=true"
+      }
+   ],
+   "instanceNameFormat" : "Trigger Release $(releaseName) from project $(projectName)",
+   "name" : "TriggerRelease",
+   "version" : {
+      "Major" : "1",
+      "Minor" : "0",
+      "Patch" : 16
+   }
+}

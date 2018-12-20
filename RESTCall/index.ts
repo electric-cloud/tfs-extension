@@ -28,6 +28,8 @@ var restEndpoint = tl.getInput('restEndpoint', true);
 if(!restEndpoint.match(/^\//)) {
     restEndpoint = '/' + restEndpoint;
 }
+restEndpoint = encodeURI(restEndpoint);
+
 var resVarName = tl.getInput('resultVarName', true);
 let payload = tl.getInput('payload', false);
 if(!payload) {
@@ -57,11 +59,12 @@ let parseParameters = function(params: string) {
 
 let parameters = parseParameters(paramsString);
 console.log("Parameters are:", parameters);
+console.log("Payload:", payload);
 let promise = efClient.request(restEndpoint, method, parameters, payload);
 
 promise.then((res: any) => {
     console.log(res);
-    tl.setVariable(resVarName, JSON.stringify(res.response));
+    tl.setVariable(resVarName, JSON.stringify(res));
     tl.setResult(tl.TaskResult.Succeeded, `Successfully ran API method ${method} on ${restEndpoint}`);
 }).catch((e: any) => {
     console.log(e);

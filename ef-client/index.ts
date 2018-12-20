@@ -30,6 +30,12 @@ class EFClient {
         this.skipCertCheck = skipCertCheck;
     }
 
+    createFlowRuntimeLink(endpoint: string, pipelineId: string, flowRuntimeId: string) {
+        endpoint = endpoint.replace(/\/$/, '');
+        let url = endpoint + '/flow/#pipeline-run/' + pipelineId + '/' + flowRuntimeId;
+        return url;
+    }
+
     getProject(projectName: string) {
        let promise = this.get("/projects/" + querystring.escape(projectName), undefined);
        return promise;
@@ -37,6 +43,12 @@ class EFClient {
 
     getPipeline(pipelineName: string, projectName: string) {
         let promise = this.get("/pipelines/" + querystring.escape(pipelineName), {projectName: projectName});
+        return promise;
+    }
+
+    getRelease(releaseName: string, projectName: string) {
+        console.log("GET RELEASE")
+        let promise = this.get("/releases/" + querystring.escape(releaseName), {projectName: projectName});
         return promise;
     }
 
@@ -50,6 +62,8 @@ class EFClient {
             list.push({actualParameterName: parameterName, value: additionalParameters[parameterName]});
         }
         let payload = JSON.stringify({actualParameter: list});
+        console.log("Pipeline parameters (raw):", additionalParameters);
+        console.log("Pipeline parameters (converted):", payload);
         return this.post("/pipelines", {pipelineName: pipelineName, projectName: projectName}, payload)
     }
 
@@ -155,22 +169,63 @@ class EFClient {
         return acc;
     }
 
+    parseParameters(params: string) {
+        let retval = {};
+        try {
+            retval = JSON.parse(params);
+        } catch(e) {
+            if (params.match(/=/)) {
+                let lines = params.split(/\n/);
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i];
+                    let pair = line.split(/\s*=\s*/);
+                    let key = pair[0];
+                    let value = pair[1];
+                    retval[key] = value;
+                }
+            }
+            else {
+                var message = `Wrong parameters format, either JSON or key=value pairs are required. You have provided: ${params}`;
+                throw(message);
+            }
+        }
+        return retval;
+    }
+
     publishArtifact(artifactPath: string, artifactName: string, artifactVersion: string, repositoryName: string, commanderSessionId: string) {
         let def = q.defer();
 
         let form = new FormData();
+        let root = process.cwd();
+        console.log(`Root path (on agent): ${root}`);
+        console.log(`Artifact path ${artifactPath}`);
+
         let files = glob.sync(artifactPath, {});
         files.forEach((filename) => {
             let stat = fs.statSync(filename);
+
+            // Currently results returned from glob on windows will return '/' as the separator
+            // We need convert separators to native
+            if(process.platform === "win32") {
+                filename = filename.replace(/\//g, path.sep);
+            }
+
+            let relative = path.relative(artifactPath, filename);
+
             if (stat.isDirectory()) {
                 let files = this.findAllFiles(filename, []);
                 files.forEach((filename) => {
+                    let relative = path.relative(artifactPath, filename);
+
                     let stream = fs.createReadStream(filename).on("error", (e) => {
                         console.log("File stream error", e);
                         def.reject(e);
                     });
-                    console.log(`Adding file ${filename}`);
-                    form.append("files", stream);
+                    console.log(`Adding file ${filename} with relative path ${relative}`);
+                    form.append("files", stream, {
+                        filepath: relative
+                    });
+
                 });
             }
             else {
@@ -178,8 +233,10 @@ class EFClient {
                     console.log("File stream error", e);
                     def.reject(e);
                 });
-                console.log(`Adding file ${filename}`);
-                form.append("files", stream);
+                console.log(`Adding file ${filename} with relative path ${relative}`);
+                form.append("files", stream, {
+                    filepath: relative
+                });
             }
         });
 
@@ -231,5 +288,30 @@ class EFClient {
         return def.promise;
     }
 
+    release(projectName: string, releaseName: string, startingStageName: string, stagesToRun: string, additionalParameters: any) {
+        let query = { projectName: projectName, releaseName: releaseName };
+        if(startingStageName) {
+            query["startingStage"] = startingStageName;
+        }
+
+        let body = {};
+
+        if(additionalParameters) {
+            let list = [];
+            for(let parameterName in additionalParameters) {
+                list.push({pipelineParameterName: parameterName, value: additionalParameters[parameterName]});
+            }
+            body["pipelineParameter"] = list;
+        }
+
+        if(stagesToRun) {
+            body["stagesToRun"] = stagesToRun.split(",");
+        }
+
+        let payload = JSON.stringify(body);
+        console.log("Pipeline parameters (raw):", additionalParameters);
+        console.log("Pipeline parameters (converted):", payload);
+        return this.post("/releases", query, payload)
+    }
 }
 export { EFClient };
