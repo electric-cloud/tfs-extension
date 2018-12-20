@@ -211,11 +211,17 @@ class EFClient {
             }
 
             let relative = path.relative(artifactPath, filename);
+            if(relative === "") {
+                relative = path.basename(filename);
+            }
 
             if (stat.isDirectory()) {
                 let files = this.findAllFiles(filename, []);
                 files.forEach((filename) => {
                     let relative = path.relative(artifactPath, filename);
+                    if(relative === "") {
+                        relative = path.basename(filename);
+                    }
 
                     let stream = fs.createReadStream(filename).on("error", (e) => {
                         console.log("File stream error", e);
