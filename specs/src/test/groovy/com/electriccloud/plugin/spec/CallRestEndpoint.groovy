@@ -47,7 +47,7 @@ class CallRestEndpoint extends PluginTestHelper {
         tfsBuildDefinitionParams = [
                 buildDefinitionName: "QAtest",
                 tfsProject: "$tfsProject",
-                tfsTaskID: tfsCallRestEndpoint,
+                tfsTaskID: tfsCallRestEndpointTaskID,
                 inputs: [
                         electricFlowService: "",
                         method: "GET",
@@ -100,7 +100,7 @@ class CallRestEndpoint extends PluginTestHelper {
         TC.C368224 | "DELETE" | "/projects/qaProject/applications/qaTest"   | ""                                                         | ""                                                                        | "Build.Projects"   | logsToVerivy.DELETE
         TC.C368208 | "POST"   | "/projects"                                 | "projectName=qaProject2"                                   | ''                                                                        | "Build.Projects"   | logsToVerivy.POSTParams
         TC.C368218 | "POST"   | "/projects"                                 | "projectName=qaProject %?\ndescription=test ?description"  | '{ \\"resourceName\\":\\"local\\", \\"workspaceName\\":\\"default\\"}'    | "Build.Projects"   | logsToVerivy.POSTParamsAndPayload
-        TC.C368187 | "GET"    | "/projects/qaProject %?"                    | ""                                                         | ""                                                                        | "Build.Projects"   | logsToVerivy.pathSpecialSymbols
+//        TC.C368187 | "GET"    | "/projects/qaProject %?"                    | ""                                                         | ""                                                                        | "Build.Projects"   | logsToVerivy.pathSpecialSymbols
     }
 
     @Unroll
