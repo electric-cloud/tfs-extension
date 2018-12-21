@@ -10,8 +10,8 @@ import static groovyx.net.http.Method.*
 class PluginTestHelper extends PluginSpockTestSupport {
 
     @Shared
-    def efURL                     =  'http://10.200.1.250/',
-        tfsProject                =  'eserbinTFSProject',
+    def efURL                     =  System.getenv('EF_URL'),
+        tfsProject                =  System.getenv('TFS_PROJECT'),
         tfsURI                    =  "/tfs/DefaultCollection/$tfsProject/_apis/build/builds",
         tfsURIBuildDefinition     =  "/tfs/DefaultCollection/$tfsProject/_apis/build/definitions",
         tfsURIServiceEndpoint     =  "/tfs/DefaultCollection/$tfsProject/_apis/distributedtask/serviceendpoints",
@@ -19,8 +19,10 @@ class PluginTestHelper extends PluginSpockTestSupport {
         tfsCallRestEndpointTaskID =  "cd267176-2716-4cf7-b57b-420b126ec3da",
         tfsPublishArtifactTaskID  =  "0e2424a3-42b6-48f5-b3fa-ac6ed16d4c57",
         tfsTriggerReleaseTaskID   =  "41e66e30-f95f-11e8-a9f6-d16792ff02ec",
-        apiVersion = '4.0',
-        apiVersion2 = '4.0-preview.1'
+        apiVersion = System.getenv('API_VERSION'),
+        apiVersion2 = System.getenv('API_VERSION2'),
+        username = System.getenv('USER'),
+        password = System.getenv('PASSWORD')
 
     @Shared
     def currentTfsBuildRunID
@@ -31,8 +33,8 @@ class PluginTestHelper extends PluginSpockTestSupport {
             acceptUntrustedCerts: "true",
             name: "defaultServiceEndpointEF",
             url: efURL,
-            username: 'admin',
-            password: 'changeme'
+            username: username,
+            password: password
     ]
 
     @Shared
@@ -180,6 +182,45 @@ class PluginTestHelper extends PluginSpockTestSupport {
         type: 1
     }
 }"""
+            if (apiVersion == "3.0"){
+                body = """{
+    $idLine
+    $revisionLine
+    "name":"${params.buildDefinitionName}",
+    "repository":
+    {
+        "id": "\$/",
+        "type":  "TfsGit",
+        "name":  "${params.tfsProject}",
+        "url":  "$repositoryUrl",
+        "defaultBranch":  "refs/heads/master",
+        "clean":  "false",
+        "checkoutSubmodules":  false
+    },
+    "queue":
+    {
+        "name":"Default"
+    },
+    build: [
+                    {
+                        enabled: true,
+                        continueOnError: false,
+                        alwaysRun: false,
+                        displayName: "task1",
+                        timeoutInMinutes: 0,
+                        task: {
+                            id: "${params.tfsTaskID}",
+                            versionSpec: "1.*",
+                            definitionType: "task"
+                        },
+                        inputs: {
+                            $inputs
+                        }
+                    }
+                ],
+}"""
+
+            }
             println body
             headers.'Authorization' = authHeaderValue
             headers.'Content-Type' = 'application/json'
@@ -229,7 +270,7 @@ class PluginTestHelper extends PluginSpockTestSupport {
 
     def waitUntilTfsBuildCompleted(def buildID){
         def buildStatus = ''
-        for (def i=0; i<10; i++) {
+        for (def i=0; i<30; i++) {
             sleep(10000)
             def r = http.request(GET, JSON) {
                 uri.path = tfsURI + '/' + buildID
