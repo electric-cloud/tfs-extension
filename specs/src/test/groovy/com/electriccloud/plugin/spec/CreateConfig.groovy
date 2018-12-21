@@ -21,6 +21,9 @@ class CreateConfig extends PluginTestHelper {
     ]
 
     @Shared
+    def errorLog = (apiVersion == "4.0") ? 'Unexpected token < in JSON at position 0' : 'Unhandled: Unexpected token <'
+
+    @Shared
     def idBuildPipelineTfs = null,
         tfsBuildDefinitionParams = [
                 buildDefinitionName: "QAtest",
@@ -94,7 +97,7 @@ class CreateConfig extends PluginTestHelper {
         TC.C185308 | "v1.0"        | "true"                | "testConfig1"  | efURL              | 'admin'     | 'changeme' | false
         TC.C185532 | "v1.0"        | "true"                | "ᶃᶄᶆᶇᶈᶉᶊᶋ"     | efURL              | 'ᶃᶄᶆᶇᶈᶉᶊᶋ'  | 'ᶃᶄᶆᶇᶈᶉᶊᶋ'  | '[error]No credentials/session found in this request'
         TC.C368052 | "v1.0"        | "true"                | "testConfig2"  | efURL              | 'admin1'    | 'changeme1'| '[error]No credentials/session found in this request'
-        TC.C368054 | "v1.0"        | "true"                | "testConfig3"  | 'http://test.com/' | 'admin'     | 'changeme' | 'Unexpected token < in JSON at position 0'
+        TC.C368054 | "v1.0"        | "true"                | "testConfig3"  | 'http://test.com/' | 'admin'     | 'changeme' | errorLog
         TC.C368027 | "v1.0"        | "false"               | "testConfig1"  | efURL              | 'admin'     | 'changeme' | 'Error: self signed certificate'
     }
 
@@ -149,7 +152,7 @@ class CreateConfig extends PluginTestHelper {
         where: 'The following params will be: '
         testCaseID | restVersion   | acceptUntrustedCerts  | name              | url                | username    | password    | errorLogs
         TC.C368045 | "v1.0"        | "true"                | "updatedConfig1"  | efURL              | 'admin'     | 'changeme'  | false
-        TC.C368046 | "v1.0"        | "true"                | "defaultEF"       | 'http://test.com/' | 'admin'     | 'changeme'  | 'Unexpected token < in JSON at position 0'
+        TC.C368046 | "v1.0"        | "true"                | "defaultEF"       | 'http://test.com/' | 'admin'     | 'changeme'  | errorLog
         TC.C368381 | "v1.0"        | "true"                | "updatedConfig1"  | efURL              | 'admin1'    | 'changeme1' | '[error]No credentials/session found in this request'
     }
 
