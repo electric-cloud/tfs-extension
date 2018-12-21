@@ -12,9 +12,9 @@ class PluginTestHelper extends PluginSpockTestSupport {
     @Shared
     def efURL                     =  System.getenv('EF_URL'),
         tfsProject                =  System.getenv('TFS_PROJECT'),
-        tfsURI                    =  "/tfs/DefaultCollection/$tfsProject/_apis/build/builds",
-        tfsURIBuildDefinition     =  "/tfs/DefaultCollection/$tfsProject/_apis/build/definitions",
-        tfsURIServiceEndpoint     =  "/tfs/DefaultCollection/$tfsProject/_apis/distributedtask/serviceendpoints",
+        tfsURI                    =  (System.getenv('IS_AZURE')) ? "/$tfsProject/_apis/build/builds/" : "/tfs/DefaultCollection/$tfsProject/_apis/build/builds",
+        tfsURIBuildDefinition     =  (System.getenv('IS_AZURE')) ? "/$tfsProject/_apis/build/definitions" : "/tfs/DefaultCollection/$tfsProject/_apis/build/definitions",
+        tfsURIServiceEndpoint     =  (System.getenv('IS_AZURE')) ? "/$tfsProject/_apis/distributedtask/serviceendpoints" : "/tfs/DefaultCollection/$tfsProject/_apis/distributedtask/serviceendpoints",
         tfsRunPipelineTaskID      =  "0442a599-dd0c-4d8d-b991-ace99fa47424",
         tfsCallRestEndpointTaskID =  "cd267176-2716-4cf7-b57b-420b126ec3da",
         tfsPublishArtifactTaskID  =  "0e2424a3-42b6-48f5-b3fa-ac6ed16d4c57",
