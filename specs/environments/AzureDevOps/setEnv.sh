@@ -1,2 +1,9 @@
-export TFS_HOST="https://dev.azure.com"
+export TFS_HOST="https://pluginsdev.visualstudio.com"
 export TFS_TOKEN="tcn7c4elbe6gh2fpkg6l2mfjf5krr76estlrvweli32yjyicuz2a"
+export API_VERSION="4.0"
+export API_VERSION2="4.0-preview.1"
+export EF_URL="https://18.221.56.243/"
+export TFS_PROJECT="qa_eserbin_test-CI"
+export USER="admin"
+export PASSWORD="changeme"
+export IS_AZURE=1
