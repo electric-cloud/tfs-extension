@@ -33,7 +33,7 @@ class CallRestEndpoint extends PluginTestHelper {
             POSTParams:            ["POST /rest/v1.0/projects?projectName=qaProject2", "{ project:", "projectName: 'qaProject2',"],
             POSTParamsAndPayload:  ["POST /rest/v1.0/projects?projectName=qaProject%20%25%3F&description=test%20%3Fdescription", "{ project:", "projectName: 'qaProject %?',", "description: 'test ?description',"],
             pathSpecialSymbols:    ["SHOULD BE updated"],
-            wrongMethod:           [(apiVersion == "4.0") ? "[error]Unhandled: Unexpected end of JSON input" : "[error]Unhandled: Unexpected end of input"],
+            wrongMethod:           [(apiVersion != "3.0") ? "[error]Unhandled: Unexpected end of JSON input" : "[error]Unhandled: Unexpected end of input"],
             wrongPath:             ["{ error:", "code: 'NotImplemented'"],
             wrongParams:           ["[error]'projectName' is required and must be between 1 and 255 characters"],
             wrongPayload:          ["[error]'projectName' is required and must be between 1 and 255 characters"],

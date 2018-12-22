@@ -234,11 +234,10 @@ class PluginTestHelper extends PluginSpockTestSupport {
     "repository":
     {
         "id": "\$/",
-        "type":  "TfsVersionControl",
+        "type":  "TfsGit",
         "name":  "${params.tfsProject}",
-        "url":  "$repositoryUrl",
-        "defaultBranch":  "\$/TestProject",
-        "rootFolder": "\$/TestProject",
+        "url":  "https://pluginsdev@dev.azure.com/pluginsdev/${params.tfsProject}/_git/${params.tfsProject}",
+        "defaultBranch":  "refs/heads/master",
         "clean":  "false",
         "checkoutSubmodules":  false
     },

@@ -20,7 +20,7 @@ class PublishArtifact extends PluginTestHelper {
     ]
 
     @Shared
-    def xml1 = """
+    def xml1 = !(isAzure) ? """
 <manifest version="2" .*>
   <file name="README.md" .*/>
   <directory name="folder1">
@@ -33,8 +33,22 @@ class PublishArtifact extends PluginTestHelper {
     <file name="test1" .*/>
     <file name="test2" .*/>
   </directory>
+""" : """
+<manifest version="2" .*>
+  <directory name="folder1">
+    <file name="test2" .*/>
+    <file name="test1" .*/>
+    <directory name="folder2">
+      <file name="test3" .*/>
+    </directory>
+    <directory name="folder3">
+      <file name="test4" .*/>
+    </directory>
+  </directory>
+  <file name="README.md" .*/>
 """,
-    xml2 = """
+
+    xml2 = !(isAzure) ? """
 <manifest version="2" .*>
   <directory name="folder2">
     <file name="test3" .*/>
@@ -45,18 +59,36 @@ class PublishArtifact extends PluginTestHelper {
   <file name="test1" .*/>
   <file name="test2" .*/>
 </manifest>
+""" : """
+<manifest version="2" .*>
+  <file name="test2" .*/>
+  <file name="test1" .*/>
+  <directory name="folder2">
+    <file name="test3" .*/>
+  </directory>
+  <directory name="folder3">
+    <file name="test4" .*/>
+  </directory>
+</manifest>
 """,
     xml3 = """
 <manifest version="2" .*>
   <file name="test1" .*/>
 </manifest>
 """,
-    xml4 = """
+    xml4 = !(isAzure) ? """
 <manifest version="2" .*>
   <file name="test1" .*/>
   <file name="test3" .*/>
   <file name="test2" .*/>
   <file name="test4" .*/>
+</manifest>
+""" : """
+<manifest version="2" .*>
+  <file name="test4" .*/>
+  <file name="test2" .*/>
+  <file name="test1" .*/>
+  <file name="test3" .*/>
 </manifest>
 """
 
