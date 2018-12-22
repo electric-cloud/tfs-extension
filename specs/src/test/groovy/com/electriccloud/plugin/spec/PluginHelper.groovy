@@ -12,9 +12,10 @@ class PluginTestHelper extends PluginSpockTestSupport {
     @Shared
     def efURL                     =  System.getenv('EF_URL'),
         tfsProject                =  System.getenv('TFS_PROJECT'),
-        tfsURI                    =  (System.getenv('IS_AZURE')) ? "/$tfsProject/_apis/build/builds/" : "/tfs/DefaultCollection/$tfsProject/_apis/build/builds",
-        tfsURIBuildDefinition     =  (System.getenv('IS_AZURE')) ? "/$tfsProject/_apis/build/definitions" : "/tfs/DefaultCollection/$tfsProject/_apis/build/definitions",
-        tfsURIServiceEndpoint     =  (System.getenv('IS_AZURE')) ? "/$tfsProject/_apis/distributedtask/serviceendpoints" : "/tfs/DefaultCollection/$tfsProject/_apis/distributedtask/serviceendpoints",
+        isAzure                   =  (System.getenv('IS_AZURE')),
+        tfsURI                    =  isAzure ? "/pluginsdev/$tfsProject/_apis/build/builds/" : "/tfs/DefaultCollection/$tfsProject/_apis/build/builds",
+        tfsURIBuildDefinition     =  isAzure ? "/pluginsdev/$tfsProject/_apis/build/definitions" : "/tfs/DefaultCollection/$tfsProject/_apis/build/definitions",
+        tfsURIServiceEndpoint     =  isAzure ? "/pluginsdev/$tfsProject/_apis/serviceendpoint/endpoints" : "/tfs/DefaultCollection/$tfsProject/_apis/distributedtask/serviceendpoints",
         tfsRunPipelineTaskID      =  "0442a599-dd0c-4d8d-b991-ace99fa47424",
         tfsCallRestEndpointTaskID =  "cd267176-2716-4cf7-b57b-420b126ec3da",
         tfsPublishArtifactTaskID  =  "0e2424a3-42b6-48f5-b3fa-ac6ed16d4c57",
@@ -115,6 +116,9 @@ class PluginTestHelper extends PluginSpockTestSupport {
 
     def createTFSBuild(def params, def method=POST, def id=null){
         def repositoryUrl = getHost() + "/tfs/DefaultCollection/"
+        if (isAzure){
+            repositoryUrl = getHost() + "/pluginsdev/"
+        }
         def inputs = ''
         for (input in params.inputs){
             inputs += "${input.key}:\"${input.value}\",\n"
@@ -221,12 +225,78 @@ class PluginTestHelper extends PluginSpockTestSupport {
 }"""
 
             }
+
+            if (isAzure){
+                body = """{
+    $idLine
+    $revisionLine
+    "name":"${params.buildDefinitionName}",
+    "repository":
+    {
+        "id": "\$/",
+        "type":  "TfsVersionControl",
+        "name":  "${params.tfsProject}",
+        "url":  "$repositoryUrl",
+        "defaultBranch":  "\$/TestProject",
+        "rootFolder": "\$/TestProject",
+        "clean":  "false",
+        "checkoutSubmodules":  false
+    },
+    queue: {
+        name: "Hosted VS2017",
+    },
+    process: {
+        phases: [
+            {
+                steps: [
+                    {
+                        environment: { },
+                        enabled: true,
+                        continueOnError: false,
+                        alwaysRun: false,
+                        displayName: "task1",
+                        timeoutInMinutes: 0,
+                        condition: "succeeded()",
+                        refName: "runpipeline1",
+                        task: {
+                            id: "${params.tfsTaskID}",
+                            versionSpec: "1.*",
+                            definitionType: "task"
+                        },
+                        inputs: {
+                            $inputs
+                        }
+                    }
+                ],
+                name: "Agent job",
+                refName: "Phase_1",
+                condition: "succeeded()",
+                target: {
+                    executionOptions: {
+                        type: 0
+                    },
+                    allowScriptsAuthAccessOption: false,
+                    type: 1
+                },
+                jobAuthorizationScope: "projectCollection",
+                jobCancelTimeoutInMinutes: 1
+            }
+        ],
+        type: 1
+    }
+}"""
+
+            }
+
             println body
             headers.'Authorization' = authHeaderValue
             headers.'Content-Type' = 'application/json'
             response.success = { resp, json ->
                 if (!id){
                     def tfsBuildId = json._links.self.href.split("/")[-1]
+                    if (isAzure){
+                        tfsBuildId = tfsBuildId.split("\\?")[0]
+                    }
                     return tfsBuildId
                 }
             }
