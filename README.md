@@ -57,6 +57,23 @@ This build task has following parameters:
 * Result variable name: Enter variable name to store call results.
 
 
+## Trigger Release in Electric Flow
+
+This integration allows you to to start a release in ElectricFlow.
+
+![Trigger Release](https://raw.githubusercontent.com/electric-cloud/tfs-extension/master/Screenshots/TriggerRelease.png)
+
+This build task has following parameters:
+
+* Endpoint: Endpoint URL of the ElectricFlow service
+* Project Name: Name of the ElectricFlow project
+* Release Name: Name of the release in ElectricFlow project.
+* Starting stage name: Specify the starting stage name in release pipeline.
+* Stages to run: One or more stages to run in a pipeline associated with the release, comma-separated.
+* Requires pipeline parameters: If checked, parameters will be passed to the pipeline.
+* Pipeline parameters: Parameters for the pipeline call, in key=value pairs or in JSON format. E.g. myParam = value.
+
+
 ## Service endpoints
 
 ![Endpoint](https://github.com/electric-cloud/tfs-extension/blob/master/Screenshots/Endpoint.png?raw=true)
