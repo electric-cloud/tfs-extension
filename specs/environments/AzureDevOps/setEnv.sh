@@ -1,0 +1,9 @@
+export TFS_HOST="https://dev.azure.com"
+export TFS_TOKEN="d35gkby32oxt4mou6cc7ad5xxqnqbvzbitxovlxipy5grih734yq"
+export API_VERSION="4.1"
+export API_VERSION2="5.1-preview.2"
+export EF_URL="https://18.218.241.168/"
+export TFS_PROJECT="qa_eserbin_test"
+export USER="admin"
+export PASSWORD="changeme"
+export IS_AZURE=1

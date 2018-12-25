@@ -1,0 +1,8 @@
+export TFS_HOST="http://10.200.1.113:8080"
+export TFS_TOKEN="aubrnyw2qgvy26h7hpptscudwymcvynkw4z4mcxuiuiwtfpa44rq"
+export API_VERSION="3.0"
+export API_VERSION2="3.0-preview.1"
+export EF_URL="http://10.200.1.250/"
+export TFS_PROJECT="eserbinTFSProject"
+export USER="admin"
+export PASSWORD="changeme"
