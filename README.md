@@ -10,9 +10,24 @@ Key feature of integration includes:
 * Run ElectricFlow Pipeline
 * Publish Artifact from Visual Studio Team Services/Team Foundation Server into ElectricFlow
 
-Following build actions are available in ElectricFlow Plugin. These actions can be executed separately or combined sequentially.
+Following build tasks are available in ElectricFlow Plugin. These tasks can be executed separately or combined sequentially.
 
-## Publish Artifact to ElectricFlow
+
+## Setting up ElectricFlow Server Connections
+
+![Endpoint](https://github.com/electric-cloud/tfs-extension/blob/master/Screenshots/Endpoint.png?raw=true)
+
+In order to use and integrate with ElectricFlow, you would have to create endpoints in Visual Studio Team Services/Team Foundation Services. Navigate to Services/Endpoints and find ElectricFlow service endpoint. One or more configurations can be created to connect to and call APIs into ElectricFlow system. For each endpoint, following attributes need to be specified:
+
+* Connection Name: Name of the ElectricFlow endpoint
+* Server URL: URL for the ElectricFlow Server. For example, `https://<electric-flow-server>`
+* REST API Version: Version for the ElectricFlow REST API. For e.g., v1
+* User Name: User name for the ElectricFlow
+* User Password: User password for the ElectricFlow
+* Accept Untrusted SSL certificates: If checked, untrusted certificates will be accepted.
+
+
+## Publish Artifact to ElectricFlow Server
 
 This integration allows you to publish artifact for your application to ElectricFlow.
 
@@ -27,7 +42,7 @@ This build task has following parameters:
 * ElectricFlow Repository Name: Name of the ElectricFlow Repository
 
 
-## Run Pipeline in ElectricFlow
+## Run Pipeline in ElectricFlow Server
 
 This integration allows you to run a pipeline in ElectricFlow.
 
@@ -41,7 +56,7 @@ This build task has following parameters:
 * (Optional) Pipeline Parameters
 
 
-## Run REST Call in ElectricFlow
+## Call ElectricFlow Server Rest API
 
 This integration allows you to run a custom REST call in ElectricFlow.
 
@@ -57,7 +72,7 @@ This build task has following parameters:
 * Result variable name: Enter variable name to store call results.
 
 
-## Trigger Release in Electric Flow
+## Trigger Release in ElectricFlow Server
 
 This integration allows you to to start a release in ElectricFlow.
 
@@ -74,22 +89,14 @@ This build task has following parameters:
 * Pipeline parameters: Parameters for the pipeline call, in key=value pairs or in JSON format. E.g. myParam = value.
 
 
-## Service endpoints
-
-![Endpoint](https://github.com/electric-cloud/tfs-extension/blob/master/Screenshots/Endpoint.png?raw=true)
-
-In order to use and integrate with ElectricFlow, you would have to create endpoints in Visual Studio Team Services/Team Foundation Services. Navigate to Services/Endpoints and find ElectricFlow service endpoint. One or more configurations can be created to connect to and call APIs into ElectricFlow system. For each endpoint, following attributes need to be specified:
-
-* Connection Name: Name of the ElectricFlow endpoint
-* Server URL: URL for the ElectricFlow Server. For example, `https://<electric-flow-server>`
-* REST API Version: Version for the ElectricFlow REST API. For e.g., v1
-* User Name: User name for the ElectricFlow
-* User Password: User password for the ElectricFlow
-* Accept Untrusted SSL certificates: If checked, untrusted certificates will be accepted.
-
-# Changelog
+# Release Notes
 
 ## Release 1.0
 
-First public release
+Initial Release which supports all these Build Tasks
 
+* Setting up ElectricFlow Server Connections
+* Publish Artifact to ElectricFlow Server
+* Run Pipeline in ElectricFlow Server
+* Call ElectricFlow Server Rest API
+* Trigger Release in ElectricFlow Server
