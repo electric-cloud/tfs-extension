@@ -1,7 +1,7 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "1.1.0.0",
+  "version": "1.1.0.288",
   "icons": {
       "default": "images/extension-icon.png"
   },
@@ -98,8 +98,8 @@
             },
             {
               "id": "acceptUntrustedCerts",
-              "name": "Accept untrusted SSL certificates",
-              "description": "If checked, self-signed certificates will be accepted. Please do not use this option in production environment.",
+              "name": "Override Electric Flow SSL Validation Check",
+              "description": "By default SSL Validation Check will be performed. Choose this setting to override the check. If you do not want to override this check, perform the SSL certificate setup required in Jenkins and Electric Flow as per the Electric Flow Server documentation.",
               "inputMode": "checkbox",
               "isConfidential": false,
               "validation": {
