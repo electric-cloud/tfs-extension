@@ -1,7 +1,7 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "1.1.0.288",
+  "version": "1.1.0.291",
   "icons": {
       "default": "images/extension-icon.png"
   },
@@ -42,7 +42,7 @@
       "targets": [ "ms.vss-endpoint.endpoint-types" ],
       "properties": {
         "name": "electricFlow",
-        "displayName": "ElectricFlow server connection",
+        "displayName": "ElectricFlow Server",
         "url": {
           "displayName": "Server URL",
           "helpText": "Specify the URL for the ElectricFlow Server. For e.g., https://electric-flow-server."
