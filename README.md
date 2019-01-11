@@ -23,7 +23,7 @@ In order to use and integrate with ElectricFlow, you would have to create endpoi
 * REST API Version: Version for the ElectricFlow REST API. For e.g., v1
 * User Name: User name for the ElectricFlow
 * User Password: User password for the ElectricFlow
-* Accept Untrusted SSL certificates: If checked, untrusted certificates will be accepted.
+* Override Electric Flow SSL Validation Check: By default SSL Validation Check will be performed. Choose this setting to override the check. If you do not want to override this check, perform the SSL certificate setup required in Jenkins and Electric Flow as per the Electric Flow Server documentation.
 
 ![Endpoint](https://github.com/electric-cloud/tfs-extension/blob/master/Screenshots/Endpoint.png?raw=true)
 
