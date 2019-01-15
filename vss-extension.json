@@ -1,12 +1,12 @@
 {
 "manifestVersion": 1,
   "id": "electric-flow",
-  "version": "1.1.1.295",
+  "version": "1.2.0.303",
   "icons": {
       "default": "images/extension-icon.png"
   },
-  "categories" : ["Build and release"],
-  "name": "ElectricFlow",
+  "categories" : ["Azure Pipelines"],
+  "name": "ElectricFlow Extension for Azure DevOps Server and Azure DevOps Services",
   "content": {
     "details": {
         "path": "README.md"
@@ -19,7 +19,7 @@
     "color": "white"
   },
   "description": "ElectricFlow is an enterprise-grade DevOps Release Automation platform that simplifies provisioning, build and release of multi-tiered applications.",
-  "publisher": "pluginsdev",
+  "publisher": "ElectricCloud",
   "scopes": [
     "vso.build_execute",
     "vso.serviceendpoint_manage"
